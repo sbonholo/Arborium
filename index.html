@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arborium — Private Forest Cabin · Mena, Arkansas</title>
+  <meta name="description" content="A secluded luxury cabin deep in the Ouachita National Forest near Wolf Pen Gap. ATV paradise, bass fishing, stone fireplace, soaking tub. Mena, Arkansas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:       #0e1c10;
+      --forest-mid:   #1a2e1c;
+      --forest-light: #2d4a2f;
+      --amber:        #c4862a;
+      --amber-light:  #e0a84a;
+      --cream:        #f7f2ea;
+      --cream-dark:   #ede6d8;
+      --stone:        #8a7d6e;
+      --text-dark:    #1a1a18;
+      --text-muted:   #6b6258;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-dark);
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ── SHARED UTILITIES ── */
+    .container        { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .container-narrow { max-width: 780px;  margin: 0 auto; padding: 0 2rem; }
+
+    section { padding: 7rem 2rem; }
+
+    .eyebrow {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 1.4rem;
+    }
+
+    .body-text {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-muted);
+    }
+
+    .btn-amber {
+      display: inline-block;
+      background: var(--amber);
+      color: var(--forest);
+      padding: 0.95rem 2.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-amber:hover { background: var(--amber-light); transform: translateY(-2px); }
+
+    .btn-outline {
+      display: inline-block;
+      border: 1.5px solid rgba(247,242,234,0.55);
+      color: var(--cream);
+      padding: 0.95rem 2.4rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--cream); background: rgba(247,242,234,0.08); }
+
+    .btn-dark {
+      display: inline-block;
+      background: var(--forest);
+      color: var(--cream);
+      padding: 1.05rem 2.8rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-dark:hover { background: var(--forest-mid); transform: translateY(-2px); }
+
+    /* ── NAVIGATION ── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.6rem 3rem;
+      transition: background 0.35s, padding 0.3s, backdrop-filter 0.35s;
+    }
+    #nav.scrolled {
+      background: rgba(14,28,16,0.96);
+      backdrop-filter: blur(14px);
+      padding: 1rem 3rem;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+    }
+    .nav-logo span { color: var(--amber); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--amber-light); }
+
+    .nav-cta {
+      background: var(--amber) !important;
+      color: var(--forest) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 2px;
+      font-weight: 600 !important;
+      opacity: 1 !important;
+    }
+    .nav-cta:hover { background: var(--amber-light) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=85');
+      background-size: cover;
+      background-position: center 40%;
+      will-change: transform;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(8,16,9,0.25) 0%,
+        rgba(8,16,9,0.52) 45%,
+        rgba(8,16,9,0.82) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      text-align: center;
+      color: var(--cream);
+      max-width: 860px;
+      padding: 0 2rem;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--amber-light);
+      margin-bottom: 1.4rem;
+      opacity: 0.9;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 9vw, 7rem);
+      font-weight: 700;
+      line-height: 1.02;
+      margin-bottom: 1.6rem;
+      letter-spacing: -0.01em;
+    }
+    .hero-title em { font-style: italic; color: var(--amber-light); }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      font-weight: 300;
+      line-height: 1.7;
+      opacity: 0.82;
+      max-width: 580px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(247,242,234,0.5);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 38px;
+      background: linear-gradient(to bottom, rgba(247,242,234,0.55), transparent);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 0.4; }
+      50%      { opacity: 1; }
+    }
+
+    /* ── MOBILE NAV ── */
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--forest);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.8rem 2.8rem;
+      border-right: 1px solid rgba(247,242,234,0.1);
+      flex: 1;
+      min-width: 130px;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--amber-light);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(247,242,234,0.5);
+    }
+
+    /* ── INTRO ── */
+    .intro { background: var(--cream); }
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5.5rem;
+      align-items: center;
+    }
+    .intro-img-wrap {
+      position: relative;
+    }
+    .intro-img-wrap img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      display: block;
+      border-radius: 2px;
+    }
+    .intro-img-accent {
+      position: absolute;
+      bottom: -1.4rem;
+      right: -1.4rem;
+      width: 52%;
+      aspect-ratio: 1;
+      border: 3px solid var(--amber);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+    .intro-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2.2rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--cream-dark);
+      padding: 0.45rem 1rem;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--forest-mid);
+    }
+
+    /* ── THE SPACE ── */
+    .space { background: var(--forest); }
+    .space-header { text-align: center; margin-bottom: 3.5rem; }
+    .space-header .section-title { color: var(--cream); }
+    .space-header .eyebrow { color: var(--amber-light); }
+    .space-sub {
+      font-size: 0.95rem;
+      color: rgba(247,242,234,0.55);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .room-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    .room-card {
+      background: var(--forest-mid);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .room-card-img {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+    .room-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .room-card:hover .room-card-img img { transform: scale(1.04); }
+    .room-card-body { padding: 1.8rem; }
+    .room-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 0.65rem;
+    }
+    .room-card-desc {
+      font-size: 0.88rem;
+      line-height: 1.72;
+      color: rgba(247,242,234,0.6);
+      margin-bottom: 1.2rem;
+    }
+    .room-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .room-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber-light);
+      border: 1px solid rgba(196,134,42,0.35);
+      padding: 0.28rem 0.75rem;
+      border-radius: 50px;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      #nav { padding: 1.2rem 1.5rem; }
+      #nav.scrolled { padding: 0.8rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .intro-grid,
+      .room-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .intro-img-accent { display: none; }
+      .stat-item { padding: 1.3rem 1.5rem; min-width: 100px; }
+      .stat-value { font-size: 1.5rem; }
+    }
+
+    /* ── AMENITIES ── */
+    .amenities { background: var(--cream-dark); }
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.8rem;
+      margin-top: 3.5rem;
+    }
+    .amenity {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .amenity-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.05rem; }
+    .amenity-name { font-size: 0.9rem; font-weight: 500; color: var(--text-dark); line-height: 1.3; }
+    .amenity-desc { font-size: 0.77rem; color: var(--stone); margin-top: 0.2rem; line-height: 1.4; }
+
+    /* ── OUTDOOR ── */
+    .outdoor { background: var(--forest); }
+    .outdoor-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .outdoor-img {
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .outdoor-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .outdoor .section-title { color: var(--cream); }
+    .outdoor-list {
+      list-style: none;
+      margin-top: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .outdoor-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: rgba(247,242,234,0.7);
+    }
+    .outdoor-list li::before {
+      content: '';
+      width: 5px; height: 5px;
+      background: var(--amber);
+      border-radius: 50%;
+      margin-top: 0.55rem;
+      flex-shrink: 0;
+    }
+
+    /* ── ACTIVITIES ── */
+    .activities { background: var(--cream); }
+    .activities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2.2rem;
+      margin-top: 4rem;
+    }
+    .activity-card { border-top: 2px solid var(--amber); padding-top: 1.5rem; }
+    .activity-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+    .activity-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--forest);
+    }
+    .activity-desc { font-size: 0.87rem; line-height: 1.7; color: var(--text-muted); }
+
+    /* ── GALLERY ── */
+    .gallery { background: var(--forest); padding: 5rem 0; }
+    .gallery-header { text-align: center; padding: 0 2rem 3rem; }
+    .gallery-header .eyebrow { color: var(--amber-light); }
+    .gallery-header .section-title { color: var(--cream); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    .g-item { overflow: hidden; cursor: pointer; }
+    .g-item.tall { grid-row: span 2; }
+    .g-item.wide { grid-column: span 2; }
+    .g-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: transform 0.5s ease;
+      aspect-ratio: 1;
+    }
+    .g-item.tall img  { aspect-ratio: auto; }
+    .g-item.wide img  { aspect-ratio: 2/1; }
+    .g-item:hover img { transform: scale(1.05); }
+
+    @media (max-width: 768px) {
+      .outdoor-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .outdoor-img { aspect-ratio: 3/2; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .g-item.wide { grid-column: span 1; }
+      .g-item.wide img { aspect-ratio: 1; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .g-item.tall { grid-row: span 1; }
+    }
+
+    /* ── REVIEWS ── */
+    .reviews { background: var(--cream-dark); }
+    .reviews-top {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+    }
+    .rating-big {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      color: var(--forest);
+      line-height: 1;
+    }
+    .rating-row { display: flex; align-items: center; gap: 1.5rem; }
+    .rating-stars { color: var(--amber); font-size: 1.15rem; }
+    .rating-sub { font-size: 0.82rem; color: var(--stone); margin-top: 0.3rem; }
+    .guest-fav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--forest);
+      color: var(--cream);
+      padding: 0.55rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-top: 0.6rem;
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+    }
+    .review-card {
+      background: var(--cream);
+      padding: 2rem;
+      border-radius: 2px;
+    }
+    .review-stars { color: var(--amber); font-size: 0.88rem; margin-bottom: 0.9rem; }
+    .review-text {
+      font-size: 0.9rem;
+      line-height: 1.78;
+      color: #4a4540;
+      font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+    .review-author { font-size: 0.78rem; font-weight: 600; color: var(--forest); letter-spacing: 0.06em; }
+
+    /* ── LOCATION ── */
+    .location { background: var(--forest); }
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .location .section-title { color: var(--cream); }
+    .location-list {
+      list-style: none;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .location-list li {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: rgba(247,242,234,0.7);
+    }
+    .loc-icon { font-size: 1.05rem; flex-shrink: 0; margin-top: 0.05rem; }
+    .location-map {
+      aspect-ratio: 4/3;
+      background: var(--forest-mid);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .location-map img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.7; }
+
+    /* ── BOOK CTA ── */
+    .book-cta {
+      background: var(--amber);
+      padding: 8rem 2rem;
+      text-align: center;
+    }
+    .book-cta .eyebrow { color: rgba(14,28,16,0.65); }
+    .book-cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 700;
+      color: var(--forest);
+      line-height: 1.08;
+      margin-bottom: 1.4rem;
+    }
+    .book-cta-title em { font-style: italic; }
+    .book-cta-sub {
+      font-size: 1.02rem;
+      color: rgba(14,28,16,0.7);
+      line-height: 1.65;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #070e08;
+      color: rgba(247,242,234,0.45);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      line-height: 1.8;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--cream);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .footer-logo span { color: var(--amber); }
+    footer a { color: var(--amber-light); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .reviews-top { flex-direction: column; align-items: flex-start; }
+      .location-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Arborium<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#the-cabin">The Cabin</a></li>
+    <li><a href="#amenities">Amenities</a></li>
+    <li><a href="#activities">Activities</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" class="nav-cta">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Mena, Arkansas &nbsp;·&nbsp; Ouachita National Forest</p>
+    <h1 class="hero-title">Your Forest<br><em>Escape</em> Awaits</h1>
+    <p class="hero-sub">A private, handcrafted cabin deep in the Ouachita wilderness — where the trees are your only neighbors and adventure starts at the front door.</p>
+    <div class="hero-btns">
+      <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" class="btn-amber">Check Availability</a>
+      <a href="#the-cabin" class="btn-outline">Explore the Cabin</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-value">6</span>
+    <span class="stat-label">Guests</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">2</span>
+    <span class="stat-label">Bedrooms</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">3</span>
+    <span class="stat-label">Beds</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">2</span>
+    <span class="stat-label">Bathrooms</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">5.0</span>
+    <span class="stat-label">★ Rating</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">Top&nbsp;10%</span>
+    <span class="stat-label">of all homes</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro" id="the-cabin">
+  <div class="container">
+    <div class="intro-grid">
+      <div class="intro-img-wrap">
+        <!-- Replace with your cabin exterior / pond reflection photo -->
+        <img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=900&q=85" alt="Cabin exterior in the Ouachita forest" />
+        <div class="intro-img-accent"></div>
+      </div>
+      <div>
+        <span class="eyebrow">The Escape</span>
+        <h2 class="section-title">Secluded.<br>Private.<br><em style="font-style:italic;color:var(--amber)">Unforgettable.</em></h2>
+        <p class="body-text">Ideal for couples, families, and friends. Nestled deep in the Ouachita National Forest near Wolf Pen Gap, this handcrafted timber-frame cabin is an ATV and SxS paradise — ride from the doorstep straight to the trails.</p>
+        <p class="body-text" style="margin-top:1rem">Hike, explore creeks, fish bass on the private pond, and watch the sun melt into the mountains at the Vista. Cozy up by the stone fireplace or gather around the fire pit under the stars. No cell service — just Starlink Wi-Fi, total privacy, and the sound of the forest.</p>
+        <div class="intro-badges">
+          <span class="badge">🏆 Guest Favorite</span>
+          <span class="badge">⭐ 5.0 · 13 Reviews</span>
+          <span class="badge">🔑 Self Check-in</span>
+          <span class="badge">🥇 Superhost</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE SPACE -->
+<section class="space" id="the-space">
+  <div class="container">
+    <div class="space-header">
+      <span class="eyebrow">Where You'll Sleep</span>
+      <h2 class="section-title">Two beautifully<br>appointed spaces.</h2>
+      <p class="space-sub">Room for three couples or a family of six — each space thoughtfully designed for comfort and character.</p>
+    </div>
+    <div class="room-grid">
+      <div class="room-card">
+        <div class="room-card-img">
+          <!-- Replace with your master bedroom photo -->
+          <img src="https://images.unsplash.com/photo-1631049552057-403cdb8f0658?auto=format&fit=crop&w=800&q=80" alt="Master bedroom" />
+        </div>
+        <div class="room-card-body">
+          <h3 class="room-card-title">Master Bedroom</h3>
+          <p class="room-card-desc">A serene retreat with a queen bed, large forest-view windows, a dedicated workspace, and a private en-suite bathroom with a freestanding soaking tub and slate-tiled rainfall shower.</p>
+          <div class="room-tags">
+            <span class="room-tag">Queen Bed</span>
+            <span class="room-tag">Soaking Tub</span>
+            <span class="room-tag">Rain Shower</span>
+            <span class="room-tag">Large TV</span>
+            <span class="room-tag">En-suite Bath</span>
+          </div>
+        </div>
+      </div>
+      <div class="room-card">
+        <div class="room-card-img">
+          <!-- Replace with your loft photo -->
+          <img src="https://images.unsplash.com/photo-1586105251261-72a756497a11?auto=format&fit=crop&w=800&q=80" alt="The Loft" />
+        </div>
+        <div class="room-card-body">
+          <h3 class="room-card-title">The Loft</h3>
+          <p class="room-card-desc">Open and rustic with soaring corrugated ceilings and log railings, the loft sleeps four across two queen beds with its own full bathroom and a separate TV room for the whole crew.</p>
+          <div class="room-tags">
+            <span class="room-tag">2 Queen Beds</span>
+            <span class="room-tag">Full Bathroom</span>
+            <span class="room-tag">TV Room</span>
+            <span class="room-tag">Log Railings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMENITIES -->
+<section class="amenities" id="amenities">
+  <div class="container">
+    <span class="eyebrow">What's Included</span>
+    <h2 class="section-title">Every detail,<br>thought through.</h2>
+    <div class="amenities-grid">
+      <div class="amenity"><span class="amenity-icon">🔥</span><div><div class="amenity-name">Stone Fireplace</div><div class="amenity-desc">Floor-to-ceiling indoor stone fireplace</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🛁</span><div><div class="amenity-name">Soaking Tub</div><div class="amenity-desc">Freestanding tub in master bathroom</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🚿</span><div><div class="amenity-name">Rainfall Shower</div><div class="amenity-desc">Slate-tiled walk-in shower, both baths</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🛜</span><div><div class="amenity-name">Starlink Wi-Fi</div><div class="amenity-desc">High-speed internet — no cell needed</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🍳</span><div><div class="amenity-name">Fully Equipped Kitchen</div><div class="amenity-desc">Gas range, full-size fridge, microwave</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🥄</span><div><div class="amenity-name">KitchenAid Mixer</div><div class="amenity-desc">Plus full cookware, utensils & dishes</div></div></div>
+      <div class="amenity"><span class="amenity-icon">☕</span><div><div class="amenity-name">Two Coffee Makers</div><div class="amenity-desc">Nespresso pods + drip; coffee provided</div></div></div>
+      <div class="amenity"><span class="amenity-icon">📺</span><div><div class="amenity-name">Smart TVs</div><div class="amenity-desc">Large TV in master + TV room in loft</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🪵</span><div><div class="amenity-name">Outdoor Fire Pit</div><div class="amenity-desc">Private, seats 6, firewood included</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🌿</span><div><div class="amenity-name">Covered Porch & Swing</div><div class="amenity-desc">Outdoor seating for morning coffee</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🎣</span><div><div class="amenity-name">Private Fishing Pond</div><div class="amenity-desc">Bass fishing on the property</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🔐</span><div><div class="amenity-name">Smart Lock Entry</div><div class="amenity-desc">Keyless self check-in, no key needed</div></div></div>
+      <div class="amenity"><span class="amenity-icon">❄️</span><div><div class="amenity-name">Climate Control</div><div class="amenity-desc">Mini-split AC & heating throughout</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🏍️</span><div><div class="amenity-name">ATV Parking</div><div class="amenity-desc">Space for vehicles, ATVs & SxS rigs</div></div></div>
+      <div class="amenity"><span class="amenity-icon">🍺</span><div><div class="amenity-name">Game & Bar Area</div><div class="amenity-desc">Bigfoot bar cart with wine storage</div></div></div>
+      <div class="amenity"><span class="amenity-icon">💼</span><div><div class="amenity-name">Dedicated Workspace</div><div class="amenity-desc">Desk with monitor stand in master</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTDOOR LIVING -->
+<section class="outdoor" id="outdoor">
+  <div class="container">
+    <div class="outdoor-grid">
+      <div class="outdoor-img">
+        <!-- Replace with your fire pit / outdoor photo -->
+        <img src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&w=900&q=85" alt="Fire pit at night" />
+      </div>
+      <div>
+        <span class="eyebrow">Outside Your Door</span>
+        <h2 class="section-title">The forest<br>is yours.</h2>
+        <p class="body-text" style="color:rgba(247,242,234,0.65)">Step outside and breathe. Total seclusion paired with immediate access to everything the Ouachita has to offer.</p>
+        <ul class="outdoor-list">
+          <li>Private fire pit with string lights — seats 6, firewood included</li>
+          <li>Covered porch with swing for morning coffee and sunset watching</li>
+          <li>On-property fishing pond — catch bass steps from the cabin</li>
+          <li>Zero nearby neighbors — complete peace and quiet</li>
+          <li>Deer, turkey, and black bears spotted on the property</li>
+          <li>Ride your ATV directly from the cabin to Wolf Pen Gap trails</li>
+          <li>Starlink keeps you connected; the forest keeps you present</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="activities" id="activities">
+  <div class="container">
+    <span class="eyebrow">Adventure Awaits</span>
+    <h2 class="section-title" style="max-width:480px">Built for those<br>who love the outdoors.</h2>
+    <div class="activities-grid">
+      <div class="activity-card">
+        <div class="activity-icon">🏍️</div>
+        <h3 class="activity-title">ATV & SxS Riding</h3>
+        <p class="activity-desc">Ride directly from the cabin to the Wolf Pen Gap ATV trail system — one of Arkansas's premier off-road destinations. The perfect basecamp for a full weekend of riding.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🎣</div>
+        <h3 class="activity-title">Bass Fishing</h3>
+        <p class="activity-desc">Cast a line in the on-property bass pond or explore nearby Shady Lake and the creeks winding through the national forest. No drive needed — fish from your own backyard.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🥾</div>
+        <h3 class="activity-title">Hiking & Biking</h3>
+        <p class="activity-desc">Explore hundreds of miles of trails through the Ouachita National Forest. Visit Bard Springs, a hidden waterfall oasis, or summit a ridge for panoramic forest views.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🌅</div>
+        <h3 class="activity-title">Sunset at the Vista</h3>
+        <p class="activity-desc">Golden hour at the Vista is something guests return for again and again. Watch the sun set over an ocean of Ouachita treetops — a moment you won't find anywhere else.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">💧</div>
+        <h3 class="activity-title">Creek Exploring</h3>
+        <p class="activity-desc">Wade through crystal-clear Ouachita creeks, discover natural swimming holes, and explore the hidden hollows of the national forest. Shady Lake is just minutes away.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🐻</div>
+        <h3 class="activity-title">Wildlife Watching</h3>
+        <p class="activity-desc">Deer graze at dusk, turkeys wander the property at dawn, and black bears have been spotted right on the grounds. This is their forest — you're just visiting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header">
+    <span class="eyebrow">Photo Gallery</span>
+    <h2 class="section-title">See it for yourself.</h2>
+  </div>
+  <div class="gallery-grid">
+    <!-- Replace all images below with your actual cabin photos -->
+    <div class="g-item tall">
+      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Mountain vista" style="aspect-ratio:auto;height:100%" />
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1542718610-a1e3ff62daef?auto=format&fit=crop&w=600&q=80" alt="Cabin living room" />
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1631049552057-403cdb8f0658?auto=format&fit=crop&w=600&q=80" alt="Bedroom" />
+    </div>
+    <div class="g-item wide">
+      <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=80" alt="Forest sunset" />
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?auto=format&fit=crop&w=600&q=80" alt="Campfire at night" />
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80" alt="Deep green forest" />
+    </div>
+    <div class="g-item">
+      <img src="https://images.unsplash.com/photo-1440342440045-af47de1d0440?auto=format&fit=crop&w=600&q=80" alt="Forest pond reflection" />
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="reviews-top">
+      <div>
+        <span class="eyebrow">What Guests Say</span>
+        <h2 class="section-title">Loved by every<br>guest. Every stay.</h2>
+      </div>
+      <div>
+        <div class="rating-row">
+          <span class="rating-big">5.0</span>
+          <div>
+            <div class="rating-stars">★★★★★</div>
+            <div class="rating-sub">13 reviews on Airbnb</div>
+            <span class="guest-fav">🏆 Guest Favorite</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Absolutely incredible cabin. The stone fireplace, the soaking tub, the live-edge kitchen island — every detail was thoughtfully done. We spotted a black bear from the porch on our second morning. Already planning our return trip."</p>
+        <div class="review-author">Airbnb Guest &nbsp;·&nbsp; 2024</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Perfect basecamp for Wolf Pen Gap. We rode trails all day and came back to the most comfortable cabin in the woods. The fire pit with string lights at night was pure magic. Highly recommend for any ATV crew."</p>
+        <div class="review-author">Airbnb Guest &nbsp;·&nbsp; 2024</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"We came for a family getaway and couldn't believe how private and peaceful it was. The kids loved fishing the pond, and the adults loved the fireplace and morning coffee on the covered porch. A true hidden gem in the Ouachita."</p>
+        <div class="review-author">Airbnb Guest &nbsp;·&nbsp; 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location" id="location">
+  <div class="container">
+    <div class="location-grid">
+      <div>
+        <span class="eyebrow">Getting There</span>
+        <h2 class="section-title">Deep in the<br>Ouachita.</h2>
+        <p class="body-text" style="color:rgba(247,242,234,0.6)">The cabin sits far from the noise of everyday life — exactly as it should be. Plan your route and come prepared for the ultimate forest escape.</p>
+        <ul class="location-list">
+          <li><span class="loc-icon">📍</span><span>Near Mena, Arkansas in the Ouachita National Forest. Exact address provided after booking.</span></li>
+          <li><span class="loc-icon">🚙</span><span>SUV or truck strongly recommended — gravel and forest roads lead to the cabin. Worth every mile.</span></li>
+          <li><span class="loc-icon">📵</span><span>No cell service at the property. Fast Starlink Wi-Fi provided for streaming, calls, and remote work.</span></li>
+          <li><span class="loc-icon">🏍️</span><span>Ample parking for vehicles, ATVs, motocross bikes, and side-by-sides directly at the cabin.</span></li>
+          <li><span class="loc-icon">🗺️</span><span>Nearby: Wolf Pen Gap ATV Trails, Bard Springs, Shady Lake, Ouachita National Forest.</span></li>
+          <li><span class="loc-icon">🔑</span><span>Self check-in and self check-out via smartlock. The place is all yours.</span></li>
+        </ul>
+      </div>
+      <div class="location-map">
+        <!-- Replace with an actual map embed or photo of the area -->
+        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=800&q=80" alt="Ouachita forest aerial" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK CTA -->
+<section class="book-cta">
+  <div class="container-narrow">
+    <span class="eyebrow">Reserve Your Stay</span>
+    <h2 class="book-cta-title">Ready to<br><em>escape?</em></h2>
+    <p class="book-cta-sub">6 guests &nbsp;·&nbsp; 2 bedrooms &nbsp;·&nbsp; 2 bathrooms &nbsp;·&nbsp; 5.0 ★<br>Check availability and book your Ouachita adventure on Airbnb.</p>
+    <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" class="btn-dark">Check Availability on Airbnb</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Arborium<span>.</span></span>
+  <p>Private Forest Cabin &nbsp;·&nbsp; Mena, Arkansas &nbsp;·&nbsp; Ouachita National Forest</p>
+  <p style="margin-top:0.4rem">
+    <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank">Book on Airbnb</a>
+    &nbsp;·&nbsp; Hosted by Simao — Superhost
+  </p>
+  <p style="margin-top:1.5rem;font-size:0.72rem;opacity:0.3">© 2025 Arborium. All rights reserved.</p>
+</footer>
+
+<script>
+  // Nav: transparent → solid on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // Hero parallax
+  const heroBg = document.getElementById('heroBg');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < window.innerHeight) {
+      heroBg.style.transform = `translateY(${window.scrollY * 0.35}px)`;
+    }
+  }, { passive: true });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.activity-card, .room-card, .amenity, .review-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
