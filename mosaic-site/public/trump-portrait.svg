@@ -1,0 +1,90 @@
+<svg viewBox="0 0 500 580" xmlns="http://www.w3.org/2000/svg">
+  <!-- Suit body -->
+  <path d="M80 580 L140 430 L190 405 L250 420 L310 405 L360 430 L420 580 Z" fill="#1c1c2e"/>
+  <!-- Shirt collar -->
+  <path d="M210 405 L250 420 L290 405 L270 380 L250 390 L230 380 Z" fill="#f0ede8"/>
+  <!-- Red tie -->
+  <path d="M242 390 L258 390 L265 480 L250 490 L235 480 Z" fill="#b22234"/>
+  <path d="M242 390 L258 390 L253 415 L247 415 Z" fill="#8a1a28"/>
+  <!-- Neck -->
+  <path d="M215 370 Q250 385 285 370 L285 405 Q250 418 215 405 Z" fill="#e08060"/>
+
+  <!-- Face base -->
+  <ellipse cx="250" cy="255" rx="145" ry="160" fill="#e08060"/>
+  <!-- Jowl bulges -->
+  <ellipse cx="118" cy="320" rx="38" ry="55" fill="#e08060"/>
+  <ellipse cx="382" cy="320" rx="38" ry="55" fill="#e08060"/>
+  <!-- Forehead highlight -->
+  <ellipse cx="250" cy="170" rx="100" ry="65" fill="#e89070" opacity="0.5"/>
+
+  <!-- Hair – main swept-back dome -->
+  <path d="M108 220
+           Q105 160 130 130
+           Q155 95  200 82
+           Q250 68  300 82
+           Q345 95  370 130
+           Q395 160 392 220
+           L375 215
+           Q365 155 335 128
+           Q305 105 250 95
+           Q195 105 165 128
+           Q135 155 125 215 Z"
+        fill="#c9a84c"/>
+  <!-- Hair strands texture -->
+  <path d="M160 100 Q200 78 250 72 Q300 78 340 100" stroke="#a07830" stroke-width="3" fill="none" opacity="0.7"/>
+  <path d="M148 130 Q195 105 250 100 Q305 105 352 130" stroke="#a07830" stroke-width="2.5" fill="none" opacity="0.6"/>
+  <path d="M138 165 Q190 140 250 135 Q310 140 362 165" stroke="#a07830" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Side hair wisps -->
+  <path d="M108 220 Q98 250 105 290 Q112 268 125 245" fill="#c9a84c"/>
+  <path d="M392 220 Q402 250 395 290 Q388 268 375 245" fill="#c9a84c"/>
+
+  <!-- LEFT brow -->
+  <path d="M155 228 Q178 218 210 224" stroke="#7a5020" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <!-- RIGHT brow -->
+  <path d="M290 224 Q322 218 345 228" stroke="#7a5020" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+  <!-- LEFT eye white -->
+  <ellipse cx="185" cy="248" rx="26" ry="14" fill="#f5f0e8"/>
+  <!-- LEFT iris -->
+  <ellipse cx="185" cy="248" rx="13" ry="12" fill="#3a2808"/>
+  <ellipse cx="181" cy="244" rx="4" ry="3" fill="white" opacity="0.6"/>
+  <!-- LEFT upper eyelid shadow -->
+  <path d="M159 243 Q185 234 211 243" stroke="#c87848" stroke-width="2.5" fill="none"/>
+  <!-- LEFT lower eyelid bags -->
+  <path d="M161 256 Q185 264 209 256" stroke="#c87848" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- RIGHT eye white -->
+  <ellipse cx="315" cy="248" rx="26" ry="14" fill="#f5f0e8"/>
+  <!-- RIGHT iris -->
+  <ellipse cx="315" cy="248" rx="13" ry="12" fill="#3a2808"/>
+  <ellipse cx="311" cy="244" rx="4" ry="3" fill="white" opacity="0.6"/>
+  <!-- RIGHT upper eyelid shadow -->
+  <path d="M289 243 Q315 234 341 243" stroke="#c87848" stroke-width="2.5" fill="none"/>
+  <!-- RIGHT lower eyelid bags -->
+  <path d="M291 256 Q315 264 339 256" stroke="#c87848" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- Nose bridge -->
+  <path d="M248 262 L240 295 Q244 312 250 315 Q256 312 260 295 Z" fill="#d07050"/>
+  <!-- Nostrils -->
+  <ellipse cx="237" cy="308" rx="12" ry="8" fill="#c06848"/>
+  <ellipse cx="263" cy="308" rx="12" ry="8" fill="#c06848"/>
+  <!-- Nose tip -->
+  <ellipse cx="250" cy="308" rx="14" ry="9" fill="#d07858"/>
+
+  <!-- Upper lip (Cupid's bow, small pursed) -->
+  <path d="M218 340 Q232 330 250 334 Q268 330 282 340 Q268 347 250 345 Q232 347 218 340 Z" fill="#c07070"/>
+  <!-- Lower lip -->
+  <path d="M218 340 Q250 358 282 340 Q268 352 250 354 Q232 352 218 340 Z" fill="#c07070"/>
+  <!-- Mouth line -->
+  <path d="M222 340 Q250 343 278 340" stroke="#a05050" stroke-width="1.5" fill="none"/>
+
+  <!-- Chin crease -->
+  <path d="M230 375 Q250 382 270 375" stroke="#c07050" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <!-- Jawline definition -->
+  <path d="M120 310 Q148 380 250 400 Q352 380 380 310" stroke="#c87850" stroke-width="1" fill="none" opacity="0.3"/>
+
+  <!-- Ear left -->
+  <path d="M108 258 Q96 270 98 295 Q100 315 112 320 Q115 295 118 270 Z" fill="#d87858"/>
+  <!-- Ear right -->
+  <path d="M392 258 Q404 270 402 295 Q400 315 388 320 Q385 295 382 270 Z" fill="#d87858"/>
+</svg>
