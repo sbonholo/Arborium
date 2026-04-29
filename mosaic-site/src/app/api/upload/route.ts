@@ -1,11 +1,12 @@
 import { createUploadUrl } from "@/lib/r2";
 import { supabaseAdmin } from "@/lib/supabase";
 
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabaseAdmin as any;
+
+// The client resizes to 128×128 JPEG before uploading, so processed files
+// are tiny. 200 KB is a very generous upper bound (~6× typical size).
+const MAX_PROCESSED_BYTES = 200 * 1024;
 
 export async function POST(request: Request) {
   try {
@@ -14,11 +15,14 @@ export async function POST(request: Request) {
     if (!session_id || typeof session_id !== "string") {
       return Response.json({ error: "Missing session_id." }, { status: 400 });
     }
-    if (!ALLOWED_TYPES.includes(file_type)) {
-      return Response.json({ error: "Only JPEG, PNG, or WebP images are allowed." }, { status: 400 });
+    if (file_type !== "image/jpeg") {
+      return Response.json({ error: "Expected a JPEG (processed client-side)." }, { status: 400 });
     }
-    if (!file_size || file_size > MAX_BYTES) {
-      return Response.json({ error: "File too large. Maximum size is 10 MB." }, { status: 400 });
+    if (!file_size || file_size > MAX_PROCESSED_BYTES) {
+      return Response.json(
+        { error: `Processed file too large (max ${MAX_PROCESSED_BYTES / 1024} KB).` },
+        { status: 400 }
+      );
     }
 
     // Verify purchase exists and hasn't been uploaded yet
@@ -29,16 +33,21 @@ export async function POST(request: Request) {
       .maybeSingle();
 
     if (!purchase) {
-      return Response.json({ error: "Purchase not found. Make sure payment completed." }, { status: 404 });
+      return Response.json(
+        { error: "Purchase not found. Make sure payment has completed." },
+        { status: 404 }
+      );
     }
     if (purchase.photo_uploaded) {
-      return Response.json({ error: "A photo has already been uploaded for this purchase." }, { status: 409 });
+      return Response.json(
+        { error: "A photo has already been uploaded for this purchase." },
+        { status: 409 }
+      );
     }
 
-    const ext = file_type === "image/png" ? "png" : file_type === "image/webp" ? "webp" : "jpg";
-    const key = `photos/${session_id}.${ext}`;
-
-    const uploadUrl = await createUploadUrl(key, file_type);
+    // All uploads are stored as JPEG (client already converted)
+    const key = `photos/${session_id}.jpg`;
+    const uploadUrl = await createUploadUrl(key, "image/jpeg");
 
     return Response.json({ upload_url: uploadUrl, key });
   } catch (err) {
