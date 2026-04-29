@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface Cell {
   index: number;
@@ -11,98 +12,222 @@ interface Cell {
 interface Props {
   filledCells: Cell[];
   totalFilled: number;
+  onNewCell?: (cell: Cell, newTotal: number) => void;
 }
 
-const GRID = 100; // 100×100 display grid (each square = 100 real cells)
-const TOTAL_DISPLAY = GRID * GRID;
+// Display grid: 100×100 squares, each representing 100 real cells (10×10 block)
+const DISPLAY_GRID = 100;
+const TOTAL_DISPLAY = DISPLAY_GRID * DISPLAY_GRID;
 
-export default function MosaicPreview({ filledCells, totalFilled }: Props) {
+export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
 
-  useEffect(() => {
+  // Offscreen portrait for color sampling
+  const portraitColorRef = useRef<Uint8ClampedArray | null>(null);
+
+  // Image cache: photoUrl → HTMLImageElement
+  const imgCacheRef = useRef<Map<string, HTMLImageElement>>(new Map());
+
+  // Current display cells: displayIdx → { photoUrl, cells }
+  const displayCellsRef = useRef<Map<number, { photoUrl: string; cells: number }>>(new Map());
+
+  // Sample portrait colors into a flat RGBA array at DISPLAY_GRID resolution
+  const samplePortraitColors = useCallback(() => {
+    const offscreen = document.createElement("canvas");
+    offscreen.width = DISPLAY_GRID;
+    offscreen.height = DISPLAY_GRID;
+    const ctx = offscreen.getContext("2d")!;
     const img = new Image();
-    img.src = "/trump-portrait.svg";
     img.onload = () => {
-      imgRef.current = img;
+      ctx.drawImage(img, 0, 0, DISPLAY_GRID, DISPLAY_GRID);
+      portraitColorRef.current = ctx.getImageData(0, 0, DISPLAY_GRID, DISPLAY_GRID).data;
       draw();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    img.src = "/trump-portrait.svg";
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (imgRef.current) draw();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filledCells, totalFilled]);
+  function realIndexToDisplayIndex(realIdx: number): number {
+    return Math.min(Math.floor((realIdx / 1_000_000) * TOTAL_DISPLAY), TOTAL_DISPLAY - 1);
+  }
+
+  function loadPhoto(url: string, onLoad: () => void): HTMLImageElement | null {
+    const cache = imgCacheRef.current;
+    if (cache.has(url)) return cache.get(url)!;
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => { cache.set(url, img); onLoad(); };
+    img.onerror = () => cache.set(url, img); // store even on error to avoid retry loops
+    img.src = url;
+    cache.set(url, img); // store placeholder so we don't re-request
+    return null;
+  }
 
   function draw() {
     const canvas = canvasRef.current;
-    if (!canvas || !imgRef.current) return;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const W = canvas.width;
     const H = canvas.height;
-    const cw = W / GRID;
-    const ch = H / GRID;
+    const cw = W / DISPLAY_GRID;
+    const ch = H / DISPLAY_GRID;
+    const colors = portraitColorRef.current;
+    const cells = displayCellsRef.current;
 
-    // Draw portrait as background reference
-    ctx.drawImage(imgRef.current, 0, 0, W, H);
+    ctx.clearRect(0, 0, W, H);
 
-    // Overlay semi-transparent dark grid on empty cells
-    ctx.strokeStyle = "rgba(0,0,0,0.15)";
-    ctx.lineWidth = 0.5;
-
-    const filledSet = new Set<number>();
-    filledCells.forEach((c) => {
-      // Map real cell index to display cell index (100 real → 1 display)
-      const displayIdx = Math.floor((c.index / 1_000_000) * TOTAL_DISPLAY);
-      filledSet.add(displayIdx);
-    });
-
-    for (let r = 0; r < GRID; r++) {
-      for (let c = 0; c < GRID; c++) {
-        const idx = r * GRID + c;
+    for (let r = 0; r < DISPLAY_GRID; r++) {
+      for (let c = 0; c < DISPLAY_GRID; c++) {
+        const dIdx = r * DISPLAY_GRID + c;
         const x = c * cw;
         const y = r * ch;
 
-        if (!filledSet.has(idx)) {
-          // Empty cell — dark overlay so portrait shows through subtly
-          ctx.fillStyle = "rgba(10,10,10,0.55)";
+        // Portrait reference color for this cell
+        let pr = 20, pg = 20, pb = 20;
+        if (colors) {
+          const pi = dIdx * 4;
+          pr = colors[pi]; pg = colors[pi + 1]; pb = colors[pi + 2];
+        }
+
+        const cellData = cells.get(dIdx);
+
+        if (cellData?.photoUrl) {
+          const img = loadPhoto(cellData.photoUrl, draw);
+          if (img?.complete && img.naturalWidth > 0) {
+            // Draw the supporter photo
+            ctx.drawImage(img, x, y, cw, ch);
+
+            // Color-grade: multiply-blend with the portrait color so from afar
+            // the cells collectively read as the Trump portrait
+            ctx.globalCompositeOperation = "multiply";
+            ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
+            ctx.fillRect(x, y, cw, ch);
+            ctx.globalCompositeOperation = "source-over";
+          } else {
+            // Photo not yet loaded — show portrait color as placeholder
+            ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
+            ctx.fillRect(x, y, cw, ch);
+          }
+        } else {
+          // Empty cell — darken so the portrait shows through very subtly
+          ctx.fillStyle = `rgba(${Math.floor(pr * 0.15)}, ${Math.floor(pg * 0.15)}, ${Math.floor(pb * 0.15)}, 1)`;
           ctx.fillRect(x, y, cw, ch);
         }
-        // Grid lines
+
+        // Subtle grid lines
+        ctx.strokeStyle = "rgba(0,0,0,0.2)";
+        ctx.lineWidth = 0.3;
         ctx.strokeRect(x, y, cw, ch);
       }
     }
-
-    // Draw gold shimmer on filled cells (photo images loaded async in Step 5)
-    filledCells.forEach((c) => {
-      const displayIdx = Math.floor((c.index / 1_000_000) * TOTAL_DISPLAY);
-      const r = Math.floor(displayIdx / GRID);
-      const col = displayIdx % GRID;
-      const x = col * cw;
-      const y = r * ch;
-      const size = Math.min(Math.sqrt(c.cells), 10);
-      ctx.fillStyle = "rgba(201,168,76,0.35)";
-      ctx.fillRect(x, y, cw * size, ch * size);
-    });
   }
 
+  // Flash a newly added cell in gold
+  function flashCell(displayIdx: number) {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const cw = W / DISPLAY_GRID;
+    const ch = H / DISPLAY_GRID;
+    const r = Math.floor(displayIdx / DISPLAY_GRID);
+    const c = displayIdx % DISPLAY_GRID;
+
+    let alpha = 0.85;
+    const fade = () => {
+      if (alpha <= 0) { draw(); return; }
+      ctx.fillStyle = `rgba(201, 168, 76, ${alpha})`;
+      ctx.fillRect(c * cw, r * ch, cw, ch);
+      alpha -= 0.06;
+      requestAnimationFrame(fade);
+    };
+    requestAnimationFrame(fade);
+  }
+
+  // Seed display cells from initial props
+  useEffect(() => {
+    const cells = displayCellsRef.current;
+    filledCells.forEach((cell) => {
+      if (!cell.photoUrl) return;
+      const dIdx = realIndexToDisplayIndex(cell.index);
+      if (!cells.has(dIdx)) {
+        cells.set(dIdx, { photoUrl: cell.photoUrl, cells: cell.cells });
+      }
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Initialize portrait colors and first draw
+  useEffect(() => {
+    samplePortraitColors();
+  }, [samplePortraitColors]);
+
+  // Supabase Realtime — listen for new uploads
+  useEffect(() => {
+    const channel = supabase
+      .channel("mosaic-preview-updates")
+      .on(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        "postgres_changes" as any,
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "purchases",
+          filter: "photo_uploaded=eq.true",
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (payload: any) => {
+          const row = payload.new;
+          if (!row?.photo_uploaded || !row?.photo_url) return;
+
+          const indices: number[] = row.cell_indices ?? [];
+          const cells = displayCellsRef.current;
+          let firstNewDisplay = -1;
+
+          indices.forEach((realIdx: number) => {
+            const dIdx = realIndexToDisplayIndex(realIdx);
+            if (!cells.has(dIdx)) {
+              cells.set(dIdx, { photoUrl: row.photo_url, cells: row.cells_purchased });
+              if (firstNewDisplay === -1) firstNewDisplay = dIdx;
+            }
+          });
+
+          if (firstNewDisplay !== -1) flashCell(firstNewDisplay);
+
+          const newCell: Cell = {
+            index: indices[0] ?? 0,
+            photoUrl: row.photo_url,
+            cells: row.cells_purchased,
+          };
+          onNewCell?.(newCell, totalFilled + row.cells_purchased);
+        }
+      )
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [totalFilled, onNewCell]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <div className="mosaic-wrapper rounded-lg overflow-hidden" style={{ aspectRatio: "500/580" }}>
+    <div className="mosaic-wrapper rounded-lg overflow-hidden" style={{ aspectRatio: "500/580", position: "relative" }}>
       <canvas
         ref={canvasRef}
         width={500}
         height={580}
         className="mosaic-canvas w-full h-full"
-        title="The mosaic fills in as supporters join"
+        title="Zoom in to see individual supporters"
       />
       <div
-        className="absolute bottom-0 left-0 right-0 p-3 text-center text-xs"
-        style={{ background: "linear-gradient(transparent, rgba(0,0,0,0.8))", color: "#c9a84c" }}
+        className="absolute bottom-0 left-0 right-0 px-3 py-2 text-center text-xs"
+        style={{
+          background: "linear-gradient(transparent, rgba(0,0,0,0.85))",
+          color: "#c9a84c",
+          pointerEvents: "none",
+        }}
       >
-        {totalFilled.toLocaleString()} / 1,000,000 spots filled
+        {totalFilled.toLocaleString()} / 1,000,000 supporters
       </div>
     </div>
   );

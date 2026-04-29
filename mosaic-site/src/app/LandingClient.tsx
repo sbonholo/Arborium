@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import ProgressBar from "@/components/ProgressBar";
 import PaymentModal from "@/components/PaymentModal";
 
@@ -22,6 +23,11 @@ interface Props {
 
 export default function LandingClient({ initialFilled, initialPurchases, initialCells }: Props) {
   const [showModal, setShowModal] = useState(false);
+  const [liveFilled, setLiveFilled] = useState(initialFilled);
+
+  const handleNewCell = useCallback((_cell: Cell, newTotal: number) => {
+    setLiveFilled(newTotal);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#0d0d0d" }}>
@@ -36,21 +42,35 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
             Trump Mosaic
           </span>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="btn-primary text-xs py-2 px-4"
-        >
-          Claim My Spot
-        </button>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/mosaic"
+            className="text-xs font-semibold uppercase tracking-wider hidden sm:block"
+            style={{ color: "#c9a84c" }}
+          >
+            View Mosaic
+          </Link>
+          <button
+            onClick={() => setShowModal(true)}
+            className="btn-primary text-xs py-2 px-4"
+          >
+            Claim My Spot
+          </button>
+        </div>
       </nav>
 
       {/* ── HERO ── */}
       <section className="flex-1 flex flex-col lg:flex-row items-stretch gap-0 max-w-7xl mx-auto w-full px-4 pt-10 pb-16 lg:gap-12 lg:items-start">
         {/* LEFT — mosaic preview */}
         <div className="w-full lg:w-1/2 lg:sticky lg:top-8">
-          <MosaicPreview filledCells={initialCells} totalFilled={initialFilled} />
+          <MosaicPreview
+            filledCells={initialCells}
+            totalFilled={liveFilled}
+            onNewCell={handleNewCell}
+          />
           <p className="text-xs text-center mt-3" style={{ color: "#3a3a3a" }}>
-            Far away: a portrait. Up close: 1,000,000 supporters.
+            Far away: a portrait. Up close: 1,000,000 supporters.{" "}
+            <Link href="/mosaic" style={{ color: "#c9a84c" }}>View full mosaic →</Link>
           </p>
         </div>
 
@@ -83,12 +103,17 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
             className="p-5 rounded-xl"
             style={{ background: "#111", border: "1px solid #1e1e1e" }}
           >
-            <ProgressBar filled={initialFilled} />
+            <ProgressBar filled={liveFilled} />
             {initialPurchases > 0 && (
               <p className="text-xs text-gray-700 mt-3">
                 {initialPurchases.toLocaleString()} supporters have already joined.
               </p>
             )}
+            {/* Live indicator */}
+            <div className="flex items-center gap-1.5 mt-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block" />
+              <span className="text-xs text-gray-700">Updating live</span>
+            </div>
           </div>
 
           {/* CTA block */}
