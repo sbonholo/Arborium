@@ -58,3 +58,40 @@ CREATE POLICY "Public can read uploaded photos"
 -- Realtime: enable so the frontend can subscribe to new uploads
 -- ---------------------------------------------------------
 ALTER PUBLICATION supabase_realtime ADD TABLE purchases;
+
+-- ---------------------------------------------------------
+-- Cell counter — atomic allocation of grid positions.
+-- A single row tracks the next available cell index.
+-- The UPDATE is row-locked, so concurrent purchases never
+-- receive the same cell slots.
+-- ---------------------------------------------------------
+CREATE TABLE IF NOT EXISTS cell_counter (
+  id         INTEGER PRIMARY KEY DEFAULT 1,
+  next_cell  INTEGER NOT NULL DEFAULT 0
+);
+-- Seed the counter (only insert if the row doesn't exist)
+INSERT INTO cell_counter (id, next_cell) VALUES (1, 0)
+ON CONFLICT (id) DO NOTHING;
+
+-- Stored procedure called by the webhook to atomically claim N cells.
+CREATE OR REPLACE FUNCTION allocate_cells(n_cells INTEGER)
+RETURNS INTEGER[]
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  start_cell INTEGER;
+  indices    INTEGER[];
+BEGIN
+  -- Lock the counter row and advance it
+  UPDATE cell_counter
+  SET    next_cell = next_cell + n_cells
+  WHERE  id = 1
+  RETURNING next_cell - n_cells INTO start_cell;
+
+  -- Return the array of assigned indices
+  SELECT ARRAY(SELECT generate_series(start_cell, start_cell + n_cells - 1))
+  INTO indices;
+
+  RETURN indices;
+END;
+$$;
