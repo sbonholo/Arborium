@@ -255,6 +255,23 @@
     .stargazing-teaser .body-text { color: rgba(232,236,255,0.65); }
     .photos-soon { display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(155,179,255,0.12); border: 1px solid rgba(155,179,255,0.25); color: #9bb3ff; padding: 0.55rem 1.1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; margin-top: 1.5rem; }
 
+    /* ── STARGAZING GALLERY ── */
+    .stargazing-gallery { background: #0a0e1a; padding: 0 0 5rem; }
+    .sg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .sg-item { overflow: hidden; cursor: pointer; }
+    .sg-item.sg-tall { grid-row: span 2; }
+    .sg-item.sg-wide { grid-column: span 2; }
+    .sg-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; aspect-ratio: 1; }
+    .sg-item.sg-tall img { aspect-ratio: auto; }
+    .sg-item.sg-wide img { aspect-ratio: 2/1; }
+    .sg-item:hover img { transform: scale(1.05); }
+    @media (max-width: 768px) {
+      .sg-grid { grid-template-columns: repeat(2, 1fr); }
+      .sg-item.sg-wide { grid-column: span 1; }
+      .sg-item.sg-wide img { aspect-ratio: 1; }
+      .sg-item.sg-tall { grid-row: span 1; }
+    }
+
     /* ── NIGHTFALL COMING SOON ── */
     .nightfall { background: var(--cream-dark); padding: 7rem 2rem; }
     .nightfall-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
@@ -383,18 +400,19 @@
       <!-- STARGAZING CABIN -->
       <div class="cabin-card">
         <div class="cabin-card-img">
-          <img src="https://images.unsplash.com/photo-1475274047050-1d0c0975864c?auto=format&fit=crop&w=800&q=80" alt="Stargazing Cabin — night sky over the forest" />
-          <span class="cabin-status-badge badge-new">New · Coming Soon</span>
+          <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f2126ff5-fe60-44ee-bd32-f9ec36467901.png" alt="Stargazing Cabin exterior" />
+          <span class="cabin-status-badge badge-available">Available</span>
         </div>
         <div class="cabin-card-body">
           <h3 class="cabin-card-name">Stargazing Cabin</h3>
           <p class="cabin-card-tagline">No light pollution. Just you and the Milky Way.</p>
-          <p class="cabin-card-desc">Deep in the Ouachita wilderness where the night sky is truly dark, this cabin is designed for those who want to disconnect completely and look up. Details and booking coming soon.</p>
+          <p class="cabin-card-desc">Deep in the Ouachita wilderness where the night sky is truly dark. Disconnect completely, look up, and experience the stars the way they were meant to be seen.</p>
           <div class="cabin-card-stats">
-            <span class="cabin-stat"><span class="cabin-stat-icon">🌙</span> Opening soon</span>
+            <span class="cabin-stat"><span class="cabin-stat-icon">🌙</span> Stargazing retreat</span>
           </div>
           <div class="cabin-card-footer">
-            <a href="mailto:info@arborium.app" class="btn-outline-dark" style="padding:0.7rem 1.5rem;font-size:0.75rem">Get Notified</a>
+            <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
+            <a href="#stargazing-cabin" class="btn-outline-dark" style="padding:0.7rem 1.5rem;font-size:0.75rem">View Details</a>
           </div>
         </div>
       </div>
@@ -677,28 +695,75 @@
 
 <div class="cabin-divider" id="stargazing-cabin">
   <div class="divider-line"></div>
-  <span class="divider-name">Stargazing Cabin — Coming Soon</span>
+  <span class="divider-name">Stargazing Cabin — Full Details</span>
   <div class="divider-line"></div>
 </div>
 
 <section class="stargazing-teaser">
   <div class="stargazing-grid">
     <div class="stargazing-img">
-      <img src="https://images.unsplash.com/photo-1475274047050-1d0c0975864c?auto=format&fit=crop&w=900&q=85" alt="Stargazing Cabin — night sky" />
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f2126ff5-fe60-44ee-bd32-f9ec36467901.png" alt="Stargazing Cabin exterior" />
       <div class="stargazing-img-overlay"></div>
     </div>
     <div>
       <span class="eyebrow">Stargazing Cabin</span>
       <h2 class="section-title">Where the Milky Way<br>is the view.</h2>
-      <p class="body-text">Deep in the Ouachita National Forest, where there is no light pollution and the night sky opens up above you — this cabin is for those who want to truly disconnect. No city glow. No noise. Just the forest, the silence, and the stars.</p>
-      <p class="body-text" style="margin-top:1rem">Details, photos, and booking will be available soon. Drop us your email and we'll let you know the moment it opens.</p>
+      <p class="body-text">Deep in the Ouachita National Forest, where there is no light pollution and the night sky opens fully above you. This cabin is for those who want to truly disconnect — no city glow, no noise, just the forest, the silence, and an endless sky full of stars.</p>
+      <p class="body-text" style="margin-top:1rem">Secluded, serene, and perfectly positioned for a night under the stars. Another handcrafted Arborium retreat built for those who love the Ouachita wilderness.</p>
       <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
-        <a href="mailto:info@arborium.app?subject=Stargazing Cabin — Notify Me" class="btn-amber">Get Notified</a>
+        <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" class="btn-amber">Book on Airbnb</a>
       </div>
-      <span class="photos-soon">📸 Photos coming soon</span>
     </div>
   </div>
 </section>
+
+<!-- STARGAZING GALLERY -->
+<div class="stargazing-gallery">
+  <div class="sg-grid">
+    <div class="sg-item sg-tall">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/fd4fd18c-07b2-4b90-a0b4-d7d5096e4c4d.png" alt="Stargazing Cabin" style="aspect-ratio:auto;height:100%" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/4757a2eb-6576-4bad-883e-9883e6758ddc.png" alt="Stargazing Cabin interior" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/c9e7c331-962f-4770-9c9f-2bd8a6f9100c.png" alt="Stargazing Cabin bedroom" />
+    </div>
+    <div class="sg-item sg-wide">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/2e2245ce-69c3-4da0-8d1a-d5887c9e5bbf.png" alt="Stargazing Cabin view" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/4a6db8ab-3513-4dd8-a445-7ca6151ade0f.png" alt="Stargazing Cabin details" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f9115b35-bab7-49d1-88cd-73b40ce18c5b.png" alt="Stargazing Cabin outdoor" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/301403cf-c905-44df-bbf0-f359de4abf9c.png" alt="Stargazing Cabin living area" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/7f3ff764-87b5-4771-a4e7-ed5d3acb178f.jpeg" alt="Stargazing Cabin bathroom" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/d117796f-0107-47ec-8370-d2c4c6151ba6.jpeg" alt="Stargazing Cabin kitchen" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/30427833-72bd-43ec-8ac6-b952b0f21844.jpeg" alt="Stargazing Cabin view" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/faea41d2-9930-4c52-b793-52c3b3608b28.jpeg" alt="Stargazing Cabin exterior" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/d9569156-ad45-45fa-b680-58985daddfba.jpeg" alt="Stargazing Cabin porch" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/adf2cccc-54de-4930-acaa-9a7c9ab3497d.jpeg" alt="Stargazing Cabin surroundings" />
+    </div>
+    <div class="sg-item">
+      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/0b3ee34a-9dee-4897-8c5c-7bcf8e3656ac.jpeg" alt="Stargazing Cabin night" />
+    </div>
+  </div>
+</div>
 
 <!-- ════════════════════════════════════════ -->
 <!--      NIGHTFALL GUEST HOUSE — SOON       -->
