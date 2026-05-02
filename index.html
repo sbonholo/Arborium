@@ -3,8 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arborium Cabins — Ouachita National Forest · Mena, Arkansas</title>
-  <meta name="description" content="Three secluded cabins in the Ouachita National Forest near Mena, Arkansas. Sunset Cabin, Stargazing Cabin, and Nightfall Guest Cabin. ATV trails, bass fishing, stone fireplaces." />
+  <title>Arborium Cabins | Ouachita National Forest Cabin Rentals · Mena, Arkansas</title>
+  <meta name="description" content="Book a secluded cabin in the Ouachita National Forest near Mena, Arkansas. Sunset Cabin — 5.0 ★ Airbnb Guest Favorite. Stone fireplace, soaking tub, ATV trails, private fishing pond. Also offering Stargazing Cabin." />
+  <link rel="canonical" href="https://arborium.app/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arborium.app/" />
+  <meta property="og:title" content="Arborium Cabins — Ouachita National Forest · Mena, Arkansas" />
+  <meta property="og:description" content="Three secluded cabin rentals deep in the Ouachita National Forest. Stone fireplace, soaking tub, ATV trail access, private fishing pond. 5.0 ★ Guest Favorite on Airbnb." />
+  <meta property="og:image" content="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="800" />
+  <meta property="og:site_name" content="Arborium Cabins" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Arborium Cabins — Ouachita National Forest · Mena, Arkansas" />
+  <meta name="twitter:description" content="Secluded cabin retreats in the Ouachita National Forest. Stone fireplace, soaking tub, ATV trails, bass fishing. 5.0 ★ Airbnb Guest Favorite." />
+  <meta name="twitter:image" content="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LodgingBusiness",
+        "@id": "https://arborium.app/#sunset-cabin",
+        "name": "Sunset Cabin — Arborium Cabins",
+        "description": "Handcrafted timber-frame cabin in the Ouachita National Forest. Stone fireplace, soaking tub, private bass fishing pond, ATV trail access. Sleeps 6, 2 bedrooms, 2 baths.",
+        "url": "https://www.airbnb.com/rooms/1369606948743760150",
+        "image": "https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg",
+        "address": { "@type": "PostalAddress", "addressLocality": "Mena", "addressRegion": "AR", "addressCountry": "US" },
+        "geo": { "@type": "GeoCoordinates", "latitude": 34.59, "longitude": -94.24 },
+        "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "13", "bestRating": "5" },
+        "amenityFeature": [
+          {"@type": "LocationFeatureSpecification", "name": "Stone Fireplace", "value": true},
+          {"@type": "LocationFeatureSpecification", "name": "Soaking Tub", "value": true},
+          {"@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true},
+          {"@type": "LocationFeatureSpecification", "name": "Full Kitchen", "value": true},
+          {"@type": "LocationFeatureSpecification", "name": "ATV Trail Access", "value": true},
+          {"@type": "LocationFeatureSpecification", "name": "Private Fishing Pond", "value": true}
+        ],
+        "numberOfRooms": 2,
+        "petsAllowed": false
+      },
+      {
+        "@type": "LodgingBusiness",
+        "@id": "https://arborium.app/#stargazing-cabin",
+        "name": "Stargazing Cabin — Arborium Cabins",
+        "description": "Secluded cabin deep in the Ouachita National Forest, positioned for dark-sky stargazing with no light pollution.",
+        "url": "https://www.airbnb.com/rooms/1668015378530902092",
+        "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f2126ff5-fe60-44ee-bd32-f9ec36467901.png",
+        "address": { "@type": "PostalAddress", "addressLocality": "Mena", "addressRegion": "AR", "addressCountry": "US" }
+      }
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -376,6 +433,134 @@
       .gallery-grid { grid-template-columns: 1fr; }
       .g-item.tall { grid-row: span 1; }
     }
+
+    /* ── HERO TRUST BADGES ── */
+    .hero-trust {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .hero-trust-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(247,242,234,0.12); border: 1px solid rgba(247,242,234,0.25);
+      backdrop-filter: blur(8px);
+      color: var(--cream); padding: 0.38rem 0.9rem; border-radius: 50px;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.04em;
+    }
+
+    /* ── WHY ARBORIUM STRIP ── */
+    .why-strip { background: var(--cream-dark); padding: 4rem 2rem; }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .why-item { text-align: center; }
+    .why-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .why-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--forest); margin-bottom: 0.4rem; }
+    .why-desc { font-size: 0.82rem; line-height: 1.65; color: var(--text-muted); }
+    @media (max-width: 768px) { .why-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .why-grid { grid-template-columns: 1fr; } }
+
+    /* ── INLINE BOOK CTA ── */
+    .inline-cta {
+      background: var(--forest); color: var(--cream);
+      padding: 3rem 2rem; text-align: center;
+    }
+    .inline-cta-title {
+      font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .inline-cta-sub { font-size: 0.88rem; opacity: 0.7; margin-bottom: 1.5rem; line-height: 1.6; }
+    .inline-cta-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── FAQ ── */
+    .faq { background: var(--cream); padding: 5rem 2rem; }
+    .faq-header { text-align: center; margin-bottom: 3rem; }
+    .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+    .faq-item { border-bottom: 1px solid var(--cream-dark); }
+    .faq-item:first-child { border-top: 1px solid var(--cream-dark); }
+    .faq-question {
+      width: 100%; background: none; border: none; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.3rem 0; text-align: left;
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 500;
+      color: var(--text-dark); gap: 1rem;
+    }
+    .faq-question:hover { color: var(--forest); }
+    .faq-chevron { flex-shrink: 0; font-size: 0.7rem; color: var(--amber); transition: transform 0.25s; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.25s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 400px; }
+    .faq-answer-inner { padding-bottom: 1.2rem; font-size: 0.88rem; line-height: 1.78; color: var(--text-muted); }
+
+    /* ── BOOK CTA DUAL BUTTONS ── */
+    .book-cta-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .btn-dark-outline {
+      display: inline-block; border: 2px solid var(--forest); color: var(--forest);
+      padding: 1.05rem 2.2rem; font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
+      border-radius: 2px; transition: background 0.2s, color 0.2s;
+    }
+    .btn-dark-outline:hover { background: var(--forest); color: var(--cream); }
+
+    /* ── FLOATING BOOK BAR ── */
+    .book-float {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+      background: var(--forest); color: var(--cream);
+      padding: 0.9rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      transform: translateY(100%); transition: transform 0.35s ease;
+      box-shadow: 0 -4px 30px rgba(0,0,0,0.25);
+    }
+    .book-float.visible { transform: translateY(0); }
+    .book-float-text { font-size: 0.85rem; line-height: 1.4; }
+    .book-float-text strong { display: block; font-family: 'Playfair Display', serif; font-size: 1rem; }
+    .book-float-btns { display: flex; gap: 0.75rem; flex-shrink: 0; }
+    .book-float-close {
+      background: none; border: none; cursor: pointer; color: rgba(247,242,234,0.45);
+      font-size: 1.1rem; padding: 0.25rem; align-self: flex-start; flex-shrink: 0;
+    }
+    .book-float-close:hover { color: var(--cream); }
+    @media (max-width: 600px) {
+      .book-float { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      .book-float-btns { width: 100%; }
+      .book-float-btns .btn-amber, .book-float-btns .btn-outline-light { flex: 1; text-align: center; padding: 0.75rem 1rem; }
+    }
+
+    /* ── MOBILE NAV HAMBURGER ── */
+    .nav-hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 0.4rem; color: var(--cream); flex-direction: column; gap: 5px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px; background: currentColor;
+      border-radius: 2px; transition: transform 0.25s, opacity 0.25s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (max-width: 768px) { .nav-hamburger { display: flex; } }
+
+    /* ── MOBILE NAV OVERLAY ── */
+    .nav-mobile {
+      display: none; position: fixed; inset: 0; z-index: 190;
+      background: rgba(14,28,16,0.97); backdrop-filter: blur(12px);
+      flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      color: var(--cream); text-decoration: none; font-size: 1.4rem;
+      font-family: 'Playfair Display', serif; font-weight: 600;
+      opacity: 0.85; transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-mobile a:hover { opacity: 1; color: var(--amber-light); }
+    .nav-mobile .nav-mobile-book {
+      background: var(--amber); color: var(--forest) !important; opacity: 1 !important;
+      padding: 0.85rem 2.5rem; border-radius: 2px;
+      font-size: 0.9rem; font-family: 'Inter', sans-serif; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
@@ -387,10 +572,22 @@
     <li><a href="#our-cabins">Our Cabins</a></li>
     <li><a href="#activities">Activities</a></li>
     <li><a href="#location">Location</a></li>
-    <li><a href="https://www.instagram.com/arborium.app" target="_blank">Instagram</a></li>
-    <li><a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" class="nav-cta">Book Now</a></li>
+    <li><a href="https://www.instagram.com/arborium.app" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+    <li><a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="nav-cta">Book Now</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="nav-mobile" id="navMobile">
+  <a href="#our-cabins" onclick="closeNav()">Our Cabins</a>
+  <a href="#activities" onclick="closeNav()">Activities</a>
+  <a href="#location" onclick="closeNav()">Location</a>
+  <a href="https://www.instagram.com/arborium.app" target="_blank" rel="noopener noreferrer" onclick="closeNav()">Instagram</a>
+  <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="nav-mobile-book" onclick="closeNav()">Book Sunset Cabin</a>
+</div>
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -399,10 +596,16 @@
   <div class="hero-content">
     <p class="hero-eyebrow">Ouachita National Forest &nbsp;·&nbsp; Mena, Arkansas</p>
     <h1 class="hero-title">Three Cabins.<br>One <em>Magical</em> Forest.</h1>
+    <div class="hero-trust">
+      <span class="hero-trust-badge">⭐ 5.0 Rating</span>
+      <span class="hero-trust-badge">🏆 Guest Favorite</span>
+      <span class="hero-trust-badge">🥇 Superhost</span>
+      <span class="hero-trust-badge">13 Reviews</span>
+    </div>
     <p class="hero-sub">Secluded retreats deep in the Ouachita National Forest — where sunsets are best watched from a porch, adventure starts at the front door, and the stars are worth staying up for.</p>
     <div class="hero-btns">
-      <a href="#our-cabins" class="btn-amber">Explore Our Cabins</a>
-      <a href="#location" class="btn-outline-light">Find Us</a>
+      <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="btn-amber">Book Sunset Cabin</a>
+      <a href="#our-cabins" class="btn-outline-light">View All Cabins</a>
     </div>
   </div>
   <div class="hero-scroll">
@@ -410,6 +613,32 @@
     <span>Scroll</span>
   </div>
 </section>
+
+<!-- WHY ARBORIUM -->
+<div class="why-strip">
+  <div class="why-grid">
+    <div class="why-item">
+      <div class="why-icon">🏆</div>
+      <div class="why-title">5.0 ★ Guest Favorite</div>
+      <div class="why-desc">Airbnb Guest Favorite with 13 five-star reviews and Superhost status. Every detail earns its place.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🌲</div>
+      <div class="why-title">True Seclusion</div>
+      <div class="why-desc">No neighbors. No noise. Just you, the forest, and the sound of the Ouachita. Cell service ends — peace begins.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🏍️</div>
+      <div class="why-title">Adventure at the Door</div>
+      <div class="why-desc">Ride ATV trails from the cabin. Fish the private pond. Hike, kayak, stargaze — it's all minutes away.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🔥</div>
+      <div class="why-title">Handcrafted Comfort</div>
+      <div class="why-desc">Stone fireplaces, soaking tubs, and live-edge wood. Built with care — feels like nowhere else on Earth.</div>
+    </div>
+  </div>
+</div>
 
 <!-- OUR CABINS -->
 <section class="cabins-section" id="our-cabins">
@@ -437,7 +666,7 @@
             <span class="cabin-stat"><span class="cabin-stat-icon">🚿</span> 2 baths</span>
           </div>
           <div class="cabin-card-footer">
-            <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
+            <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
             <a href="#sunset-cabin" class="btn-outline-dark" style="padding:0.7rem 1.5rem;font-size:0.75rem">View Details</a>
             <span class="cabin-rating"><span>★</span> 5.0 · 13 reviews</span>
           </div>
@@ -458,7 +687,7 @@
             <span class="cabin-stat"><span class="cabin-stat-icon">🌙</span> Stargazing retreat</span>
           </div>
           <div class="cabin-card-footer">
-            <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
+            <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
             <a href="#stargazing-cabin" class="btn-outline-dark" style="padding:0.7rem 1.5rem;font-size:0.75rem">View Details</a>
           </div>
         </div>
@@ -512,7 +741,7 @@
   <div class="container">
     <div class="intro-grid">
       <div class="intro-img-wrap">
-        <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/3d7fa2f2-b66b-47ca-bf02-6a729a72e5b1.jpg" alt="Sunset Cabin — aerial view of the full property" />
+        <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/3d7fa2f2-b66b-47ca-bf02-6a729a72e5b1.jpg" alt="Sunset Cabin — aerial view of the full property" />
         <div class="intro-img-accent"></div>
       </div>
       <div>
@@ -542,7 +771,7 @@
     <div class="room-grid">
       <div class="room-card">
         <div class="room-card-img">
-          <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/d7dfde29-4e1d-4843-a751-57e86e85873d.jpg" alt="Master bedroom" />
+          <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/d7dfde29-4e1d-4843-a751-57e86e85873d.jpg" alt="Master bedroom" />
         </div>
         <div class="room-card-body">
           <h3 class="room-card-title">Master Bedroom</h3>
@@ -558,7 +787,7 @@
       </div>
       <div class="room-card">
         <div class="room-card-img">
-          <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/19ae572d-a109-46ac-a6ea-94ef5db5bd46.jpg" alt="The Loft" />
+          <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/19ae572d-a109-46ac-a6ea-94ef5db5bd46.jpg" alt="The Loft" />
         </div>
         <div class="room-card-body">
           <h3 class="room-card-title">The Loft</h3>
@@ -601,12 +830,22 @@
   </div>
 </section>
 
+<!-- INLINE BOOK CTA -->
+<div class="inline-cta">
+  <div class="inline-cta-title">Sounds like your kind of escape?</div>
+  <div class="inline-cta-sub">Check availability and lock in your dates — Sunset Cabin books fast on weekends and holidays.</div>
+  <div class="inline-cta-btns">
+    <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="btn-amber">Check Availability — Sunset Cabin</a>
+    <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-outline-light">Book Stargazing Cabin</a>
+  </div>
+</div>
+
 <!-- OUTDOOR LIVING -->
 <section class="outdoor" id="outdoor">
   <div class="container">
     <div class="outdoor-grid">
       <div class="outdoor-img">
-        <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/26c424a8-3c7e-46e9-9b03-69f5cc3e378e.jpg" alt="Covered porch swing overlooking the pond at golden hour" />
+        <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/26c424a8-3c7e-46e9-9b03-69f5cc3e378e.jpg" alt="Covered porch swing overlooking the pond at golden hour" />
       </div>
       <div>
         <span class="eyebrow">Outside Your Door</span>
@@ -634,25 +873,25 @@
   </div>
   <div class="gallery-grid">
     <div class="g-item tall">
-      <img src="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg" alt="Cabin reflected in pond" style="aspect-ratio:auto;height:100%" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg" alt="Cabin reflected in pond" style="aspect-ratio:auto;height:100%" />
     </div>
     <div class="g-item">
-      <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/26c424a8-3c7e-46e9-9b03-69f5cc3e378e.jpg" alt="Sunset over the Ouachita mountains" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/26c424a8-3c7e-46e9-9b03-69f5cc3e378e.jpg" alt="Sunset over the Ouachita mountains" />
     </div>
     <div class="g-item">
-      <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/3d7fa2f2-b66b-47ca-bf02-6a729a72e5b1.jpg" alt="Forest aerial view" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/3d7fa2f2-b66b-47ca-bf02-6a729a72e5b1.jpg" alt="Forest aerial view" />
     </div>
     <div class="g-item wide">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1369606948743760150/original/e6ab6582-fca8-42cc-b7b3-c59b739a2d76.jpeg" alt="Cabin exterior" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1369606948743760150/original/e6ab6582-fca8-42cc-b7b3-c59b739a2d76.jpeg" alt="Cabin exterior" />
     </div>
     <div class="g-item">
-      <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/b1a616d0-082b-46ab-bd7f-d54071051e5e.jpg" alt="Stone fireplace and living room" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/b1a616d0-082b-46ab-bd7f-d54071051e5e.jpg" alt="Stone fireplace and living room" />
     </div>
     <div class="g-item">
-      <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/18912d47-add5-4107-85ee-1109aa9693ee.jpg" alt="Kitchen" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/18912d47-add5-4107-85ee-1109aa9693ee.jpg" alt="Kitchen" />
     </div>
     <div class="g-item">
-      <img src="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/028082f6-4a42-46df-b7be-7d1082827aed.jpeg" alt="Master bathroom soaking tub" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/028082f6-4a42-46df-b7be-7d1082827aed.jpeg" alt="Master bathroom soaking tub" />
     </div>
   </div>
 </section>
@@ -709,7 +948,7 @@
 <section class="stargazing-teaser">
   <div class="stargazing-grid">
     <div class="stargazing-img">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f2126ff5-fe60-44ee-bd32-f9ec36467901.png" alt="Stargazing Cabin exterior" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f2126ff5-fe60-44ee-bd32-f9ec36467901.png" alt="Stargazing Cabin exterior" />
       <div class="stargazing-img-overlay"></div>
     </div>
     <div>
@@ -718,7 +957,7 @@
       <p class="body-text">Deep in the Ouachita National Forest, where there is no light pollution and the night sky opens fully above you. This cabin is for those who want to truly disconnect — no city glow, no noise, just the forest, the silence, and an endless sky full of stars.</p>
       <p class="body-text" style="margin-top:1rem">Secluded, serene, and perfectly positioned for a night under the stars. Another handcrafted Arborium retreat built for those who love the Ouachita wilderness.</p>
       <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap">
-        <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" class="btn-amber">Book on Airbnb</a>
+        <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-amber">Book on Airbnb</a>
       </div>
     </div>
   </div>
@@ -728,46 +967,46 @@
 <div class="stargazing-gallery">
   <div class="sg-grid">
     <div class="sg-item sg-tall">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/fd4fd18c-07b2-4b90-a0b4-d7d5096e4c4d.png" alt="Stargazing Cabin" style="aspect-ratio:auto;height:100%" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/fd4fd18c-07b2-4b90-a0b4-d7d5096e4c4d.png" alt="Stargazing Cabin" style="aspect-ratio:auto;height:100%" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/4757a2eb-6576-4bad-883e-9883e6758ddc.png" alt="Stargazing Cabin interior" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/4757a2eb-6576-4bad-883e-9883e6758ddc.png" alt="Stargazing Cabin interior" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/c9e7c331-962f-4770-9c9f-2bd8a6f9100c.png" alt="Stargazing Cabin bedroom" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/c9e7c331-962f-4770-9c9f-2bd8a6f9100c.png" alt="Stargazing Cabin bedroom" />
     </div>
     <div class="sg-item sg-wide">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/2e2245ce-69c3-4da0-8d1a-d5887c9e5bbf.png" alt="Stargazing Cabin view" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/2e2245ce-69c3-4da0-8d1a-d5887c9e5bbf.png" alt="Stargazing Cabin view" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/4a6db8ab-3513-4dd8-a445-7ca6151ade0f.png" alt="Stargazing Cabin details" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/4a6db8ab-3513-4dd8-a445-7ca6151ade0f.png" alt="Stargazing Cabin details" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f9115b35-bab7-49d1-88cd-73b40ce18c5b.png" alt="Stargazing Cabin outdoor" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f9115b35-bab7-49d1-88cd-73b40ce18c5b.png" alt="Stargazing Cabin outdoor" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/301403cf-c905-44df-bbf0-f359de4abf9c.png" alt="Stargazing Cabin living area" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/301403cf-c905-44df-bbf0-f359de4abf9c.png" alt="Stargazing Cabin living area" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/7f3ff764-87b5-4771-a4e7-ed5d3acb178f.jpeg" alt="Stargazing Cabin bathroom" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/7f3ff764-87b5-4771-a4e7-ed5d3acb178f.jpeg" alt="Stargazing Cabin bathroom" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/d117796f-0107-47ec-8370-d2c4c6151ba6.jpeg" alt="Stargazing Cabin kitchen" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/d117796f-0107-47ec-8370-d2c4c6151ba6.jpeg" alt="Stargazing Cabin kitchen" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/30427833-72bd-43ec-8ac6-b952b0f21844.jpeg" alt="Stargazing Cabin view" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/30427833-72bd-43ec-8ac6-b952b0f21844.jpeg" alt="Stargazing Cabin view" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/faea41d2-9930-4c52-b793-52c3b3608b28.jpeg" alt="Stargazing Cabin exterior" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/faea41d2-9930-4c52-b793-52c3b3608b28.jpeg" alt="Stargazing Cabin exterior" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/d9569156-ad45-45fa-b680-58985daddfba.jpeg" alt="Stargazing Cabin porch" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/d9569156-ad45-45fa-b680-58985daddfba.jpeg" alt="Stargazing Cabin porch" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/adf2cccc-54de-4930-acaa-9a7c9ab3497d.jpeg" alt="Stargazing Cabin surroundings" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/adf2cccc-54de-4930-acaa-9a7c9ab3497d.jpeg" alt="Stargazing Cabin surroundings" />
     </div>
     <div class="sg-item">
-      <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/0b3ee34a-9dee-4897-8c5c-7bcf8e3656ac.jpeg" alt="Stargazing Cabin night" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/0b3ee34a-9dee-4897-8c5c-7bcf8e3656ac.jpeg" alt="Stargazing Cabin night" />
     </div>
   </div>
 </div>
@@ -785,7 +1024,7 @@
 <section class="nightfall">
   <div class="nightfall-inner">
     <div class="nightfall-img">
-      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=85" alt="Nightfall Guest Cabin — deep Ouachita forest" />
+      <img loading="lazy" src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=85" alt="Nightfall Guest Cabin — deep Ouachita forest" />
     </div>
     <div>
       <span class="coming-soon-pill">🌑 Coming Soon</span>
@@ -816,13 +1055,13 @@
       <!-- 1. TRAILS AT MENA -->
       <div class="activity-featured">
         <div class="activity-featured-img">
-          <img src="https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?auto=format&fit=crop&w=800&q=80" alt="Mountain biking trail" />
+          <img loading="lazy" src="https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?auto=format&fit=crop&w=800&q=80" alt="Mountain biking trail" />
         </div>
         <div class="activity-featured-body">
           <span class="activity-featured-tag">🚵 Under Development · Ward Lake Zone Now Open</span>
           <h3 class="activity-featured-title">The Trails at Mena</h3>
           <p class="activity-featured-desc">Mena is becoming one of the most exciting mountain bike destinations in the country. The Ward Lake Zone — the first phase of <strong style="color:var(--cream)">The Trails at Mena</strong> — is already open with flow trails and singletrack. The full build-out will deliver <strong style="color:var(--cream)">up to 100 miles of trail</strong>, a lift-served system with <strong style="color:var(--cream)">1,300 vertical feet</strong>, and a summit connection to Queen Wilhelmina State Park — making it the world's largest purpose-built lift-served mountain bike park. Phase One targets <strong style="color:var(--cream)">spring 2028</strong>. Arborium Cabins are your basecamp — minutes from the trailhead.</p>
-          <a href="https://visitmena.com" target="_blank" class="activity-featured-link">Learn more about Trails at Mena →</a>
+          <a href="https://visitmena.com" target="_blank" rel="noopener noreferrer" class="activity-featured-link">Learn more about Trails at Mena →</a>
         </div>
       </div>
 
@@ -838,7 +1077,7 @@
       <!-- 2. WOLF PEN GAP ATV -->
       <div class="activity-featured">
         <div class="activity-featured-img">
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" alt="Four-wheeler on forest ATV trail" />
+          <img loading="lazy" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" alt="Four-wheeler on forest ATV trail" />
         </div>
         <div class="activity-featured-body">
           <span class="activity-featured-tag">🏍️ Ride from the Cabin</span>
@@ -850,7 +1089,7 @@
       <!-- 3. HIKING THE OUACHITA -->
       <div class="activity-featured">
         <div class="activity-featured-img">
-          <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80" alt="Hiking through the Ouachita National Forest" />
+          <img loading="lazy" src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80" alt="Hiking through the Ouachita National Forest" />
         </div>
         <div class="activity-featured-body">
           <span class="activity-featured-tag">🥾 Miles of Trail at Your Feet</span>
@@ -862,13 +1101,13 @@
       <!-- 4. SHADY LAKE: FISHING & KAYAKING -->
       <div class="activity-featured">
         <div class="activity-featured-img">
-          <img src="https://images.unsplash.com/photo-1474249949617-ca9a962c876a?auto=format&fit=crop&w=800&q=80" alt="Fishing and kayaking on Shady Lake" />
+          <img loading="lazy" src="https://images.unsplash.com/photo-1474249949617-ca9a962c876a?auto=format&fit=crop&w=800&q=80" alt="Fishing and kayaking on Shady Lake" />
         </div>
         <div class="activity-featured-body">
           <span class="activity-featured-tag">🎣 National Register of Historic Places · No Motors</span>
           <h3 class="activity-featured-title">Fishing & Kayaking at Shady Lake</h3>
           <p class="activity-featured-desc">Built in 1935 by the <strong style="color:var(--cream)">Civilian Conservation Corps</strong>, Shady Lake is a 25-acre mountain gem tucked in the southern Ouachita — one of the most serene stretches of water in all of Arkansas. No motorized boats are allowed, which means the only sounds you'll hear are paddle dips and birdsong. Fish for <strong style="color:var(--cream)">largemouth bass, crappie, catfish, and bream</strong> from the bank or a kayak, or spread out at one of the stone-built CCC picnic areas beneath the hardwoods. A 3.1-mile trail circles the shoreline past <strong style="color:var(--cream)">historic stone bridges</strong> listed on the National Register of Historic Places, before climbing toward Tall Peak and the Caney Creek Wilderness.</p>
-          <a href="https://www.fs.usda.gov/recarea/ouachita/recarea/?recid=10789" target="_blank" class="activity-featured-link">Shady Lake Recreation Area →</a>
+          <a href="https://www.fs.usda.gov/recarea/ouachita/recarea/?recid=10789" target="_blank" rel="noopener noreferrer" class="activity-featured-link">Shady Lake Recreation Area →</a>
         </div>
       </div>
 
@@ -877,13 +1116,13 @@
     <!-- GEM & CRYSTAL HUNTING -->
     <div class="gem-callout">
       <div class="gem-callout-img">
-        <img src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?auto=format&fit=crop&w=600&q=80" alt="Quartz crystals found in Ouachita streams" />
+        <img loading="lazy" src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?auto=format&fit=crop&w=600&q=80" alt="Quartz crystals found in Ouachita streams" />
       </div>
       <div class="gem-callout-body">
         <span class="gem-callout-tag">💎 Family Favorite · Free in the National Forest</span>
         <h3 class="gem-callout-title">Gem & Crystal Hunting</h3>
         <p class="gem-callout-desc">Arkansas quartz ranks among the finest in the world — and the Ouachita is full of it. Wade into creek beds, scan exposed hillsides, and dig through hollows hunting for <strong style="color:var(--cream)">quartz crystals, wavellite, garnet, agate, and amethyst</strong>. Native Americans prized these same crystals for tools and arrowheads — Hernando de Soto documented their use as far back as 1541. The Ouachita National Forest permits free personal-use rockhounding with no permit needed for surface collection (up to 25 lbs/day). For a dedicated dig with the family, <strong style="color:var(--cream)">Board Camp Crystal Mine</strong> is just 10 miles east of Mena: $20 per adult, free for kids under 16, open March through October in an all-natural mine with no heavy equipment — just you, the earth, and whatever you find.</p>
-        <a href="https://boardcampcrystalmine.com" target="_blank" class="gem-callout-link">Visit Board Camp Crystal Mine →</a>
+        <a href="https://boardcampcrystalmine.com" target="_blank" rel="noopener noreferrer" class="gem-callout-link">Visit Board Camp Crystal Mine →</a>
       </div>
     </div>
 
@@ -901,7 +1140,7 @@
         <p class="activity-desc">Golden hour at the Vista is something guests return for again and again. Watch the sun dissolve into an ocean of Ouachita treetops — a moment that never gets old.</p>
       </div>
       <div class="activity-card">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Little_Missouri_River_Arkansas.JPG" alt="Little Missouri Falls, Ouachita National Forest" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;margin-bottom:0.75rem;display:block" />
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Little_Missouri_River_Arkansas.JPG" alt="Little Missouri Falls, Ouachita National Forest" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;margin-bottom:0.75rem;display:block" />
         <div class="activity-icon">💧</div>
         <h3 class="activity-title">Creek & Waterfall Exploring</h3>
         <p class="activity-desc">Wade through crystal-clear Ouachita creeks, discover hidden swimming holes, and chase the sound of falling water to Little Missouri Falls — one of the most beautiful cascades in the region. Bard Springs is close by too.</p>
@@ -933,9 +1172,70 @@
         </ul>
       </div>
       <div class="location-map">
-        <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/3ffe9731-66cb-46ec-bc68-c9eb727fa22b.jpg" alt="Ouachita National Forest aerial view" />
+        <img loading="lazy" src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/3ffe9731-66cb-46ec-bc68-c9eb727fa22b.jpg" alt="Ouachita National Forest aerial view" />
       </div>
     </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-header">
+    <span class="eyebrow">Before You Book</span>
+    <h2 class="section-title">Common Questions</h2>
+  </div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+        How far are the cabins from Mena, Arkansas?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">The cabins are located near Mena in the Ouachita National Forest. Exact addresses are provided after booking. Plan on gravel and forest roads leading in — an SUV or truck is strongly recommended. The drive is part of the experience.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+        Is there Wi-Fi and cell service at the cabin?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">There is no cell service at the properties — that's part of the magic. However, every cabin includes high-speed Starlink Wi-Fi, so you can stream, video call, or work remotely without issue. You'll feel off-grid without actually being off-grid.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+        Can we bring ATVs, SxS, or dirt bikes?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Absolutely — Arborium Cabins are built for riders. There's ample parking directly at each cabin for vehicles, ATVs, SxS rigs, and motocross bikes. The Wolf Pen Gap ATV trail system is accessible right from the property. Load up and ride.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+        How many guests can Sunset Cabin accommodate?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Sunset Cabin comfortably sleeps up to 6 guests across 2 bedrooms and 3 beds. The master bedroom has a queen bed and private en-suite; the loft has 2 queen beds and a full bathroom. Perfect for couples, families, or friend groups.</div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+        What's the check-in process?
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Sunset Cabin features a smart lock for seamless keyless self check-in. Your access code is provided through Airbnb before arrival. No need to meet anyone — just show up, punch in your code, and the cabin is yours.</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -943,9 +1243,12 @@
 <section class="book-cta">
   <div class="container-narrow">
     <span class="eyebrow">Reserve Your Stay</span>
-    <h2 class="book-cta-title">Ready to<br><em>escape?</em></h2>
-    <p class="book-cta-sub">Sunset Cabin is available now — 6 guests, 2 bedrooms, 5.0 ★ Guest Favorite. Book directly on Airbnb.</p>
-    <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" class="btn-dark">Check Availability on Airbnb</a>
+    <h2 class="book-cta-title">The forest is<br><em>waiting for you.</em></h2>
+    <p class="book-cta-sub">Both cabins book directly on Airbnb. No middlemen, no fees — just you and the Ouachita. Weekends fill fast.</p>
+    <div class="book-cta-btns">
+      <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="btn-dark">Book Sunset Cabin →</a>
+      <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-dark-outline">Book Stargazing Cabin →</a>
+    </div>
   </div>
 </section>
 
@@ -954,12 +1257,26 @@
   <span class="footer-logo">Arborium <span>Cabins</span></span>
   <p>Ouachita National Forest &nbsp;·&nbsp; Mena, Arkansas</p>
   <p style="margin-top:0.75rem;display:flex;justify-content:center;align-items:center;gap:1.5rem;flex-wrap:wrap">
-    <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank">Book Sunset Cabin on Airbnb</a>
-    <a href="https://www.instagram.com/arborium.app" target="_blank">@arborium.app</a>
+    <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer">Book Sunset Cabin</a>
+    <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer">Book Stargazing Cabin</a>
+    <a href="https://www.instagram.com/arborium.app" target="_blank" rel="noopener noreferrer">@arborium.app</a>
     <a href="mailto:info@arborium.app">info@arborium.app</a>
   </p>
   <p style="margin-top:1.5rem;font-size:0.72rem;opacity:0.3">© 2025 Arborium LLC. All rights reserved.</p>
 </footer>
+
+<!-- FLOATING BOOK BAR -->
+<div class="book-float" id="bookFloat">
+  <div class="book-float-text">
+    <strong>Sunset Cabin &nbsp;·&nbsp; ⭐ 5.0 · 13 Reviews</strong>
+    <span>6 guests · 2 bedrooms · Guest Favorite · Ouachita National Forest</span>
+  </div>
+  <div class="book-float-btns">
+    <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book Sunset Cabin</a>
+    <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-outline-light" style="padding:0.7rem 1.5rem;font-size:0.75rem">Stargazing Cabin</a>
+  </div>
+  <button class="book-float-close" onclick="document.getElementById('bookFloat').classList.remove('visible');document.getElementById('bookFloat').style.display='none'" aria-label="Close">✕</button>
+</div>
 
 <script>
   const nav = document.getElementById('nav');
@@ -974,6 +1291,40 @@
     }
   }, { passive: true });
 
+  // Floating book bar — appears after scrolling past the hero
+  const bookFloat = document.getElementById('bookFloat');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > window.innerHeight * 0.8) {
+      bookFloat.classList.add('visible');
+    } else {
+      bookFloat.classList.remove('visible');
+    }
+  }, { passive: true });
+
+  // Mobile nav
+  const hamburger = document.getElementById('navHamburger');
+  const mobileNav = document.getElementById('navMobile');
+  function toggleNav() {
+    const open = mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function closeNav() {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  hamburger.addEventListener('click', toggleNav);
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+    btn.setAttribute('aria-expanded', !wasOpen);
+  }
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -984,7 +1335,7 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.activity-card, .room-card, .amenity, .review-card, .cabin-card').forEach(el => {
+  document.querySelectorAll('.activity-card, .room-card, .amenity, .review-card, .cabin-card, .why-item, .faq-item').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(24px)';
     el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
