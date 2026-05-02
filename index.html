@@ -240,6 +240,19 @@
     .bike-callout-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--forest); margin-bottom: 0.35rem; }
     .bike-callout-text { font-size: 0.87rem; line-height: 1.7; color: var(--text-muted); }
 
+    /* Gem hunting callout */
+    .gem-callout { display: grid; grid-template-columns: 300px 1fr; gap: 0; border-radius: 12px; overflow: hidden; background: var(--forest-mid); margin-top: 2.5rem; }
+    .gem-callout-img { overflow: hidden; min-height: 240px; }
+    .gem-callout-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .gem-callout:hover .gem-callout-img img { transform: scale(1.04); }
+    .gem-callout-body { padding: 2rem 2.2rem; display: flex; flex-direction: column; justify-content: center; }
+    .gem-callout-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber-light); display: block; margin-bottom: 0.8rem; }
+    .gem-callout-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 600; color: var(--cream); margin-bottom: 0.75rem; line-height: 1.25; }
+    .gem-callout-desc { font-size: 0.87rem; line-height: 1.72; color: rgba(247,242,234,0.65); }
+    .gem-callout-link { display: inline-block; margin-top: 1.2rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber-light); text-decoration: none; border-bottom: 1px solid rgba(224,168,74,0.35); padding-bottom: 2px; transition: border-color 0.2s, color 0.2s; }
+    .gem-callout-link:hover { color: var(--amber); border-color: var(--amber); }
+    @media (max-width: 640px) { .gem-callout { grid-template-columns: 1fr; } .gem-callout-img { min-height: 200px; } }
+
     /* More activities */
     .activities-more-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--stone); margin-top: 4rem; margin-bottom: 1.8rem; display: block; }
     .activities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; }
@@ -617,8 +630,8 @@
 <section class="activities" id="activities">
   <div class="container">
     <span class="eyebrow">Adventure Awaits</span>
-    <h2 class="section-title" style="max-width:560px">Three reasons to come.<br>A hundred to stay.</h2>
-    <p class="body-text" style="max-width:580px">Arborium Cabins sit at the crossroads of the Ouachita's best outdoor experiences — whether you're here to pedal, ride, or just walk until the world gets quiet.</p>
+    <h2 class="section-title" style="max-width:560px">Every reason to come.<br>A hundred to stay.</h2>
+    <p class="body-text" style="max-width:580px">Arborium Cabins sit at the crossroads of the Ouachita's best outdoor experiences — whether you're here to pedal, ride, paddle, fish, or just walk until the world gets quiet.</p>
 
     <!-- THREE FEATURED ACTIVITIES -->
     <div class="activities-featured">
@@ -660,6 +673,19 @@
         </div>
       </div>
 
+      <!-- 4. SHADY LAKE: FISHING & KAYAKING -->
+      <div class="activity-featured">
+        <div class="activity-featured-img">
+          <img src="https://images.unsplash.com/photo-kHSlNQcpBYE?auto=format&fit=crop&w=800&q=80" alt="Fishing on a peaceful lake surrounded by forest" />
+        </div>
+        <div class="activity-featured-body">
+          <span class="activity-featured-tag">🎣 National Register of Historic Places · No Motors</span>
+          <h3 class="activity-featured-title">Fishing & Kayaking at Shady Lake</h3>
+          <p class="activity-featured-desc">Built in 1935 by the <strong style="color:var(--cream)">Civilian Conservation Corps</strong>, Shady Lake is a 25-acre mountain gem tucked in the southern Ouachita — one of the most serene stretches of water in all of Arkansas. No motorized boats are allowed, which means the only sounds you'll hear are paddle dips and birdsong. Fish for <strong style="color:var(--cream)">largemouth bass, crappie, catfish, and bream</strong> from the bank or a kayak, or spread out at one of the stone-built CCC picnic areas beneath the hardwoods. A 3.1-mile trail circles the shoreline past <strong style="color:var(--cream)">historic stone bridges</strong> listed on the National Register of Historic Places, before climbing toward Tall Peak and the Caney Creek Wilderness.</p>
+          <a href="https://www.fs.usda.gov/recarea/ouachita/recarea/?recid=10789" target="_blank" class="activity-featured-link">Shady Lake Recreation Area →</a>
+        </div>
+      </div>
+
     </div>
 
     <!-- BIKE SUPPORT CALLOUT -->
@@ -668,6 +694,19 @@
       <div>
         <div class="bike-callout-title">Dedicated Bike Support at Nightfall Guest Cabin</div>
         <div class="bike-callout-text">Our upcoming <strong>Nightfall Guest Cabin</strong> will include a purpose-built bike support area — secure bike storage, a full tool station, a wash-down area, and everything a riding crew needs to go out hard and come back ready to do it again. Whether you're lapping the Ward Lake Zone, hitting the forest trails, or shuttling to Wolf Pen Gap, Nightfall is built with riders in mind.</div>
+      </div>
+    </div>
+
+    <!-- GEM & CRYSTAL HUNTING -->
+    <div class="gem-callout">
+      <div class="gem-callout-img">
+        <img src="https://images.unsplash.com/photo-6NSa9QoIqrE?auto=format&fit=crop&w=600&q=80" alt="Children exploring a rocky stream bed hunting for crystals" />
+      </div>
+      <div class="gem-callout-body">
+        <span class="gem-callout-tag">💎 Family Favorite · Free in the National Forest</span>
+        <h3 class="gem-callout-title">Gem & Crystal Hunting</h3>
+        <p class="gem-callout-desc">Arkansas quartz ranks among the finest in the world — and the Ouachita is full of it. Wade into creek beds, scan exposed hillsides, and dig through hollows hunting for <strong style="color:var(--cream)">quartz crystals, wavellite, garnet, agate, and amethyst</strong>. Native Americans prized these same crystals for tools and arrowheads — Hernando de Soto documented their use as far back as 1541. The Ouachita National Forest permits free personal-use rockhounding with no permit needed for surface collection (up to 25 lbs/day). For a dedicated dig with the family, <strong style="color:var(--cream)">Board Camp Crystal Mine</strong> is just 10 miles east of Mena: $20 per adult, free for kids under 16, open March through October in an all-natural mine with no heavy equipment — just you, the earth, and whatever you find.</p>
+        <a href="https://boardcampcrystalmine.com" target="_blank" class="gem-callout-link">Visit Board Camp Crystal Mine →</a>
       </div>
     </div>
 
