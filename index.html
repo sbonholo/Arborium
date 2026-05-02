@@ -436,6 +436,43 @@
       .g-item.tall { grid-row: span 1; }
     }
 
+    /* ── ATV RENTALS ── */
+    .rentals { background: var(--forest); }
+    .rentals-header { text-align: center; margin-bottom: 4rem; }
+    .rentals-header .section-title { color: var(--cream); }
+    .rentals-header .eyebrow { color: var(--amber-light); }
+    .rentals-intro { font-size: 1rem; line-height: 1.8; color: rgba(247,242,234,0.65); max-width: 640px; margin: 0 auto; text-align: center; }
+
+    .fleet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .fleet-card { background: var(--forest-mid); border-radius: 3px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .fleet-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+    .fleet-card-img { position: relative; aspect-ratio: 16/10; overflow: hidden; }
+    .fleet-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .fleet-card:hover .fleet-card-img img { transform: scale(1.04); }
+    .fleet-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      background: var(--amber); color: var(--forest);
+      padding: 0.3rem 0.8rem; border-radius: 50px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .fleet-card-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
+    .fleet-year { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 0.4rem; }
+    .fleet-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: var(--cream); margin-bottom: 0.35rem; line-height: 1.2; }
+    .fleet-type { font-size: 0.8rem; color: rgba(247,242,234,0.45); margin-bottom: 1rem; font-style: italic; }
+    .fleet-specs { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.4rem; flex: 1; }
+    .fleet-specs li { font-size: 0.85rem; color: rgba(247,242,234,0.7); display: flex; align-items: center; gap: 0.6rem; }
+    .fleet-specs li::before { content: ''; width: 4px; height: 4px; background: var(--amber); border-radius: 50%; flex-shrink: 0; }
+    .fleet-color-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.2); }
+
+    .rentals-cta-box {
+      margin-top: 4rem; background: rgba(196,134,42,0.12); border: 1px solid rgba(196,134,42,0.25);
+      border-radius: 3px; padding: 2.5rem; text-align: center; max-width: 640px; margin-left: auto; margin-right: auto;
+    }
+    .rentals-cta-box h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--cream); margin-bottom: 0.6rem; }
+    .rentals-cta-box p { font-size: 0.9rem; color: rgba(247,242,234,0.65); line-height: 1.7; margin-bottom: 1.5rem; }
+
+    @media (max-width: 900px) { .fleet-grid { grid-template-columns: 1fr; max-width: 480px; } }
+
     /* ── HERO TRUST BADGES ── */
     .hero-trust {
       display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem;
@@ -573,6 +610,7 @@
   <ul class="nav-links">
     <li><a href="#our-cabins">Our Cabins</a></li>
     <li><a href="#activities">Activities</a></li>
+    <li><a href="#rentals">ATV Rentals</a></li>
     <li><a href="#location">Location</a></li>
     <li><a href="https://www.instagram.com/arborium.app" target="_blank" rel="noopener noreferrer">Instagram</a></li>
     <li><a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="nav-cta">Book Now</a></li>
@@ -586,6 +624,7 @@
 <div class="nav-mobile" id="navMobile">
   <a href="#our-cabins" onclick="closeNav()">Our Cabins</a>
   <a href="#activities" onclick="closeNav()">Activities</a>
+  <a href="#rentals" onclick="closeNav()">ATV Rentals</a>
   <a href="#location" onclick="closeNav()">Location</a>
   <a href="https://www.instagram.com/arborium.app" target="_blank" rel="noopener noreferrer" onclick="closeNav()">Instagram</a>
   <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="nav-mobile-book" onclick="closeNav()">Book Sunset Cabin</a>
@@ -1159,6 +1198,93 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ATV & SxS RENTALS -->
+<section class="rentals" id="rentals">
+  <div class="container">
+    <div class="rentals-header">
+      <span class="eyebrow">Available for Guests</span>
+      <h2 class="section-title">ATV &amp; Side-by-Side<br><em style="font-style:italic;color:var(--amber)">Rentals</em></h2>
+      <p class="rentals-intro">No rig? No problem. Arborium Cabins offers a small fleet of 2024 Yamaha ATVs and side-by-sides available for guest rental — so you can hit the Wolf Pen Gap trail system from day one. All vehicles are new, well-maintained, and ready for the Ouachita. Reach out to us directly to check availability and rates.</p>
+    </div>
+
+    <div class="fleet-grid">
+
+      <!-- YAMAHA VIKING VI -->
+      <div class="fleet-card">
+        <div class="fleet-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" alt="2024 Yamaha Viking VI Ranch Edition" />
+          <span class="fleet-badge">Available</span>
+        </div>
+        <div class="fleet-card-body">
+          <div class="fleet-year">2024 Model</div>
+          <div class="fleet-name">Yamaha Viking VI<br>Ranch Edition</div>
+          <div class="fleet-type">6-Seat Side-by-Side (SxS / UTV)</div>
+          <ul class="fleet-specs">
+            <li>Seats 6 — bring the whole crew</li>
+            <li>686cc fuel-injected engine</li>
+            <li>Ranch Edition — premium trim &amp; comfort</li>
+            <li><span class="fleet-color-dot" style="background:#6b3fa0"></span> Distinctive purple colorway</li>
+            <li>Power steering · independent suspension</li>
+            <li>Perfect for Wolf Pen Gap trail system</li>
+          </ul>
+          <a href="mailto:info@arborium.app?subject=ATV Rental — Yamaha Viking VI" class="btn-outline-dark" style="color:var(--cream);border-color:rgba(247,242,234,0.3);text-align:center">Inquire About Rental</a>
+        </div>
+      </div>
+
+      <!-- YAMAHA GRIZZLY 700 -->
+      <div class="fleet-card">
+        <div class="fleet-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?auto=format&fit=crop&w=800&q=80" alt="2024 Yamaha Grizzly 700" />
+          <span class="fleet-badge">Available</span>
+        </div>
+        <div class="fleet-card-body">
+          <div class="fleet-year">2024 Model</div>
+          <div class="fleet-name">Yamaha Grizzly 700</div>
+          <div class="fleet-type">Sport ATV — Single Rider</div>
+          <ul class="fleet-specs">
+            <li>686cc high-torque engine</li>
+            <li>On-command 4WD with diff lock</li>
+            <li>Aggressive sport-utility handling</li>
+            <li><span class="fleet-color-dot" style="background:#b5c800"></span> Bright Cyan Storm colorway</li>
+            <li>Electric power steering</li>
+            <li>Ideal for solo trail runs &amp; creek crossings</li>
+          </ul>
+          <a href="mailto:info@arborium.app?subject=ATV Rental — Yamaha Grizzly 700" class="btn-outline-dark" style="color:var(--cream);border-color:rgba(247,242,234,0.3);text-align:center">Inquire About Rental</a>
+        </div>
+      </div>
+
+      <!-- YAMAHA KODIAK 700 -->
+      <div class="fleet-card">
+        <div class="fleet-card-img">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80" alt="2024 Yamaha Kodiak 700" />
+          <span class="fleet-badge">Available</span>
+        </div>
+        <div class="fleet-card-body">
+          <div class="fleet-year">2024 Model</div>
+          <div class="fleet-name">Yamaha Kodiak 700</div>
+          <div class="fleet-type">Utility ATV — Single Rider</div>
+          <ul class="fleet-specs">
+            <li>686cc proven Yamaha engine</li>
+            <li>Ultramatic automatic transmission</li>
+            <li>Smooth, confidence-inspiring ride</li>
+            <li><span class="fleet-color-dot" style="background:#4a5e3a"></span> Military green colorway</li>
+            <li>Electric power steering</li>
+            <li>Great for beginners &amp; experienced riders</li>
+          </ul>
+          <a href="mailto:info@arborium.app?subject=ATV Rental — Yamaha Kodiak 700" class="btn-outline-dark" style="color:var(--cream);border-color:rgba(247,242,234,0.3);text-align:center">Inquire About Rental</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rentals-cta-box">
+      <h3>Ready to ride?</h3>
+      <p>All three vehicles are available exclusively for Arborium Cabins guests. Rates, availability, and trail recommendations provided on request. We'll make sure you're set up and on the trail from the moment you arrive.</p>
+      <a href="mailto:info@arborium.app?subject=ATV%20%26%20SxS%20Rental%20Inquiry" class="btn-amber">Contact Us About Rentals</a>
+    </div>
   </div>
 </section>
 
