@@ -22,8 +22,9 @@ const TOTAL_DISPLAY = DISPLAY_GRID * DISPLAY_GRID;
 export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Offscreen portrait for color sampling
+  // Offscreen portrait for color sampling and base rendering
   const portraitColorRef = useRef<Uint8ClampedArray | null>(null);
+  const portraitImgRef = useRef<HTMLImageElement | null>(null);
 
   // Image cache: photoUrl → HTMLImageElement
   const imgCacheRef = useRef<Map<string, HTMLImageElement>>(new Map());
@@ -41,6 +42,7 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
     img.onload = () => {
       ctx.drawImage(img, 0, 0, DISPLAY_GRID, DISPLAY_GRID);
       portraitColorRef.current = ctx.getImageData(0, 0, DISPLAY_GRID, DISPLAY_GRID).data;
+      portraitImgRef.current = img;
       draw();
     };
     img.src = "/trump-portrait.svg";
@@ -77,13 +79,22 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
 
     ctx.clearRect(0, 0, W, H);
 
+    // Draw portrait as the base layer — always visible underneath the grid
+    const portraitImg = portraitImgRef.current;
+    if (portraitImg) {
+      ctx.drawImage(portraitImg, 0, 0, W, H);
+    } else {
+      ctx.fillStyle = "#1a1a2e";
+      ctx.fillRect(0, 0, W, H);
+    }
+
     for (let r = 0; r < DISPLAY_GRID; r++) {
       for (let c = 0; c < DISPLAY_GRID; c++) {
         const dIdx = r * DISPLAY_GRID + c;
         const x = c * cw;
         const y = r * ch;
 
-        // Portrait reference color for this cell
+        // Portrait reference color for multiply-blending supporter photos
         let pr = 20, pg = 20, pb = 20;
         if (colors) {
           const pi = dIdx * 4;
@@ -95,28 +106,26 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
         if (cellData?.photoUrl) {
           const img = loadPhoto(cellData.photoUrl, draw);
           if (img?.complete && img.naturalWidth > 0) {
-            // Draw the supporter photo
-            ctx.drawImage(img, x, y, cw, ch);
-
-            // Color-grade: multiply-blend with the portrait color so from afar
+            // Draw supporter photo, then multiply-blend portrait color so zoomed-out
             // the cells collectively read as the Trump portrait
+            ctx.drawImage(img, x, y, cw, ch);
             ctx.globalCompositeOperation = "multiply";
             ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
             ctx.fillRect(x, y, cw, ch);
             ctx.globalCompositeOperation = "source-over";
           } else {
-            // Photo not yet loaded — show portrait color as placeholder
-            ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
+            // Photo still loading — portrait base already shows; slight dim while waiting
+            ctx.fillStyle = "rgba(0,0,0,0.3)";
             ctx.fillRect(x, y, cw, ch);
           }
         } else {
-          // Empty cell — darken so the portrait shows through very subtly
-          ctx.fillStyle = `rgba(${Math.floor(pr * 0.15)}, ${Math.floor(pg * 0.15)}, ${Math.floor(pb * 0.15)}, 1)`;
+          // Empty cell — dark overlay lets portrait show at ~35% brightness
+          ctx.fillStyle = "rgba(0,0,0,0.65)";
           ctx.fillRect(x, y, cw, ch);
         }
 
         // Subtle grid lines
-        ctx.strokeStyle = "rgba(0,0,0,0.2)";
+        ctx.strokeStyle = "rgba(255,255,255,0.08)";
         ctx.lineWidth = 0.3;
         ctx.strokeRect(x, y, cw, ch);
       }
