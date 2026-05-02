@@ -210,11 +210,46 @@
 
     /* ── ACTIVITIES ── */
     .activities { background: var(--cream); }
-    .activities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.2rem; margin-top: 4rem; }
-    .activity-card { border-top: 2px solid var(--amber); padding-top: 1.5rem; }
-    .activity-icon { font-size: 2rem; margin-bottom: 0.7rem; }
-    .activity-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--forest); }
-    .activity-desc { font-size: 0.87rem; line-height: 1.7; color: var(--text-muted); }
+
+    /* Featured three */
+    .activities-featured { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; }
+    .activity-featured {
+      background: var(--forest); border-radius: 3px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .activity-featured-img { aspect-ratio: 16/9; overflow: hidden; }
+    .activity-featured-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .activity-featured:hover .activity-featured-img img { transform: scale(1.04); }
+    .activity-featured-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
+    .activity-featured-tag {
+      display: inline-block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: 0.75rem;
+    }
+    .activity-featured-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: var(--cream); margin-bottom: 0.75rem; line-height: 1.25; }
+    .activity-featured-desc { font-size: 0.87rem; line-height: 1.72; color: rgba(247,242,234,0.65); flex: 1; }
+    .activity-featured-link { display: inline-block; margin-top: 1.2rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber-light); text-decoration: none; border-bottom: 1px solid rgba(224,168,74,0.35); padding-bottom: 2px; transition: border-color 0.2s, color 0.2s; }
+    .activity-featured-link:hover { color: var(--amber); border-color: var(--amber); }
+
+    /* Bike support callout */
+    .bike-callout {
+      margin-top: 2.5rem; background: var(--cream-dark);
+      border-left: 4px solid var(--amber); border-radius: 0 3px 3px 0;
+      padding: 1.5rem 2rem; display: flex; align-items: flex-start; gap: 1.2rem;
+    }
+    .bike-callout-icon { font-size: 1.8rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .bike-callout-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--forest); margin-bottom: 0.35rem; }
+    .bike-callout-text { font-size: 0.87rem; line-height: 1.7; color: var(--text-muted); }
+
+    /* More activities */
+    .activities-more-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--stone); margin-top: 4rem; margin-bottom: 1.8rem; display: block; }
+    .activities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; }
+    .activity-card { border-top: 2px solid var(--amber); padding-top: 1.4rem; }
+    .activity-icon { font-size: 1.7rem; margin-bottom: 0.6rem; }
+    .activity-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--forest); }
+    .activity-desc { font-size: 0.85rem; line-height: 1.7; color: var(--text-muted); }
+
+    @media (max-width: 900px) { .activities-featured { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .activities-featured { grid-template-columns: 1fr; } }
 
     /* ── GALLERY ── */
     .gallery { background: var(--forest); padding: 5rem 0; }
@@ -582,39 +617,85 @@
 <section class="activities" id="activities">
   <div class="container">
     <span class="eyebrow">Adventure Awaits</span>
-    <h2 class="section-title" style="max-width:480px">Built for those<br>who love the outdoors.</h2>
-    <div class="activities-grid">
-      <div class="activity-card">
-        <div class="activity-icon">🏍️</div>
-        <h3 class="activity-title">ATV & SxS Riding</h3>
-        <p class="activity-desc">Ride directly from the cabin to the Wolf Pen Gap ATV trail system — one of Arkansas's premier off-road destinations. The perfect basecamp for a full weekend of riding.</p>
+    <h2 class="section-title" style="max-width:560px">Three reasons to come.<br>A hundred to stay.</h2>
+    <p class="body-text" style="max-width:580px">Arborium Cabins sit at the crossroads of the Ouachita's best outdoor experiences — whether you're here to pedal, ride, or just walk until the world gets quiet.</p>
+
+    <!-- THREE FEATURED ACTIVITIES -->
+    <div class="activities-featured">
+
+      <!-- 1. TRAILS AT MENA -->
+      <div class="activity-featured">
+        <div class="activity-featured-img">
+          <img src="https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?auto=format&fit=crop&w=800&q=80" alt="Mountain biking in the Ouachita Forest" />
+        </div>
+        <div class="activity-featured-body">
+          <span class="activity-featured-tag">🚵 Under Development · Ward Lake Zone Now Open</span>
+          <h3 class="activity-featured-title">The Trails at Mena</h3>
+          <p class="activity-featured-desc">Mena is becoming one of the most exciting mountain bike destinations in the country. The Ward Lake Zone — the first phase of <strong style="color:var(--cream)">The Trails at Mena</strong> — is already open with flow trails and singletrack. The full build-out will deliver <strong style="color:var(--cream)">up to 100 miles of trail</strong>, a lift-served system with <strong style="color:var(--cream)">1,300 vertical feet</strong>, and a summit connection to Queen Wilhelmina State Park — making it the world's largest purpose-built lift-served mountain bike park. Phase One targets <strong style="color:var(--cream)">spring 2028</strong>. Arborium Cabins are your basecamp — minutes from the trailhead.</p>
+          <a href="https://visitmena.com" target="_blank" class="activity-featured-link">Learn more about Trails at Mena →</a>
+        </div>
       </div>
+
+      <!-- 2. WOLF PEN GAP ATV -->
+      <div class="activity-featured">
+        <div class="activity-featured-img">
+          <img src="https://a0.muscache.com/im/pictures/airflow/Hosting-1369606948743760150/original/3d7fa2f2-b66b-47ca-bf02-6a729a72e5b1.jpg" alt="Wolf Pen Gap ATV trails from above" />
+        </div>
+        <div class="activity-featured-body">
+          <span class="activity-featured-tag">🏍️ Ride from the Cabin</span>
+          <h3 class="activity-featured-title">Wolf Pen Gap ATV & SxS Trails</h3>
+          <p class="activity-featured-desc">One of Arkansas's most celebrated off-road playgrounds, the <strong style="color:var(--cream)">Wolf Pen Gap ATV trail system</strong> is right outside our door. Load up the SxS or ATV and ride directly from the cabin to miles of twisting forest roads, ridgeline runs, and creek crossings. This is the kind of riding you plan your whole trip around — and Arborium Cabins give you the best seat in the house for it. Plenty of parking for rigs of all sizes directly at each cabin.</p>
+        </div>
+      </div>
+
+      <!-- 3. HIKING THE OUACHITA -->
+      <div class="activity-featured">
+        <div class="activity-featured-img">
+          <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=800&q=80" alt="Hiking through the Ouachita National Forest" />
+        </div>
+        <div class="activity-featured-body">
+          <span class="activity-featured-tag">🥾 Miles of Trail at Your Feet</span>
+          <h3 class="activity-featured-title">Hiking the Ouachita Forest</h3>
+          <p class="activity-featured-desc">The <strong style="color:var(--cream)">Ouachita National Forest</strong> stretches across nearly 1.8 million acres of ancient ridges, hardwood hollows, and spring-fed creeks. From the cabin, step onto trail and go — to Bard Springs waterfall, to Shady Lake, to ridge summits with views over an unbroken sea of trees. The forest trail network is also excellent for mountain biking, with a variety of terrain to suit all skill levels well before the Trails at Mena reaches full scale.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BIKE SUPPORT CALLOUT -->
+    <div class="bike-callout">
+      <div class="bike-callout-icon">🔧</div>
+      <div>
+        <div class="bike-callout-title">Dedicated Bike Support at Nightfall Guest Cabin</div>
+        <div class="bike-callout-text">Our upcoming <strong>Nightfall Guest Cabin</strong> will include a purpose-built bike support area — secure bike storage, a full tool station, a wash-down area, and everything a riding crew needs to go out hard and come back ready to do it again. Whether you're lapping the Ward Lake Zone, hitting the forest trails, or shuttling to Wolf Pen Gap, Nightfall is built with riders in mind.</div>
+      </div>
+    </div>
+
+    <!-- MORE TO EXPLORE -->
+    <span class="activities-more-label">More to Explore</span>
+    <div class="activities-grid">
       <div class="activity-card">
         <div class="activity-icon">🎣</div>
         <h3 class="activity-title">Bass Fishing</h3>
-        <p class="activity-desc">Cast a line in the on-property bass pond or explore nearby Shady Lake and the creeks of the national forest. No drive needed — fish from your own backyard.</p>
-      </div>
-      <div class="activity-card">
-        <div class="activity-icon">🥾</div>
-        <h3 class="activity-title">Hiking & Biking</h3>
-        <p class="activity-desc">Explore hundreds of miles of trails through the Ouachita National Forest. Visit Bard Springs, a hidden waterfall oasis, or summit a ridge for panoramic forest views.</p>
+        <p class="activity-desc">Cast a line in the on-property bass pond or explore Shady Lake and the national forest creeks. No drive needed — fish steps from your cabin door.</p>
       </div>
       <div class="activity-card">
         <div class="activity-icon">🌅</div>
         <h3 class="activity-title">Sunset at the Vista</h3>
-        <p class="activity-desc">Golden hour at the Vista is something guests return for again and again. Watch the sun set over an ocean of Ouachita treetops — a moment you won't find anywhere else.</p>
+        <p class="activity-desc">Golden hour at the Vista is something guests return for again and again. Watch the sun dissolve into an ocean of Ouachita treetops — a moment that never gets old.</p>
       </div>
       <div class="activity-card">
         <div class="activity-icon">💧</div>
         <h3 class="activity-title">Creek Exploring</h3>
-        <p class="activity-desc">Wade through crystal-clear Ouachita creeks, discover natural swimming holes, and explore the hidden hollows of the forest. Shady Lake is just minutes away.</p>
+        <p class="activity-desc">Wade through crystal-clear Ouachita creeks, find natural swimming holes, and explore hidden hollows in the forest. Bard Springs and Shady Lake are close by.</p>
       </div>
       <div class="activity-card">
         <div class="activity-icon">🐻</div>
         <h3 class="activity-title">Wildlife Watching</h3>
-        <p class="activity-desc">Deer graze at dusk, turkeys wander at dawn, and black bears have been spotted right on the grounds. This is their forest — you're just visiting.</p>
+        <p class="activity-desc">Deer at dusk, turkeys at dawn, and black bears spotted on the property. This is their forest — you're just lucky enough to be visiting.</p>
       </div>
     </div>
+
   </div>
 </section>
 
