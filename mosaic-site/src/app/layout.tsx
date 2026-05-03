@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "1,000,000 Trump Supporters — The Mosaic",
     description:
-      "Be part of a once-in-a-lifetime portrait. 1,000,000 supporters. One monumental gift.",
+      "Be part of a once-in-a-lifetime portrait. 1,000,000 supporters. One historic gift to President Trump.",
     type: "website",
   },
 };
