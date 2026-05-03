@@ -63,6 +63,12 @@ export default function MosaicViewerClient() {
 
     // Cell size in canvas pixels at current zoom
     const cellPx = (W / GRID) * zoom;
+
+    // Draw portrait as base layer — always visible underneath cells
+    const portrait = portraitRef.current;
+    if (portrait) {
+      ctx.drawImage(portrait, -camX * cellPx, -camY * cellPx, GRID * cellPx, GRID * cellPx);
+    }
     const colors = portraitColorsRef.current;
 
     // Visible cell range (with one-cell padding)
@@ -99,8 +105,8 @@ export default function MosaicViewerClient() {
             ctx.fillRect(sx, sy, cellPx, cellPx);
           }
         } else {
-          // Empty — very dark tint of portrait color
-          ctx.fillStyle = `rgb(${Math.floor(pr * 0.12)}, ${Math.floor(pg * 0.12)}, ${Math.floor(pb * 0.12)})`;
+          // Empty — dark overlay so portrait shows through at ~35% brightness
+          ctx.fillStyle = "rgba(0,0,0,0.65)";
           ctx.fillRect(sx, sy, cellPx, cellPx);
         }
 

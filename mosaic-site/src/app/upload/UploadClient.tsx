@@ -287,7 +287,7 @@ export default function UploadClient() {
             <p className="text-gray-600 text-sm">or click to browse your files</p>
             <p className="text-gray-700 text-xs">
               Any format · Any resolution · Up to 50 MB
-              <br />We compress it automatically to ~{Math.round(CELL_PX * CELL_PX * 0.82 / 1024)} KB
+              <br />We compress it automatically to ~5 KB
             </p>
           </div>
         </div>
