@@ -1,6 +1,8 @@
 import { stripe, cellsToAmountCents } from "@/lib/stripe";
 import { TIERS, type TierId } from "@/lib/mosaic";
 
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();

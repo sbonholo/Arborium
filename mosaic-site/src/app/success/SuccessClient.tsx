@@ -20,6 +20,7 @@ export default function SuccessClient() {
   const [status, setStatus] = useState<Status>("loading");
   const [purchase, setPurchase] = useState<PurchaseInfo | null>(null);
   const [attempts, setAttempts] = useState(0);
+  const [canRetry, setCanRetry] = useState(false);
 
   useEffect(() => {
     if (!sessionId) {
@@ -30,9 +31,10 @@ export default function SuccessClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
-  async function poll(sid: string) {
-    // Webhook processing can take a few seconds — retry up to 10×
-    for (let i = 0; i < 10; i++) {
+  async function poll(sid: string, maxAttempts = 20) {
+    setCanRetry(false);
+    setStatus("loading");
+    for (let i = 0; i < maxAttempts; i++) {
       setAttempts(i + 1);
       try {
         const res = await fetch(`/api/purchase-status?session_id=${sid}`);
@@ -45,11 +47,12 @@ export default function SuccessClient() {
           }
         }
       } catch {
-        // ignore, keep polling
+        // network error — keep polling
       }
       await sleep(1500);
     }
     setStatus("not_found");
+    setCanRetry(true);
   }
 
   if (status === "loading") {
@@ -59,7 +62,7 @@ export default function SuccessClient() {
           <Spinner />
           <p className="text-white text-lg">Confirming your payment…</p>
           <p className="text-gray-600 text-sm">
-            {attempts > 1 ? `Still checking (attempt ${attempts}/10)…` : "This takes just a moment."}
+            {attempts > 1 ? `Still checking (attempt ${attempts}/20)…` : "This takes just a moment."}
           </p>
         </div>
       </Centered>
@@ -74,9 +77,19 @@ export default function SuccessClient() {
           <h1 className="text-white text-xl font-bold">Payment not found yet</h1>
           <p className="text-gray-400 text-sm">
             Sometimes Stripe takes a few extra seconds. If you completed payment, check your
-            email for a receipt, then return here with your session link.
+            email for a receipt and come back to this page.
           </p>
-          <Link href="/" className="btn-primary inline-block">← Back to home</Link>
+          {canRetry && sessionId && (
+            <button
+              onClick={() => poll(sessionId, 20)}
+              className="btn-primary w-full"
+            >
+              Check Again
+            </button>
+          )}
+          <Link href="/" className="block text-center text-sm text-gray-600 hover:text-gray-400">
+            ← Back to home
+          </Link>
         </div>
       </Centered>
     );

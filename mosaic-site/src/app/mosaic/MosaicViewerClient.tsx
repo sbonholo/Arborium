@@ -43,6 +43,7 @@ export default function MosaicViewerClient() {
 
   const [totalFilled, setTotalFilled] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   // ── Rendering ─────────────────────────────────────────────────
 
@@ -206,7 +207,7 @@ export default function MosaicViewerClient() {
 
       while (true) {
         const res = await fetch(`/api/mosaic?after=${after}`);
-        if (!res.ok) break;
+        if (!res.ok) { setLoadError(true); break; }
         const { cells, nextAfter } = await res.json();
         cells.forEach((c: Cell) => {
           cellsRef.current.set(c.index, c);
@@ -390,6 +391,14 @@ export default function MosaicViewerClient() {
             style={{ background: "rgba(0,0,0,0.7)", color: "#c9a84c" }}
           >
             Loading photos…
+          </div>
+        )}
+        {loadError && (
+          <div
+            className="absolute top-4 right-4 text-xs px-3 py-1 rounded-full"
+            style={{ background: "rgba(180,30,30,0.85)", color: "#fff" }}
+          >
+            Some photos failed to load — showing what we have
           </div>
         )}
       </div>

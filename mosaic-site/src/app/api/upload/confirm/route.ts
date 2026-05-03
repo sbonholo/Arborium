@@ -1,6 +1,8 @@
 import { photoPublicUrl } from "@/lib/r2";
 import { supabaseAdmin } from "@/lib/supabase";
 
+export const runtime = "nodejs";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabaseAdmin as any;
 

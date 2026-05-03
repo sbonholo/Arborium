@@ -2,6 +2,8 @@ import { stripe } from "@/lib/stripe";
 import { supabaseAdmin } from "@/lib/supabase";
 import Stripe from "stripe";
 
+export const runtime = "nodejs";
+
 // Stripe requires the raw body for signature verification.
 export async function POST(request: Request) {
   const body = await request.text();
