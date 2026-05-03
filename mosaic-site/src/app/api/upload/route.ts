@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     if (file_type !== "image/jpeg") {
       return Response.json({ error: "Expected a JPEG (processed client-side)." }, { status: 400 });
     }
-    if (!file_size || file_size > MAX_PROCESSED_BYTES) {
+    if (typeof file_size !== "number" || file_size <= 0 || file_size > MAX_PROCESSED_BYTES) {
       return Response.json(
         { error: `Processed file too large (max ${MAX_PROCESSED_BYTES / 1024} KB).` },
         { status: 400 }

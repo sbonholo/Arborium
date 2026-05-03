@@ -14,8 +14,8 @@ export async function POST(request: Request) {
 
     // Verify the key matches what we'd have issued for this session
     // (prevents a user from confirming someone else's key)
-    const expectedPrefix = `photos/${session_id}.`;
-    if (!key.startsWith(expectedPrefix)) {
+    const expectedKey = `photos/${session_id}.jpg`;
+    if (key !== expectedKey) {
       return Response.json({ error: "Key mismatch." }, { status: 403 });
     }
 
