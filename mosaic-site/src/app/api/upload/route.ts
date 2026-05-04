@@ -1,14 +1,14 @@
-import { r2, R2_BUCKET, photoPublicUrl } from "@/lib/r2";
 import { supabaseAdmin } from "@/lib/supabase";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
 import type { NextRequest } from "next/server";
 
 export const runtime = "nodejs";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const db = supabaseAdmin as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const storage = (supabaseAdmin as any).storage;
 
-// The client resizes to 128×128 JPEG before uploading. 200 KB is a generous cap.
+const BUCKET = "mosaic-photos";
 const MAX_PROCESSED_BYTES = 200 * 1024;
 
 // POST /api/upload
@@ -61,44 +61,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Guard: ensure R2 is configured before attempting the network call
-    const r2AccountId = process.env.R2_ACCOUNT_ID;
-    const r2AccessKey = process.env.R2_ACCESS_KEY_ID;
-    const r2SecretKey = process.env.R2_SECRET_ACCESS_KEY;
-    const r2BucketName = process.env.R2_BUCKET_NAME;
-    if (!r2AccountId || !r2AccessKey || !r2SecretKey || !r2BucketName) {
-      const missing = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET_NAME"]
-        .filter((k) => !process.env[k])
-        .join(", ");
-      console.error("[upload] Missing R2 env vars:", missing);
-      return Response.json(
-        { error: `R2 storage not configured. Missing: ${missing}` },
-        { status: 500 }
-      );
-    }
+    // Ensure the storage bucket exists (idempotent — ignores "already exists" error)
+    await storage.createBucket(BUCKET, { public: true, allowedMimeTypes: ["image/jpeg"] });
 
-    // Upload to R2 server-side — no browser CORS needed
-    const key = `photos/${sessionId}.jpg`;
+    // Upload to Supabase Storage
+    const path = `photos/${sessionId}.jpg`;
     const body = Buffer.from(arrayBuffer);
 
-    await r2.send(
-      new PutObjectCommand({
-        Bucket: R2_BUCKET,
-        Key: key,
-        Body: body,
-        ContentType: "image/jpeg",
-        ContentLength: body.length,
-        Metadata: { source: "trump-mosaic" },
-      })
-    );
+    const { error: uploadError } = await storage
+      .from(BUCKET)
+      .upload(path, body, { contentType: "image/jpeg", upsert: true });
 
-    // Mark purchase as uploaded and store the public URL
-    const publicUrl = photoPublicUrl(key);
+    if (uploadError) {
+      console.error("[upload] Storage upload error:", JSON.stringify(uploadError));
+      return Response.json({ error: `Storage error: ${uploadError.message}` }, { status: 500 });
+    }
+
+    // Build the public URL
+    const { data: urlData } = storage.from(BUCKET).getPublicUrl(path);
+    const publicUrl: string = urlData.publicUrl;
+
+    // Mark purchase as uploaded
     const { error: updateError } = await db
       .from("purchases")
       .update({
         photo_uploaded: true,
-        photo_key: key,
+        photo_key: path,
         photo_url: publicUrl,
         uploaded_at: new Date().toISOString(),
       })

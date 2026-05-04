@@ -3,10 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      // Cloudflare R2 public bucket URL
+      // Cloudflare R2 public bucket URL (kept as fallback)
       { protocol: "https", hostname: "**.r2.dev" },
-      // If you set up a custom domain for R2 (e.g. photos.trumpmosaic.com), add it here:
-      // { protocol: "https", hostname: "photos.trumpmosaic.com" },
+      // Supabase Storage — primary photo storage for uploaded supporter photos
+      { protocol: "https", hostname: "**.supabase.co" },
     ],
   },
 
