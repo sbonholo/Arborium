@@ -35,8 +35,8 @@ export async function POST(request: Request) {
         tier_id: tierId,
         cells: String(tier.cells),
       },
-      // After payment Stripe redirects here; session_id is injected by Stripe
-      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      // After payment Stripe redirects directly to the upload page
+      success_url: `${appUrl}/upload?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/`,
       // Let Stripe collect billing address for chargeback protection
       billing_address_collection: "auto",

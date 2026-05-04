@@ -210,36 +210,29 @@ export default function UploadClient() {
     setProgress(0);
 
     try {
-      const initRes = await fetch("/api/upload", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          session_id: sessionId,
-          file_type: "image/jpeg",
-          file_size: processedBlob.size,
-        }),
-      });
-      if (!initRes.ok) {
-        const d = await initRes.json().catch(() => ({}));
-        throw new Error(d.error ?? "Could not start upload.");
-      }
-      const { upload_url, key } = await initRes.json();
+      const form = new FormData();
+      form.append("session_id", sessionId);
+      form.append("file", processedBlob, "photo.jpg");
 
-      await uploadWithProgress(upload_url, processedBlob, "image/jpeg", setProgress);
-
-      setStage("confirming");
-      const confirmRes = await fetch("/api/upload/confirm", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId, key }),
-      });
-      if (!confirmRes.ok) {
-        const d = await confirmRes.json().catch(() => ({}));
-        throw new Error(d.error ?? "Could not confirm upload.");
+      // Retry up to 8× (12 s total) in case the Stripe webhook hasn't written the
+      // purchase row yet when the user taps "Upload" immediately after payment.
+      let lastError: Error | null = null;
+      for (let attempt = 0; attempt < 8; attempt++) {
+        try {
+          const { photo_url } = await postFormDataWithProgress(form, "/api/upload", setProgress);
+          setPhotoUrl(photo_url);
+          setStage("done");
+          return;
+        } catch (err) {
+          lastError = err instanceof Error ? err : new Error(String(err));
+          const isPurchaseNotFound = lastError.message.includes("not found");
+          if (!isPurchaseNotFound) break;
+          // Wait 1.5 s before retrying (webhook may still be processing)
+          await new Promise((r) => setTimeout(r, 1500));
+          setProgress(0); // reset progress bar for retry
+        }
       }
-      const { photo_url } = await confirmRes.json();
-      setPhotoUrl(photo_url);
-      setStage("done");
+      throw lastError ?? new Error("Upload failed.");
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : "Upload failed. Please try again.");
       setStage("preview");
@@ -315,14 +308,12 @@ export default function UploadClient() {
     );
   }
 
-  // ── UPLOADING / CONFIRMING ────────────────────────────────────
+  // ── UPLOADING ────────────────────────────────────────────────
   if (stage === "uploading" || stage === "confirming") {
     return (
       <Shell>
         <div className="modal-box space-y-6" style={{ maxWidth: "420px" }}>
-          <h2 className="text-white text-xl font-bold text-center">
-            {stage === "uploading" ? "Uploading your photo…" : "Saving your spot…"}
-          </h2>
+          <h2 className="text-white text-xl font-bold text-center">Uploading your photo…</h2>
           {previewUrl && (
             <div className="w-32 h-32 mx-auto rounded-full overflow-hidden" style={{ outline: "2px solid #c9a84c" }}>
               <Image src={previewUrl} alt="Preview" width={128} height={128} className="object-cover w-full h-full" />
@@ -331,12 +322,10 @@ export default function UploadClient() {
           <div className="w-full h-2 rounded-full" style={{ background: "#1e1e1e" }}>
             <div
               className="progress-bar-fill rounded-full transition-all"
-              style={{ width: stage === "confirming" ? "100%" : `${progress}%` }}
+              style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-gray-600 text-sm text-center">
-            {stage === "confirming" ? "Almost done…" : `${progress}%`}
-          </p>
+          <p className="text-gray-600 text-sm text-center">{progress}%</p>
         </div>
       </Shell>
     );
@@ -396,8 +385,16 @@ export default function UploadClient() {
     <Shell>
       <div className="modal-box space-y-6" style={{ maxWidth: "480px" }}>
         {/* Header */}
-        <div className="text-center space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#c9a84c" }}>Step 2 of 2</p>
+        <div className="text-center space-y-2">
+          {sessionId && (
+            <p
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full"
+              style={{ background: "#0f1a0f", color: "#4ade80", border: "1px solid #1a3a1a" }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
+              Payment confirmed
+            </p>
+          )}
           <h1 className="text-white text-2xl font-bold">Upload Your Photo</h1>
           <p className="text-gray-500 text-sm">
             Any size, any resolution — we auto-optimize it for the portrait.
@@ -694,26 +691,32 @@ async function resizeAndCompress(source: Blob | File, targetPx: number, quality:
   });
 }
 
-/** XHR upload so we get progress events */
-function uploadWithProgress(
+/** POST FormData with XHR so we get upload progress events */
+function postFormDataWithProgress(
+  formData: FormData,
   url: string,
-  blob: Blob,
-  contentType: string,
   onProgress: (pct: number) => void
-): Promise<void> {
+): Promise<{ photo_url: string }> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.upload.addEventListener("progress", (e) => {
       if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
     });
     xhr.addEventListener("load", () => {
-      if (xhr.status >= 200 && xhr.status < 300) resolve();
-      else reject(new Error(`Upload failed: HTTP ${xhr.status}`));
+      try {
+        const data = JSON.parse(xhr.responseText);
+        if (xhr.status >= 200 && xhr.status < 300 && data.photo_url) {
+          resolve(data as { photo_url: string });
+        } else {
+          reject(new Error(data.error ?? `Upload failed (HTTP ${xhr.status}).`));
+        }
+      } catch {
+        reject(new Error(`Upload failed: HTTP ${xhr.status}.`));
+      }
     });
     xhr.addEventListener("error", () => reject(new Error("Network error during upload.")));
-    xhr.open("PUT", url);
-    xhr.setRequestHeader("Content-Type", contentType);
-    xhr.send(blob);
+    xhr.open("POST", url);
+    xhr.send(formData);
   });
 }
 
