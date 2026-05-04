@@ -21,8 +21,8 @@ const nextConfig: NextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           // Reduce referrer leakage
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          // Disable unnecessary browser features
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          // camera=(self) lets /upload use getUserMedia while blocking third-party frames
+          { key: "Permissions-Policy", value: "camera=(self), microphone=(), geolocation=()" },
         ],
       },
       {

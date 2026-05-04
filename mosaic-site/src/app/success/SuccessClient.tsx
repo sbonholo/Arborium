@@ -102,7 +102,7 @@ export default function SuccessClient() {
           <p className="text-4xl">✅</p>
           <h1 className="text-white text-2xl font-bold">You&apos;re in the portrait!</h1>
           <p className="text-gray-400">Your photo has already been uploaded. You&apos;re part of history.</p>
-          <Link href="/" className="btn-primary inline-block">View the mosaic →</Link>
+          <Link href="/mosaic" className="btn-primary inline-block">View the mosaic →</Link>
         </div>
       </Centered>
     );

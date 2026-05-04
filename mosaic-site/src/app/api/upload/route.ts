@@ -9,7 +9,7 @@ const db = supabaseAdmin as any;
 const storage = (supabaseAdmin as any).storage;
 
 const BUCKET = "mosaic-photos";
-const MAX_PROCESSED_BYTES = 200 * 1024;
+const MAX_PROCESSED_BYTES = 600 * 1024; // 512×512 JPEG at high quality is typically 40–150 KB; 600 KB is a safe ceiling
 
 // POST /api/upload
 // Headers: X-Session-ID: <id>, Content-Type: image/jpeg
