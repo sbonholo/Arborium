@@ -94,6 +94,8 @@ export default function MosaicViewerClient() {
     // Portrait as base layer
     const portrait = portraitRef.current;
     if (portrait) {
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       const { sx, sy, sw, sh } = coverCrop(portrait, GRID, GRID);
       ctx.drawImage(
         portrait, sx, sy, sw, sh,
@@ -131,11 +133,13 @@ export default function MosaicViewerClient() {
 
         const cell = cellsRef.current.get(realIdx);
         const isHighlighted = highlightCellRef.current === realIdx;
+        // As we zoom in, fade the portrait colour tint so individual faces reveal in natural colour.
+        // Full tint at cellPx ≤ 30, gone by cellPx ≥ 100.
+        const tintAlpha = Math.max(0, Math.min(1, 1 - (cellPx - 30) / 70));
 
         if (cell) {
           if (cellPx >= 3) {
-            // Highlighted cell: no tint so the face is shown in natural colour
-            drawCellPhoto(ctx, cell.photoUrl, sx, sy, cellPx, cellPx, pr, pg, pb, isHighlighted);
+            drawCellPhoto(ctx, cell.photoUrl, sx, sy, cellPx, cellPx, pr, pg, pb, isHighlighted, tintAlpha);
           } else {
             ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
             ctx.fillRect(sx, sy, cellPx, cellPx);
@@ -172,7 +176,8 @@ export default function MosaicViewerClient() {
     url: string,
     x: number, y: number, w: number, h: number,
     pr: number, pg: number, pb: number,
-    skipTint = false
+    skipTint = false,
+    tintAlpha = 1
   ) {
     const cache = imgCacheRef.current;
     const entry = cache.get(url);
@@ -184,13 +189,15 @@ export default function MosaicViewerClient() {
     }
 
     if (entry instanceof HTMLImageElement && entry.complete && entry.naturalWidth > 0) {
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       ctx.drawImage(entry, x, y, w, h);
-      if (!skipTint) {
-        // Multiply-blend the portrait's reference colour so cells collectively
-        // read as the portrait when zoomed out.
+      if (!skipTint && tintAlpha > 0.02) {
         ctx.globalCompositeOperation = "multiply";
+        ctx.globalAlpha = tintAlpha;
         ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
         ctx.fillRect(x, y, w, h);
+        ctx.globalAlpha = 1;
         ctx.globalCompositeOperation = "source-over";
       }
       return;
@@ -436,7 +443,36 @@ export default function MosaicViewerClient() {
     render();
   }, [render]);
 
-  const onMouseUp = useCallback(() => { dragRef.current.active = false; }, []);
+  const onMouseUp = useCallback((e: React.MouseEvent) => {
+    const drag = dragRef.current;
+    if (drag.active) {
+      const dx = e.clientX - drag.startX;
+      const dy = e.clientY - drag.startY;
+      if (Math.hypot(dx, dy) < 5) {
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = canvas.width / rect.width;
+          const scaleY = canvas.height / rect.height;
+          const canvasX = (e.clientX - rect.left) * scaleX;
+          const canvasY = (e.clientY - rect.top) * scaleY;
+          const { x: camX, y: camY, zoom } = viewRef.current;
+          const cellPx = (canvas.width / GRID) * zoom;
+          const col = Math.floor(camX + canvasX / cellPx);
+          const row = Math.floor(camY + canvasY / cellPx);
+          if (col >= 0 && col < GRID && row >= 0 && row < GRID) {
+            const idx = row * GRID + col;
+            if (cellsRef.current.has(idx)) {
+              animateView({ ...viewRef.current }, cellCenteredView(idx), 600);
+            }
+          }
+        }
+      }
+    }
+    dragRef.current.active = false;
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const onMouseLeave = useCallback(() => { dragRef.current.active = false; }, []);
 
   // ── Touch pinch-zoom + drag ───────────────────────────────────
 
@@ -474,10 +510,38 @@ export default function MosaicViewerClient() {
     }
   }, [render]);
 
-  const onTouchEnd = useCallback(() => {
+  const onTouchEnd = useCallback((e: React.TouchEvent) => {
+    const drag = dragRef.current;
+    const wasPinching = pinchRef.current.active;
     dragRef.current.active = false;
     pinchRef.current.active = false;
-  }, []);
+
+    if (!wasPinching && e.changedTouches.length === 1) {
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - drag.startX;
+      const dy = touch.clientY - drag.startY;
+      if (Math.hypot(dx, dy) < 10) {
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = canvas.width / rect.width;
+          const scaleY = canvas.height / rect.height;
+          const canvasX = (touch.clientX - rect.left) * scaleX;
+          const canvasY = (touch.clientY - rect.top) * scaleY;
+          const { x: camX, y: camY, zoom } = viewRef.current;
+          const cellPx = (canvas.width / GRID) * zoom;
+          const col = Math.floor(camX + canvasX / cellPx);
+          const row = Math.floor(camY + canvasY / cellPx);
+          if (col >= 0 && col < GRID && row >= 0 && row < GRID) {
+            const idx = row * GRID + col;
+            if (cellsRef.current.has(idx)) {
+              animateView({ ...viewRef.current }, cellCenteredView(idx), 600);
+            }
+          }
+        }
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pct = ((totalFilled / TOTAL_CELLS) * 100).toFixed(4);
 
@@ -525,7 +589,7 @@ export default function MosaicViewerClient() {
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
+          onMouseLeave={onMouseLeave}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
@@ -613,7 +677,7 @@ export default function MosaicViewerClient() {
           className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full"
           style={{ background: "rgba(0,0,0,0.7)", color: "#c9a84c", pointerEvents: "none" }}
         >
-          Scroll to zoom · Drag to pan
+          Tap any photo to zoom in · Scroll/pinch · Drag to pan
         </div>
 
         {loading && (

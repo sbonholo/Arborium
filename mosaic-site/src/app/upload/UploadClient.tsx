@@ -12,8 +12,8 @@ type CameraState = "idle" | "starting" | "active" | "captured" | "error";
 
 const MAX_RAW_BYTES = 50 * 1024 * 1024; // 50 MB raw input limit (any phone photo)
 
-// Target dimensions for stored photo: sized for the 75" print and digital zoom
-const CELL_PX = 128; // 128×128 px → ~5 KB stored, 4× the ~15×15 px print cell
+// Target dimensions for stored photo: sized for digital zoom and 75" print quality
+const CELL_PX = 256; // 256×256 px → ~15–25 KB stored, 17× the ~15×15 px print cell
 
 export default function UploadClient() {
   const params = useSearchParams();
@@ -348,7 +348,7 @@ export default function UploadClient() {
                     </span>
                   )}
                 </p>
-                <p className="text-gray-700 text-xs">{CELL_PX}×{CELL_PX} px — optimized for 75&quot; print</p>
+                <p className="text-gray-700 text-xs">{CELL_PX}×{CELL_PX} px — high-res for digital zoom &amp; print</p>
               </div>
               <button onClick={reset} className="text-xs pt-1" style={{ color: "#c9a84c" }}>
                 {displayName === "Selfie" ? "Retake selfie" : "Choose a different photo"}
@@ -436,7 +436,7 @@ export default function UploadClient() {
                 <p className="text-gray-600 text-sm">or click to browse your files</p>
                 <p className="text-gray-700 text-xs">
                   Any format · Any resolution · Up to 50 MB
-                  <br />We compress it automatically to ~5 KB
+                  <br />Auto-resized to {CELL_PX}×{CELL_PX} px for high-res zoom
                 </p>
               </div>
             </div>
@@ -461,7 +461,7 @@ export default function UploadClient() {
 
             <div className="text-xs text-gray-700 p-3 rounded" style={{ background: "#0a0a0a", border: "1px solid #1a1a1a" }}>
               <span style={{ color: "#c9a84c" }}>🖼 Print spec:</span> The final 75&quot; portrait needs ~15×15 px per cell
-              at 300 DPI. We store your photo at {CELL_PX}×{CELL_PX} px (4× quality margin) for crisp digital zoom
+              at 300 DPI. We store your photo at {CELL_PX}×{CELL_PX} px for crisp digital zoom at any level
               and high-quality print compositing.
             </div>
           </>
