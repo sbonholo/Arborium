@@ -135,6 +135,21 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
             </button>
           </div>
 
+          {/* Donation callout */}
+          <div
+            className="p-4 rounded-xl flex items-start gap-3"
+            style={{ background: "#0f0f0f", border: "1px solid #2a2010" }}
+          >
+            <span className="text-lg flex-shrink-0">🎗️</span>
+            <p className="text-sm leading-relaxed" style={{ color: "#c9a84c" }}>
+              <span className="font-semibold">A portion of every purchase</span>{" "}
+              <span style={{ color: "#a08030" }}>
+                will be donated to support the Republican campaign in the next election.
+                Every dollar you spend helps grow this mosaic <em>and</em> funds the fight for America.
+              </span>
+            </p>
+          </div>
+
           {/* Trust badges */}
           <div className="flex flex-wrap gap-4 text-xs text-gray-600">
             <span className="flex items-center gap-1">
@@ -148,6 +163,9 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
             </span>
             <span className="flex items-center gap-1">
               <span style={{ color: "#c9a84c" }}>✓</span> Final print sent to President Trump
+            </span>
+            <span className="flex items-center gap-1">
+              <span style={{ color: "#c9a84c" }}>✓</span> Part of proceeds donated to the Republican campaign
             </span>
           </div>
         </div>
@@ -214,6 +232,10 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
             behind their President, each one a real person, each one a real face. When it's
             complete we will have it professionally printed at monumental scale, museum-framed,
             and delivered to Donald Trump as a gift from his supporters.
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: "#7a6020" }}>
+            A portion of every purchase is donated to support the Republican campaign in the next
+            election — so your $2 does double duty.
           </p>
           <button
             onClick={() => setShowModal(true)}
