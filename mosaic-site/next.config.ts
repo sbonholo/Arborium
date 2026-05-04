@@ -26,8 +26,8 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        // Cache the Trump portrait SVG aggressively (it never changes)
-        source: "/trump-portrait.svg",
+        // Cache the Trump portrait aggressively (it never changes)
+        source: "/trump-portrait.jpg",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],

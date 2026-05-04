@@ -39,13 +39,24 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
     offscreen.height = DISPLAY_GRID;
     const ctx = offscreen.getContext("2d")!;
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.onload = () => {
-      ctx.drawImage(img, 0, 0, DISPLAY_GRID, DISPLAY_GRID);
+      // Crop: focus on face, skip ~8% from each side and bottom 25%
+      // (removes flag background on left, dark bg on right, chest area)
+      const sx = img.naturalWidth * 0.08;
+      const sy = 0;
+      const sw = img.naturalWidth * 0.84;
+      const sh = img.naturalHeight * 0.75;
+      offscreen.width = DISPLAY_GRID;
+      offscreen.height = DISPLAY_GRID;
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, DISPLAY_GRID, DISPLAY_GRID);
       portraitColorRef.current = ctx.getImageData(0, 0, DISPLAY_GRID, DISPLAY_GRID).data;
       portraitImgRef.current = img;
       draw();
     };
-    img.src = "/trump-portrait.svg";
+    // Fallback to SVG if JPG not yet uploaded
+    img.onerror = () => { img.src = "/trump-portrait.svg"; };
+    img.src = "/trump-portrait.jpg";
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function realIndexToDisplayIndex(realIdx: number): number {
@@ -82,7 +93,10 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
     // Draw portrait as the base layer — always visible underneath the grid
     const portraitImg = portraitImgRef.current;
     if (portraitImg) {
-      ctx.drawImage(portraitImg, 0, 0, W, H);
+      const sx = portraitImg.naturalWidth * 0.08;
+      const sw = portraitImg.naturalWidth * 0.84;
+      const sh = portraitImg.naturalHeight * 0.75;
+      ctx.drawImage(portraitImg, sx, 0, sw, sh, 0, 0, W, H);
     } else {
       ctx.fillStyle = "#1a1a2e";
       ctx.fillRect(0, 0, W, H);

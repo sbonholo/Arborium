@@ -67,7 +67,10 @@ export default function MosaicViewerClient() {
     // Draw portrait as base layer — always visible underneath cells
     const portrait = portraitRef.current;
     if (portrait) {
-      ctx.drawImage(portrait, -camX * cellPx, -camY * cellPx, GRID * cellPx, GRID * cellPx);
+      const sx = portrait.naturalWidth * 0.08;
+      const sw = portrait.naturalWidth * 0.84;
+      const sh = portrait.naturalHeight * 0.75;
+      ctx.drawImage(portrait, sx, 0, sw, sh, -camX * cellPx, -camY * cellPx, GRID * cellPx, GRID * cellPx);
     }
     const colors = portraitColorsRef.current;
 
@@ -163,17 +166,23 @@ export default function MosaicViewerClient() {
 
   useEffect(() => {
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.onload = () => {
       portraitRef.current = img;
       const offscreen = document.createElement("canvas");
       offscreen.width = 100; offscreen.height = 100;
       const ctx2 = offscreen.getContext("2d")!;
-      ctx2.drawImage(img, 0, 0, 100, 100);
+      // Same crop as preview: skip 8% sides, bottom 25%
+      const sx = img.naturalWidth * 0.08;
+      const sw = img.naturalWidth * 0.84;
+      const sh = img.naturalHeight * 0.75;
+      ctx2.drawImage(img, sx, 0, sw, sh, 0, 0, 100, 100);
       portraitColorsRef.current = ctx2.getImageData(0, 0, 100, 100).data;
       fitToWindow();
       render();
     };
-    img.src = "/trump-portrait.svg";
+    img.onerror = () => { img.src = "/trump-portrait.svg"; };
+    img.src = "/trump-portrait.jpg";
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Fit canvas to container ───────────────────────────────────
