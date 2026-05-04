@@ -100,6 +100,14 @@ export default function MosaicViewerClient() {
     }
     const colors = portraitColorsRef.current;
 
+    // When cells are sub-pixel, per-cell fillRects stack to solid black and bury
+    // the portrait. Instead, show the portrait clearly with a single light tint.
+    if (cellPx < 1) {
+      ctx.fillStyle = "rgba(0,0,0,0.25)";
+      ctx.fillRect(0, 0, W, H);
+      return;
+    }
+
     const colStart = Math.max(0, Math.floor(camX) - 1);
     const rowStart = Math.max(0, Math.floor(camY) - 1);
     const colEnd = Math.min(GRID, Math.ceil(camX + W / cellPx) + 1);
@@ -129,7 +137,7 @@ export default function MosaicViewerClient() {
             ctx.fillRect(sx, sy, cellPx, cellPx);
           }
         } else {
-          ctx.fillStyle = "rgba(0,0,0,0.65)";
+          ctx.fillStyle = "rgba(0,0,0,0.55)";
           ctx.fillRect(sx, sy, cellPx, cellPx);
         }
 
@@ -236,12 +244,20 @@ export default function MosaicViewerClient() {
     if (!canvas || !container) return;
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
+    const W = canvas.width;
+    const H = canvas.height;
+    if (!W || !H) return;
 
-    const containerAspect = canvas.width / canvas.height;
+    // zoom semantics: cellPx = (W / GRID) * zoom
+    // zoom = 1  → portrait fills canvas width  (W pixels wide)
+    // zoom = H/W → portrait fills canvas height (H pixels wide = H pixels tall since square)
+    //
+    // Portrait screen (W ≤ H): fit to width, center vertically
+    // Landscape screen  (W > H): fit to height, center horizontally
     const computed =
-      containerAspect > 1
-        ? { x: -(canvas.width / (canvas.height / GRID) - GRID) / 2, y: 0, zoom: canvas.height / GRID }
-        : { x: 0, y: -(canvas.height / (canvas.width / GRID) - GRID) / 2, zoom: canvas.width / GRID };
+      W > H
+        ? { zoom: H / W, x: -(GRID * (W / H - 1)) / 2, y: 0 }
+        : { zoom: 1,     x: 0, y: -(GRID * (H / W - 1)) / 2 };
 
     viewRef.current = computed;
     initialViewRef.current = computed;
