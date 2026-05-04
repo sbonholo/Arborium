@@ -1,6 +1,8 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import type { NextRequest } from "next/server";
 
+export const runtime = "nodejs";
+
 interface PurchaseRow {
   stripe_session_id: string;
   cells_purchased: number;
@@ -19,10 +21,11 @@ export async function GET(request: NextRequest) {
     .from("purchases")
     .select("stripe_session_id, cells_purchased, cell_indices, photo_uploaded")
     .eq("stripe_session_id", sessionId)
-    .maybeSingle()) as { data: PurchaseRow | null; error: unknown };
+    .maybeSingle()) as { data: PurchaseRow | null; error: { message?: string; code?: string; details?: string } | null };
 
   if (error) {
-    return Response.json({ error: "Database error" }, { status: 500 });
+    console.error("[purchase-status] Supabase error:", JSON.stringify(error));
+    return Response.json({ error: "Database error", detail: error.message }, { status: 500 });
   }
 
   if (!data) {

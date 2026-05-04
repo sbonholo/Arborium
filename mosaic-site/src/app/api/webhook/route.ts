@@ -21,6 +21,8 @@ export async function POST(request: Request) {
     return new Response(`Webhook signature error: ${err}`, { status: 400 });
   }
 
+  console.log("[webhook] received event:", event.type, event.id);
+
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     try {
@@ -38,23 +40,38 @@ export async function POST(request: Request) {
 const db = supabaseAdmin as any;
 
 async function handleSessionCompleted(session: Stripe.Checkout.Session) {
+  console.log("[webhook] processing session:", session.id, "cells:", session.metadata?.cells);
+
   const cells = parseInt(session.metadata?.cells ?? "1", 10);
   const amountCents = session.amount_total ?? cells * 200;
 
   // Idempotency — skip if already processed (Stripe can retry events)
-  const { data: existing } = await db
+  const { data: existing, error: lookupError } = await db
     .from("purchases")
     .select("id")
     .eq("stripe_session_id", session.id)
     .maybeSingle();
 
-  if (existing) return;
+  if (lookupError) {
+    console.error("[webhook] idempotency lookup failed:", JSON.stringify(lookupError));
+    throw new Error(`Supabase lookup error: ${lookupError.message}`);
+  }
+
+  if (existing) {
+    console.log("[webhook] already processed, skipping:", session.id);
+    return;
+  }
 
   // Atomically claim the next N cells in the grid
+  console.log("[webhook] calling allocate_cells RPC, n_cells:", cells);
   const { data: cellIndices, error: rpcError } = await db.rpc("allocate_cells", {
     n_cells: cells,
   });
-  if (rpcError) throw new Error(rpcError.message);
+  if (rpcError) {
+    console.error("[webhook] allocate_cells RPC failed:", JSON.stringify(rpcError));
+    throw new Error(`allocate_cells error: ${rpcError.message}`);
+  }
+  console.log("[webhook] allocated cell indices:", (cellIndices as number[]).slice(0, 3), "...");
 
   // Record the purchase
   const { error: insertError } = await db.from("purchases").insert({
@@ -66,5 +83,10 @@ async function handleSessionCompleted(session: Stripe.Checkout.Session) {
     photo_uploaded: false,
   });
 
-  if (insertError) throw new Error(insertError.message);
+  if (insertError) {
+    console.error("[webhook] insert failed:", JSON.stringify(insertError));
+    throw new Error(`Insert error: ${insertError.message}`);
+  }
+
+  console.log("[webhook] purchase recorded successfully for session:", session.id);
 }
