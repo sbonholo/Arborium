@@ -61,6 +61,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Guard: ensure R2 is configured before attempting the network call
+    const r2AccountId = process.env.R2_ACCOUNT_ID;
+    const r2AccessKey = process.env.R2_ACCESS_KEY_ID;
+    const r2SecretKey = process.env.R2_SECRET_ACCESS_KEY;
+    const r2BucketName = process.env.R2_BUCKET_NAME;
+    if (!r2AccountId || !r2AccessKey || !r2SecretKey || !r2BucketName) {
+      const missing = ["R2_ACCOUNT_ID", "R2_ACCESS_KEY_ID", "R2_SECRET_ACCESS_KEY", "R2_BUCKET_NAME"]
+        .filter((k) => !process.env[k])
+        .join(", ");
+      console.error("[upload] Missing R2 env vars:", missing);
+      return Response.json(
+        { error: `R2 storage not configured. Missing: ${missing}` },
+        { status: 500 }
+      );
+    }
+
     // Upload to R2 server-side — no browser CORS needed
     const key = `photos/${sessionId}.jpg`;
     const body = Buffer.from(arrayBuffer);

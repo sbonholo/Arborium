@@ -15,6 +15,11 @@ export async function GET() {
       : "MISSING",
     webhookSecretSet: !!process.env.STRIPE_WEBHOOK_SECRET,
     appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "MISSING",
+    r2AccountId: process.env.R2_ACCOUNT_ID ? process.env.R2_ACCOUNT_ID.slice(0, 8) + "…" : "MISSING",
+    r2AccessKeySet: !!process.env.R2_ACCESS_KEY_ID,
+    r2SecretKeySet: !!process.env.R2_SECRET_ACCESS_KEY,
+    r2BucketName: process.env.R2_BUCKET_NAME ?? "MISSING",
+    r2PublicUrl: process.env.R2_PUBLIC_URL ?? "MISSING",
   };
 
   // Test Supabase admin connectivity
