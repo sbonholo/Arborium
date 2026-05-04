@@ -217,7 +217,8 @@ export default function UploadClient() {
         try {
           const { photo_url } = await postBlobWithProgress(
             processedBlob,
-            `/api/upload?session_id=${encodeURIComponent(sessionId)}`,
+            "/api/upload",
+            sessionId,
             setProgress
           );
           setPhotoUrl(photo_url);
@@ -695,6 +696,7 @@ async function resizeAndCompress(source: Blob | File, targetPx: number, quality:
 function postBlobWithProgress(
   blob: Blob,
   url: string,
+  sessionId: string,
   onProgress: (pct: number) => void
 ): Promise<{ photo_url: string }> {
   return new Promise((resolve, reject) => {
@@ -717,6 +719,7 @@ function postBlobWithProgress(
     xhr.addEventListener("error", () => reject(new Error("Network error during upload.")));
     xhr.open("POST", url);
     xhr.setRequestHeader("Content-Type", "image/jpeg");
+    xhr.setRequestHeader("X-Session-ID", sessionId);
     xhr.send(blob);
   });
 }

@@ -11,11 +11,12 @@ const db = supabaseAdmin as any;
 // The client resizes to 128×128 JPEG before uploading. 200 KB is a generous cap.
 const MAX_PROCESSED_BYTES = 200 * 1024;
 
-// POST /api/upload?session_id=<id>
-// Body: raw JPEG bytes, Content-Type: image/jpeg
+// POST /api/upload
+// Headers: X-Session-ID: <id>, Content-Type: image/jpeg
+// Body: raw JPEG bytes
 export async function POST(request: NextRequest) {
   try {
-    const sessionId = request.nextUrl.searchParams.get("session_id");
+    const sessionId = request.headers.get("x-session-id");
     if (!sessionId) {
       return Response.json({ error: "Missing session_id." }, { status: 400 });
     }
