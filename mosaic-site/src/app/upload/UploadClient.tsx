@@ -210,26 +210,26 @@ export default function UploadClient() {
     setProgress(0);
 
     try {
-      const form = new FormData();
-      form.append("session_id", sessionId);
-      form.append("file", processedBlob, "photo.jpg");
-
       // Retry up to 8× (12 s total) in case the Stripe webhook hasn't written the
       // purchase row yet when the user taps "Upload" immediately after payment.
       let lastError: Error | null = null;
       for (let attempt = 0; attempt < 8; attempt++) {
         try {
-          const { photo_url } = await postFormDataWithProgress(form, "/api/upload", setProgress);
+          const { photo_url } = await postBlobWithProgress(
+            processedBlob,
+            `/api/upload?session_id=${encodeURIComponent(sessionId)}`,
+            setProgress
+          );
           setPhotoUrl(photo_url);
           setStage("done");
           return;
         } catch (err) {
           lastError = err instanceof Error ? err : new Error(String(err));
-          const isPurchaseNotFound = lastError.message.includes("not found");
+          const isPurchaseNotFound = lastError.message.toLowerCase().includes("not found");
           if (!isPurchaseNotFound) break;
           // Wait 1.5 s before retrying (webhook may still be processing)
           await new Promise((r) => setTimeout(r, 1500));
-          setProgress(0); // reset progress bar for retry
+          setProgress(0);
         }
       }
       throw lastError ?? new Error("Upload failed.");
@@ -691,9 +691,9 @@ async function resizeAndCompress(source: Blob | File, targetPx: number, quality:
   });
 }
 
-/** POST FormData with XHR so we get upload progress events */
-function postFormDataWithProgress(
-  formData: FormData,
+/** POST raw JPEG bytes with XHR so we get upload progress events */
+function postBlobWithProgress(
+  blob: Blob,
   url: string,
   onProgress: (pct: number) => void
 ): Promise<{ photo_url: string }> {
@@ -716,7 +716,8 @@ function postFormDataWithProgress(
     });
     xhr.addEventListener("error", () => reject(new Error("Network error during upload.")));
     xhr.open("POST", url);
-    xhr.send(formData);
+    xhr.setRequestHeader("Content-Type", "image/jpeg");
+    xhr.send(blob);
   });
 }
 
