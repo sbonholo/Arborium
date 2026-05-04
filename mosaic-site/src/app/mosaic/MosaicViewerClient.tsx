@@ -14,6 +14,20 @@ interface Cell {
 const GRID = 1000;
 const TOTAL_CELLS = GRID * GRID;
 
+function coverCrop(img: HTMLImageElement, targetW: number, targetH: number) {
+  const ir = img.naturalWidth / img.naturalHeight;
+  const tr = targetW / targetH;
+  if (ir > tr) {
+    const sh = img.naturalHeight;
+    const sw = sh * tr;
+    return { sx: (img.naturalWidth - sw) / 2, sy: 0, sw, sh };
+  } else {
+    const sw = img.naturalWidth;
+    const sh = sw / tr;
+    return { sx: 0, sy: 0, sw, sh };
+  }
+}
+
 // Zoom constraints
 const MIN_ZOOM = 0.5;   // fully zoomed out — whole portrait visible
 const MAX_ZOOM = 20;    // fully zoomed in — individual faces clearly visible
@@ -67,10 +81,8 @@ export default function MosaicViewerClient() {
     // Draw portrait as base layer — always visible underneath cells
     const portrait = portraitRef.current;
     if (portrait) {
-      const sx = portrait.naturalWidth * 0.08;
-      const sw = portrait.naturalWidth * 0.84;
-      const sh = portrait.naturalHeight * 0.75;
-      ctx.drawImage(portrait, sx, 0, sw, sh, -camX * cellPx, -camY * cellPx, GRID * cellPx, GRID * cellPx);
+      const { sx, sy, sw, sh } = coverCrop(portrait, GRID, GRID);
+      ctx.drawImage(portrait, sx, sy, sw, sh, -camX * cellPx, -camY * cellPx, GRID * cellPx, GRID * cellPx);
     }
     const colors = portraitColorsRef.current;
 
@@ -172,11 +184,8 @@ export default function MosaicViewerClient() {
       const offscreen = document.createElement("canvas");
       offscreen.width = 100; offscreen.height = 100;
       const ctx2 = offscreen.getContext("2d")!;
-      // Same crop as preview: skip 8% sides, bottom 25%
-      const sx = img.naturalWidth * 0.08;
-      const sw = img.naturalWidth * 0.84;
-      const sh = img.naturalHeight * 0.75;
-      ctx2.drawImage(img, sx, 0, sw, sh, 0, 0, 100, 100);
+      const { sx, sy, sw, sh } = coverCrop(img, 100, 100);
+      ctx2.drawImage(img, sx, sy, sw, sh, 0, 0, 100, 100);
       portraitColorsRef.current = ctx2.getImageData(0, 0, 100, 100).data;
       fitToWindow();
       render();
@@ -194,8 +203,8 @@ export default function MosaicViewerClient() {
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
 
-    // Fit the full portrait into view
-    const portraitAspect = 500 / 580;
+    // Grid is square (GRID×GRID cells), fit it into the container
+    const portraitAspect = 1;
     const containerAspect = canvas.width / canvas.height;
     if (containerAspect > portraitAspect) {
       const zoom = canvas.height / GRID;

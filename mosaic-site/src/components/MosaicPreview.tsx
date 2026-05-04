@@ -19,6 +19,20 @@ interface Props {
 const DISPLAY_GRID = 100;
 const TOTAL_DISPLAY = DISPLAY_GRID * DISPLAY_GRID;
 
+function coverCrop(img: HTMLImageElement, targetW: number, targetH: number) {
+  const ir = img.naturalWidth / img.naturalHeight;
+  const tr = targetW / targetH;
+  if (ir > tr) {
+    const sh = img.naturalHeight;
+    const sw = sh * tr;
+    return { sx: (img.naturalWidth - sw) / 2, sy: 0, sw, sh };
+  } else {
+    const sw = img.naturalWidth;
+    const sh = sw / tr;
+    return { sx: 0, sy: 0, sw, sh };
+  }
+}
+
 export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -41,12 +55,10 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
-      // Crop: focus on face, skip ~8% from each side and bottom 25%
-      // (removes flag background on left, dark bg on right, chest area)
-      const sx = img.naturalWidth * 0.08;
-      const sy = 0;
-      const sw = img.naturalWidth * 0.84;
-      const sh = img.naturalHeight * 0.75;
+      // Cover-crop: fill the preview canvas (500×580) without distortion.
+      // Image wider than canvas → crop sides symmetrically.
+      // Image taller than canvas → crop bottom (keeps face at top).
+      const { sx, sy, sw, sh } = coverCrop(img, 500, 580);
       offscreen.width = DISPLAY_GRID;
       offscreen.height = DISPLAY_GRID;
       ctx.drawImage(img, sx, sy, sw, sh, 0, 0, DISPLAY_GRID, DISPLAY_GRID);
@@ -93,10 +105,8 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
     // Draw portrait as the base layer — always visible underneath the grid
     const portraitImg = portraitImgRef.current;
     if (portraitImg) {
-      const sx = portraitImg.naturalWidth * 0.08;
-      const sw = portraitImg.naturalWidth * 0.84;
-      const sh = portraitImg.naturalHeight * 0.75;
-      ctx.drawImage(portraitImg, sx, 0, sw, sh, 0, 0, W, H);
+      const { sx, sy, sw, sh } = coverCrop(portraitImg, W, H);
+      ctx.drawImage(portraitImg, sx, sy, sw, sh, 0, 0, W, H);
     } else {
       ctx.fillStyle = "#1a1a2e";
       ctx.fillRect(0, 0, W, H);
