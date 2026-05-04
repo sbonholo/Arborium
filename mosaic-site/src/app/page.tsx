@@ -1,11 +1,16 @@
 import { Suspense } from "react";
 import LandingClient from "./LandingClient";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
+
+// Always fetch fresh stats — never serve a cached count to visitors
+export const dynamic = "force-dynamic";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = supabaseAdmin as any;
 
 async function getStats() {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data } = (await supabase.from("mosaic_stats").select("*").single()) as any;
+    const { data } = await db.from("mosaic_stats").select("*").single();
     return {
       totalFilled: Number(data?.total_cells_filled ?? 0),
       totalPurchases: Number(data?.total_purchases ?? 0),
@@ -17,13 +22,12 @@ async function getStats() {
 
 async function getFilledCells() {
   try {
-    const { data } = await supabase
+    const { data } = await db
       .from("purchases")
       .select("cell_indices, cells_purchased, photo_url")
       .eq("photo_uploaded", true)
       .limit(500);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return ((data ?? []) as any[]).flatMap((row) =>
+    return ((data ?? []) as any[]).flatMap((row: any) =>
       ((row.cell_indices ?? []) as number[]).map((idx) => ({
         index: idx,
         photoUrl: row.photo_url as string | null,
