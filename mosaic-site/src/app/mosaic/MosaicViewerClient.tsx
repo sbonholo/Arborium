@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
@@ -11,9 +11,11 @@ interface Cell {
   cells: number;
 }
 
-// Real grid: 1000×1000 = 1,000,000 cells
 const GRID = 1000;
 const TOTAL_CELLS = GRID * GRID;
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 20;
+const REVEAL_ZOOM = 12; // zoom level used when focusing on the user's cell
 
 function coverCrop(img: HTMLImageElement, targetW: number, targetH: number) {
   const ir = img.naturalWidth / img.naturalHeight;
@@ -29,41 +31,45 @@ function coverCrop(img: HTMLImageElement, targetW: number, targetH: number) {
   }
 }
 
-// Zoom constraints
-const MIN_ZOOM = 0.5;   // fully zoomed out — whole portrait visible
-const MAX_ZOOM = 20;    // fully zoomed in — individual faces clearly visible
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+type RevealPhase = "none" | "zooming-in" | "zoomed-in" | "zooming-out" | "settled";
 
 export default function MosaicViewerClient() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Camera state: what portion of the grid we're viewing
+  // Camera: position in grid-cell units + zoom multiplier
   const viewRef = useRef({ x: 0, y: 0, zoom: 1 });
+  // Snapshot of the full-portrait view, used as zoom-out target
+  const initialViewRef = useRef({ x: 0, y: 0, zoom: 1 });
 
-  // All filled cells
   const cellsRef = useRef<Map<number, Cell>>(new Map());
-
-  // Portrait reference image (color sampling)
   const portraitRef = useRef<HTMLImageElement | null>(null);
   const portraitColorsRef = useRef<Uint8ClampedArray | null>(null);
-
-  // Image cache
   const imgCacheRef = useRef<Map<string, HTMLImageElement | "loading" | "error">>(new Map());
 
-  // Drag state
   const dragRef = useRef({ active: false, startX: 0, startY: 0, startCamX: 0, startCamY: 0 });
-
-  // Pinch state
   const pinchRef = useRef({ active: false, startDist: 0, startZoom: 1 });
+
+  // rAF and timer handles for the reveal sequence
+  const animRef = useRef<number>(0);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ?cell= query param — the cell to highlight and reveal
+  const searchParams = useSearchParams();
+  const highlightCellParam = searchParams.get("cell");
+  const highlightCell = highlightCellParam !== null ? parseInt(highlightCellParam, 10) : null;
+  const highlightCellRef = useRef<number | null>(highlightCell);
 
   const [totalFilled, setTotalFilled] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
-
-  const searchParams = useSearchParams();
-  const highlightCell = searchParams.get("cell") !== null ? parseInt(searchParams.get("cell")!, 10) : null;
-  const highlightCellRef = useRef<number | null>(highlightCell);
-  const didZoomToCell = useRef(false);
+  const [revealPhase, setRevealPhase] = useState<RevealPhase>(
+    highlightCell !== null ? "zooming-in" : "none"
+  );
 
   // ── Rendering ─────────────────────────────────────────────────
 
@@ -81,18 +87,19 @@ export default function MosaicViewerClient() {
     ctx.fillStyle = "#0d0d0d";
     ctx.fillRect(0, 0, W, H);
 
-    // Cell size in canvas pixels at current zoom
     const cellPx = (W / GRID) * zoom;
 
-    // Draw portrait as base layer — always visible underneath cells
+    // Portrait as base layer
     const portrait = portraitRef.current;
     if (portrait) {
       const { sx, sy, sw, sh } = coverCrop(portrait, GRID, GRID);
-      ctx.drawImage(portrait, sx, sy, sw, sh, -camX * cellPx, -camY * cellPx, GRID * cellPx, GRID * cellPx);
+      ctx.drawImage(
+        portrait, sx, sy, sw, sh,
+        -camX * cellPx, -camY * cellPx, GRID * cellPx, GRID * cellPx
+      );
     }
     const colors = portraitColorsRef.current;
 
-    // Visible cell range (with one-cell padding)
     const colStart = Math.max(0, Math.floor(camX) - 1);
     const rowStart = Math.max(0, Math.floor(camY) - 1);
     const colEnd = Math.min(GRID, Math.ceil(camX + W / cellPx) + 1);
@@ -104,10 +111,8 @@ export default function MosaicViewerClient() {
         const sx = (col - camX) * cellPx;
         const sy = (row - camY) * cellPx;
 
-        // Portrait reference color for this cell
         let pr = 20, pg = 20, pb = 20;
         if (colors) {
-          // Sample from 100×100 portrait grid (map 1000-cell grid → 100-grid)
           const sampleCol = Math.floor(col / 10);
           const sampleRow = Math.floor(row / 10);
           const pi = (sampleRow * 100 + sampleCol) * 4;
@@ -118,31 +123,32 @@ export default function MosaicViewerClient() {
 
         if (cell) {
           if (cellPx >= 3) {
-            // Big enough to draw an actual photo
             drawCellPhoto(ctx, cell.photoUrl, sx, sy, cellPx, cellPx, pr, pg, pb);
           } else {
-            // Too small for a photo — just fill with portrait color
             ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
             ctx.fillRect(sx, sy, cellPx, cellPx);
           }
         } else {
-          // Empty — dark overlay so portrait shows through at ~35% brightness
           ctx.fillStyle = "rgba(0,0,0,0.65)";
           ctx.fillRect(sx, sy, cellPx, cellPx);
         }
 
-        // Grid lines only when cells are large enough to benefit from them
         if (cellPx >= 6) {
           ctx.strokeStyle = "rgba(0,0,0,0.25)";
           ctx.lineWidth = 0.5;
           ctx.strokeRect(sx, sy, cellPx, cellPx);
         }
 
-        // Gold highlight on the user's own cell
-        if (highlightCellRef.current === realIdx && cellPx >= 2) {
-          ctx.strokeStyle = "#c9a84c";
-          ctx.lineWidth = Math.max(2, cellPx * 0.08);
-          ctx.strokeRect(sx + 1, sy + 1, cellPx - 2, cellPx - 2);
+        // Pulsing gold glow on the user's highlighted cell
+        if (highlightCellRef.current === realIdx && cellPx >= 1.5) {
+          const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 380);
+          ctx.save();
+          ctx.shadowColor = "#c9a84c";
+          ctx.shadowBlur = Math.max(6, cellPx * (2 + pulse * 3));
+          ctx.strokeStyle = `rgba(201, 168, 76, ${0.7 + pulse * 0.3})`;
+          ctx.lineWidth = Math.max(2, cellPx * 0.09);
+          ctx.strokeRect(sx, sy, cellPx, cellPx);
+          ctx.restore();
         }
       }
     }
@@ -165,7 +171,6 @@ export default function MosaicViewerClient() {
 
     if (entry instanceof HTMLImageElement && entry.complete && entry.naturalWidth > 0) {
       ctx.drawImage(entry, x, y, w, h);
-      // Color-grade toward the portrait color using multiply blend
       ctx.globalCompositeOperation = "multiply";
       ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
       ctx.fillRect(x, y, w, h);
@@ -173,7 +178,6 @@ export default function MosaicViewerClient() {
       return;
     }
 
-    // Not cached yet — trigger load
     ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
     ctx.fillRect(x, y, w, h);
 
@@ -186,24 +190,64 @@ export default function MosaicViewerClient() {
     }
   }
 
-  // ── Zoom to a specific grid cell ─────────────────────────────
+  // ── View animation helpers ────────────────────────────────────
 
-  function zoomToCell(cellIndex: number) {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const col = cellIndex % GRID;
-    const row = Math.floor(cellIndex / GRID);
-    const targetZoom = 12;
-    const cellPx = (canvas.width / GRID) * targetZoom;
-    viewRef.current = {
-      x: (col + 0.5) - (canvas.width / 2) / cellPx,
-      y: (row + 0.5) - (canvas.height / 2) / cellPx,
-      zoom: targetZoom,
+  function animateView(
+    from: { x: number; y: number; zoom: number },
+    to: { x: number; y: number; zoom: number },
+    durationMs: number,
+    onComplete?: () => void
+  ) {
+    cancelAnimationFrame(animRef.current);
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - startTime) / durationMs);
+      const e = easeInOutCubic(t);
+      viewRef.current = {
+        x: from.x + (to.x - from.x) * e,
+        y: from.y + (to.y - from.y) * e,
+        zoom: from.zoom + (to.zoom - from.zoom) * e,
+      };
+      render();
+      if (t < 1) animRef.current = requestAnimationFrame(step);
+      else onComplete?.();
     };
-    render();
+    animRef.current = requestAnimationFrame(step);
   }
 
-  // ── Portrait color sampling ───────────────────────────────────
+  function cellCenteredView(cellIndex: number) {
+    const W = canvasRef.current?.width ?? 800;
+    const H = canvasRef.current?.height ?? 600;
+    const col = cellIndex % GRID;
+    const row = Math.floor(cellIndex / GRID);
+    const cellPx = (W / GRID) * REVEAL_ZOOM;
+    return {
+      x: (col + 0.5) - (W / 2) / cellPx,
+      y: (row + 0.5) - (H / 2) / cellPx,
+      zoom: REVEAL_ZOOM,
+    };
+  }
+
+  // ── Fit canvas + store initial full-portrait view ─────────────
+
+  function fitToWindow() {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
+
+    const containerAspect = canvas.width / canvas.height;
+    const computed =
+      containerAspect > 1
+        ? { x: -(canvas.width / (canvas.height / GRID) - GRID) / 2, y: 0, zoom: canvas.height / GRID }
+        : { x: 0, y: -(canvas.height / (canvas.width / GRID) - GRID) / 2, zoom: canvas.width / GRID };
+
+    viewRef.current = computed;
+    initialViewRef.current = computed;
+  }
+
+  // ── Portrait load + reveal sequence trigger ───────────────────
 
   useEffect(() => {
     const img = new Image();
@@ -217,10 +261,25 @@ export default function MosaicViewerClient() {
       ctx2.drawImage(img, sx, sy, sw, sh, 0, 0, 100, 100);
       portraitColorsRef.current = ctx2.getImageData(0, 0, 100, 100).data;
       fitToWindow();
-      // Zoom to the user's cell if one was specified in the URL
-      if (highlightCellRef.current !== null && !didZoomToCell.current) {
-        didZoomToCell.current = true;
-        zoomToCell(highlightCellRef.current);
+
+      if (highlightCellRef.current !== null) {
+        // Phase A: animate zoom-in to the user's cell (2 s)
+        const fromView = { ...viewRef.current };
+        const toView = cellCenteredView(highlightCellRef.current);
+        animateView(fromView, toView, 2000, () => {
+          // Phase B: hold — pulsing glow + "Your photo!" badge (2.5 s)
+          setRevealPhase("zoomed-in");
+          holdTimerRef.current = setTimeout(() => {
+            // Phase C: animate zoom-out back to full portrait (2.5 s)
+            const zoomedView = { ...viewRef.current };
+            const fullView = { ...initialViewRef.current };
+            setRevealPhase("zooming-out");
+            animateView(zoomedView, fullView, 2500, () => {
+              // Phase D: settled — persistent toast, glow persists on zoom-in
+              setRevealPhase("settled");
+            });
+          }, 2500);
+        });
       } else {
         render();
       }
@@ -229,26 +288,30 @@ export default function MosaicViewerClient() {
     img.src = "/trump-portrait.jpg";
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Fit canvas to container ───────────────────────────────────
+  // ── Continuous rAF loop during the hold phase (pulsing glow) ─
 
-  function fitToWindow() {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
+  useEffect(() => {
+    if (revealPhase !== "zoomed-in") return;
+    let active = true;
+    const loop = () => {
+      if (!active) return;
+      render();
+      animRef.current = requestAnimationFrame(loop);
+    };
+    animRef.current = requestAnimationFrame(loop);
+    return () => { active = false; cancelAnimationFrame(animRef.current); };
+  }, [revealPhase, render]);
 
-    // Grid is square (GRID×GRID cells), fit it into the container
-    const portraitAspect = 1;
-    const containerAspect = canvas.width / canvas.height;
-    if (containerAspect > portraitAspect) {
-      const zoom = canvas.height / GRID;
-      viewRef.current = { x: -(canvas.width / zoom - GRID) / 2, y: 0, zoom };
-    } else {
-      const zoom = canvas.width / GRID;
-      viewRef.current = { x: 0, y: -(canvas.height / zoom - GRID) / 2, zoom };
-    }
-  }
+  // ── Cleanup on unmount ────────────────────────────────────────
+
+  useEffect(() => {
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+    };
+  }, []);
+
+  // ── Resize ────────────────────────────────────────────────────
 
   useEffect(() => {
     fitToWindow();
@@ -263,7 +326,6 @@ export default function MosaicViewerClient() {
     async function loadAll() {
       let after = 0;
       let total = 0;
-
       while (true) {
         const res = await fetch(`/api/mosaic?after=${after}`);
         if (!res.ok) { setLoadError(true); break; }
@@ -306,7 +368,7 @@ export default function MosaicViewerClient() {
     return () => { supabase.removeChannel(channel); };
   }, [render]);
 
-  // ── Input: scroll to zoom ─────────────────────────────────────
+  // ── Scroll to zoom ────────────────────────────────────────────
 
   const onWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
@@ -320,42 +382,35 @@ export default function MosaicViewerClient() {
     const oldZoom = view.zoom;
     const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, oldZoom * (e.deltaY < 0 ? 1.15 : 0.87)));
     const cellPx = (canvas.width / GRID) * oldZoom;
-
-    // Keep the pixel under the mouse fixed while zooming
     const worldX = view.x + mouseX / cellPx;
     const worldY = view.y + mouseY / cellPx;
     const newCellPx = (canvas.width / GRID) * newZoom;
-    viewRef.current = {
-      x: worldX - mouseX / newCellPx,
-      y: worldY - mouseY / newCellPx,
-      zoom: newZoom,
-    };
+    viewRef.current = { x: worldX - mouseX / newCellPx, y: worldY - mouseY / newCellPx, zoom: newZoom };
     render();
   }, [render]);
 
-  // ── Input: click-drag to pan ──────────────────────────────────
+  // ── Click-drag to pan ─────────────────────────────────────────
 
   const onMouseDown = useCallback((e: React.MouseEvent) => {
     dragRef.current = { active: true, startX: e.clientX, startY: e.clientY, startCamX: viewRef.current.x, startCamY: viewRef.current.y };
   }, []);
 
   const onMouseMove = useCallback((e: React.MouseEvent) => {
-    const drag = dragRef.current;
-    if (!drag.active) return;
+    if (!dragRef.current.active) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const cellPx = (canvas.width / GRID) * viewRef.current.zoom;
     viewRef.current = {
       ...viewRef.current,
-      x: drag.startCamX - (e.clientX - drag.startX) / cellPx,
-      y: drag.startCamY - (e.clientY - drag.startY) / cellPx,
+      x: dragRef.current.startCamX - (e.clientX - dragRef.current.startX) / cellPx,
+      y: dragRef.current.startCamY - (e.clientY - dragRef.current.startY) / cellPx,
     };
     render();
   }, [render]);
 
   const onMouseUp = useCallback(() => { dragRef.current.active = false; }, []);
 
-  // ── Input: touch pinch-zoom + drag ───────────────────────────
+  // ── Touch pinch-zoom + drag ───────────────────────────────────
 
   function touchDist(touches: React.TouchList) {
     const dx = touches[0].clientX - touches[1].clientX;
@@ -400,6 +455,21 @@ export default function MosaicViewerClient() {
 
   return (
     <div className="flex flex-col min-h-screen" style={{ background: "#0d0d0d" }}>
+      <style>{`
+        @keyframes badgePop {
+          from { opacity: 0; transform: translateX(-50%) scale(0.85); }
+          to   { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+        @keyframes toastSlideUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cellGlow {
+          0%, 100% { opacity: 0.6; }
+          50%       { opacity: 1; }
+        }
+      `}</style>
+
       {/* ── Top bar ── */}
       <div
         className="flex items-center justify-between px-4 py-3 flex-shrink-0"
@@ -409,9 +479,7 @@ export default function MosaicViewerClient() {
           ← Home
         </Link>
         <div className="text-center">
-          <span className="text-white text-sm font-bold">
-            {totalFilled.toLocaleString()}
-          </span>
+          <span className="text-white text-sm font-bold">{totalFilled.toLocaleString()}</span>
           <span className="text-gray-600 text-xs"> / 1,000,000 · {pct}%</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -436,7 +504,83 @@ export default function MosaicViewerClient() {
           style={{ touchAction: "none", cursor: "grab" }}
         />
 
-        {/* Zoom hint */}
+        {/* ── "Your photo!" badge — visible during zoomed-in hold ── */}
+        {revealPhase === "zoomed-in" && highlightCell !== null && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 64,
+              left: "50%",
+              animation: "badgePop 0.4s cubic-bezier(0.34,1.56,0.64,1) both",
+              pointerEvents: "none",
+              zIndex: 10,
+            }}
+          >
+            {/* Wrapper keeps left:50% and handles the centering separately from the animation */}
+            <div style={{ transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
+              <div
+                style={{
+                  background: "rgba(201,168,76,0.96)",
+                  color: "#0d0d0d",
+                  fontWeight: 700,
+                  fontSize: "0.95rem",
+                  padding: "9px 20px",
+                  borderRadius: 24,
+                  whiteSpace: "nowrap",
+                  boxShadow: "0 4px 24px rgba(201,168,76,0.45), 0 2px 8px rgba(0,0,0,0.5)",
+                }}
+              >
+                ✦ Your photo is right here!
+              </div>
+              {/* Down-arrow pointing toward center of canvas (the cell) */}
+              <div
+                style={{
+                  width: 0, height: 0,
+                  borderLeft: "9px solid transparent",
+                  borderRight: "9px solid transparent",
+                  borderTop: "11px solid rgba(201,168,76,0.96)",
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ── Persistent toast — appears after zoom-out ── */}
+        {revealPhase === "settled" && highlightCell !== null && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 56,
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 10,
+            }}
+          >
+            <div style={{ animation: "toastSlideUp 0.5s ease both" }}>
+              <div
+                style={{
+                  background: "rgba(7,5,1,0.97)",
+                  border: "1px solid rgba(201,168,76,0.45)",
+                  borderRadius: 14,
+                  padding: "11px 22px",
+                  textAlign: "center",
+                  maxWidth: "min(360px, 90vw)",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.1)",
+                }}
+              >
+                <p style={{ color: "#c9a84c", fontWeight: 700, fontSize: "0.9rem", margin: 0 }}>
+                  🎉 Your photo is now in the mosaic!
+                </p>
+                <p style={{ color: "#505050", fontSize: "0.75rem", margin: "5px 0 0" }}>
+                  Supporter #{(highlightCell + 1).toLocaleString()} of 1,000,000
+                  &nbsp;·&nbsp;Zoom in to see your face
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Standard hint ── */}
         <div
           className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full"
           style={{ background: "rgba(0,0,0,0.7)", color: "#c9a84c", pointerEvents: "none" }}

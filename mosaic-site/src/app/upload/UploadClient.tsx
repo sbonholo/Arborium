@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import RevealScreen from "@/components/RevealScreen";
 
 type Stage = "idle" | "processing" | "preview" | "uploading" | "confirming" | "done" | "invalid";
 type InputMode = "upload" | "camera";
@@ -276,33 +277,13 @@ export default function UploadClient() {
     );
   }
 
-  // ── DONE ─────────────────────────────────────────────────────
+  // ── DONE — cinematic reveal ───────────────────────────────────
   if (stage === "done") {
-    // Build a deep-link that tells the mosaic viewer where to zoom
-    const firstCell = cellIndices?.[0] ?? null;
-    const mosaicHref =
-      firstCell !== null
-        ? `/mosaic?cell=${firstCell}`
-        : "/mosaic";
-
     return (
-      <Shell>
-        <div className="modal-box text-center space-y-6" style={{ maxWidth: "460px" }}>
-          <p className="text-5xl">🎉</p>
-          <h1 className="text-white text-2xl font-bold">You&apos;re in the portrait!</h1>
-          <p className="text-gray-400 text-sm">
-            Your face has been added to the mosaic. When all 1,000,000 spots are filled,
-            we&apos;ll print, frame, and deliver it to Donald Trump.
-          </p>
-          {photoUrl && (
-            <div className="rounded-lg overflow-hidden w-32 h-32 mx-auto" style={{ outline: "2px solid #c9a84c" }}>
-              <Image src={photoUrl} alt="Your uploaded photo" width={128} height={128} className="object-cover w-full h-full" />
-            </div>
-          )}
-          <Link href={mosaicHref} className="btn-primary inline-block">Find My Photo in the Mosaic →</Link>
-          <p className="text-gray-700 text-xs">Zoom in on the mosaic to find your face</p>
-        </div>
-      </Shell>
+      <RevealScreen
+        photoUrl={photoUrl}
+        cellIndex={cellIndices?.[0] ?? null}
+      />
     );
   }
 
