@@ -13,7 +13,7 @@ type CameraState = "idle" | "starting" | "active" | "captured" | "error";
 const MAX_RAW_BYTES = 50 * 1024 * 1024; // 50 MB raw input limit (any phone photo)
 
 // Target dimensions for stored photo: sized for digital zoom and 75" print quality
-const CELL_PX = 256; // 256×256 px → ~15–25 KB stored, 17× the ~15×15 px print cell
+const CELL_PX = 512; // 512×512 px → ~40–80 KB stored, fills half a phone screen at 1:1
 
 export default function UploadClient() {
   const params = useSearchParams();

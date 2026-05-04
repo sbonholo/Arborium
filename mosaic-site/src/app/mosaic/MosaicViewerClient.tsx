@@ -14,10 +14,7 @@ interface Cell {
 const GRID = 1000;
 const TOTAL_CELLS = GRID * GRID;
 const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 500;
-// At reveal, aim for the cell photo to render at ~150 CSS px so the face is clearly recognisable.
-// Computed per-device in cellCenteredView() from the actual canvas width.
-const REVEAL_TARGET_PX = 150;
+const MAX_ZOOM = 3000;
 
 function coverCrop(img: HTMLImageElement, targetW: number, targetH: number) {
   const ir = img.naturalWidth / img.naturalHeight;
@@ -245,8 +242,10 @@ export default function MosaicViewerClient() {
     const H = canvasRef.current?.height ?? 600;
     const col = cellIndex % GRID;
     const row = Math.floor(cellIndex / GRID);
-    // zoom so the photo renders at REVEAL_TARGET_PX regardless of screen size
-    const zoom = Math.min(MAX_ZOOM, (REVEAL_TARGET_PX * GRID) / W);
+    // Target: cell fills ~80 % of the shorter canvas dimension (~half the phone screen).
+    // Use the smaller of 80 % width and 45 % height so the face is large but still centred.
+    const targetPx = Math.min(W * 0.8, H * 0.45);
+    const zoom = Math.min(MAX_ZOOM, (targetPx * GRID) / W);
     const cellPx = (W / GRID) * zoom;
     return {
       x: (col + 0.5) - (W / 2) / cellPx,
@@ -415,7 +414,7 @@ export default function MosaicViewerClient() {
 
     const view = viewRef.current;
     const oldZoom = view.zoom;
-    const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, oldZoom * (e.deltaY < 0 ? 1.15 : 0.87)));
+    const newZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, oldZoom * (e.deltaY < 0 ? 1.2 : 0.83)));
     const cellPx = (canvas.width / GRID) * oldZoom;
     const worldX = view.x + mouseX / cellPx;
     const worldY = view.y + mouseY / cellPx;
