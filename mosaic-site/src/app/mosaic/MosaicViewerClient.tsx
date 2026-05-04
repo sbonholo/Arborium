@@ -167,7 +167,6 @@ export default function MosaicViewerClient() {
     if (!entry) {
       cache.set(url, "loading");
       const img = new Image();
-      img.crossOrigin = "anonymous";
       img.onload = () => { cache.set(url, img); render(); };
       img.onerror = () => cache.set(url, "error");
       img.src = url;

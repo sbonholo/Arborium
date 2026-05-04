@@ -79,7 +79,6 @@ export default function MosaicPreview({ filledCells, totalFilled, onNewCell }: P
     const cache = imgCacheRef.current;
     if (cache.has(url)) return cache.get(url)!;
     const img = new Image();
-    img.crossOrigin = "anonymous";
     img.onload = () => { cache.set(url, img); onLoad(); };
     img.onerror = () => cache.set(url, img); // store even on error to avoid retry loops
     img.src = url;
