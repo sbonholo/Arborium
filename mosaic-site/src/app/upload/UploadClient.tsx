@@ -27,6 +27,7 @@ export default function UploadClient() {
   const [progress, setProgress] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
+  const [cellIndices, setCellIndices] = useState<number[] | null>(null);
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -215,13 +216,14 @@ export default function UploadClient() {
       let lastError: Error | null = null;
       for (let attempt = 0; attempt < 8; attempt++) {
         try {
-          const { photo_url } = await postBlobWithProgress(
+          const result = await postBlobWithProgress(
             processedBlob,
             "/api/upload",
             sessionId,
             setProgress
           );
-          setPhotoUrl(photo_url);
+          setPhotoUrl(result.photo_url);
+          setCellIndices(result.cell_indices ?? null);
           setStage("done");
           return;
         } catch (err) {
@@ -276,6 +278,13 @@ export default function UploadClient() {
 
   // ── DONE ─────────────────────────────────────────────────────
   if (stage === "done") {
+    // Build a deep-link that tells the mosaic viewer where to zoom
+    const firstCell = cellIndices?.[0] ?? null;
+    const mosaicHref =
+      firstCell !== null
+        ? `/mosaic?cell=${firstCell}`
+        : "/mosaic";
+
     return (
       <Shell>
         <div className="modal-box text-center space-y-6" style={{ maxWidth: "460px" }}>
@@ -290,7 +299,8 @@ export default function UploadClient() {
               <Image src={photoUrl} alt="Your uploaded photo" width={128} height={128} className="object-cover w-full h-full" />
             </div>
           )}
-          <Link href="/" className="btn-primary inline-block">View the mosaic →</Link>
+          <Link href={mosaicHref} className="btn-primary inline-block">Find My Photo in the Mosaic →</Link>
+          <p className="text-gray-700 text-xs">Zoom in on the mosaic to find your face</p>
         </div>
       </Shell>
     );
@@ -698,7 +708,7 @@ function postBlobWithProgress(
   url: string,
   sessionId: string,
   onProgress: (pct: number) => void
-): Promise<{ photo_url: string }> {
+): Promise<{ photo_url: string; cell_indices: number[] | null }> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.upload.addEventListener("progress", (e) => {
@@ -708,7 +718,7 @@ function postBlobWithProgress(
       try {
         const data = JSON.parse(xhr.responseText);
         if (xhr.status >= 200 && xhr.status < 300 && data.photo_url) {
-          resolve(data as { photo_url: string });
+          resolve({ photo_url: data.photo_url, cell_indices: data.cell_indices ?? null });
         } else {
           reject(new Error(data.error ?? `Upload failed (HTTP ${xhr.status}).`));
         }

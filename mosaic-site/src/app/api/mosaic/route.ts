@@ -1,5 +1,7 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import type { NextRequest } from "next/server";
+
+export const runtime = "nodejs";
 
 // Returns filled mosaic cells for rendering.
 // Cursor-based pagination: pass ?after=<row_number> for subsequent pages.
@@ -8,7 +10,7 @@ export async function GET(request: NextRequest) {
   const after = parseInt(request.nextUrl.searchParams.get("after") ?? "0", 10);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
+  const { data, error } = await (supabaseAdmin as any)
     .from("purchases")
     .select("id, cell_indices, cells_purchased, photo_url")
     .eq("photo_uploaded", true)

@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     // Verify purchase exists and hasn't already been uploaded
     const { data: purchase, error: lookupError } = await db
       .from("purchases")
-      .select("id, photo_uploaded")
+      .select("id, photo_uploaded, cell_indices")
       .eq("stripe_session_id", sessionId)
       .maybeSingle();
 
@@ -98,7 +98,11 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Could not record upload." }, { status: 500 });
     }
 
-    return Response.json({ ok: true, photo_url: publicUrl });
+    return Response.json({
+      ok: true,
+      photo_url: publicUrl,
+      cell_indices: purchase.cell_indices as number[] | null,
+    });
   } catch (err) {
     console.error("[upload] unexpected error:", err);
     return Response.json(

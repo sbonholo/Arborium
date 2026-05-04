@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
@@ -58,6 +59,11 @@ export default function MosaicViewerClient() {
   const [totalFilled, setTotalFilled] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+
+  const searchParams = useSearchParams();
+  const highlightCell = searchParams.get("cell") !== null ? parseInt(searchParams.get("cell")!, 10) : null;
+  const highlightCellRef = useRef<number | null>(highlightCell);
+  const didZoomToCell = useRef(false);
 
   // ── Rendering ─────────────────────────────────────────────────
 
@@ -131,6 +137,13 @@ export default function MosaicViewerClient() {
           ctx.lineWidth = 0.5;
           ctx.strokeRect(sx, sy, cellPx, cellPx);
         }
+
+        // Gold highlight on the user's own cell
+        if (highlightCellRef.current === realIdx && cellPx >= 2) {
+          ctx.strokeStyle = "#c9a84c";
+          ctx.lineWidth = Math.max(2, cellPx * 0.08);
+          ctx.strokeRect(sx + 1, sy + 1, cellPx - 2, cellPx - 2);
+        }
       }
     }
   }, []);
@@ -173,6 +186,23 @@ export default function MosaicViewerClient() {
     }
   }
 
+  // ── Zoom to a specific grid cell ─────────────────────────────
+
+  function zoomToCell(cellIndex: number) {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const col = cellIndex % GRID;
+    const row = Math.floor(cellIndex / GRID);
+    const targetZoom = 12;
+    const cellPx = (canvas.width / GRID) * targetZoom;
+    viewRef.current = {
+      x: (col + 0.5) - (canvas.width / 2) / cellPx,
+      y: (row + 0.5) - (canvas.height / 2) / cellPx,
+      zoom: targetZoom,
+    };
+    render();
+  }
+
   // ── Portrait color sampling ───────────────────────────────────
 
   useEffect(() => {
@@ -187,7 +217,13 @@ export default function MosaicViewerClient() {
       ctx2.drawImage(img, sx, sy, sw, sh, 0, 0, 100, 100);
       portraitColorsRef.current = ctx2.getImageData(0, 0, 100, 100).data;
       fitToWindow();
-      render();
+      // Zoom to the user's cell if one was specified in the URL
+      if (highlightCellRef.current !== null && !didZoomToCell.current) {
+        didZoomToCell.current = true;
+        zoomToCell(highlightCellRef.current);
+      } else {
+        render();
+      }
     };
     img.onerror = () => { img.src = "/trump-portrait.svg"; };
     img.src = "/trump-portrait.jpg";
