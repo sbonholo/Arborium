@@ -14,8 +14,10 @@ interface Cell {
 const GRID = 1000;
 const TOTAL_CELLS = GRID * GRID;
 const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 20;
-const REVEAL_ZOOM = 12; // zoom level used when focusing on the user's cell
+const MAX_ZOOM = 500;
+// At reveal, aim for the cell photo to render at ~150 CSS px so the face is clearly recognisable.
+// Computed per-device in cellCenteredView() from the actual canvas width.
+const REVEAL_TARGET_PX = 150;
 
 function coverCrop(img: HTMLImageElement, targetW: number, targetH: number) {
   const ir = img.naturalWidth / img.naturalHeight;
@@ -128,10 +130,12 @@ export default function MosaicViewerClient() {
         }
 
         const cell = cellsRef.current.get(realIdx);
+        const isHighlighted = highlightCellRef.current === realIdx;
 
         if (cell) {
           if (cellPx >= 3) {
-            drawCellPhoto(ctx, cell.photoUrl, sx, sy, cellPx, cellPx, pr, pg, pb);
+            // Highlighted cell: no tint so the face is shown in natural colour
+            drawCellPhoto(ctx, cell.photoUrl, sx, sy, cellPx, cellPx, pr, pg, pb, isHighlighted);
           } else {
             ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
             ctx.fillRect(sx, sy, cellPx, cellPx);
@@ -147,14 +151,15 @@ export default function MosaicViewerClient() {
           ctx.strokeRect(sx, sy, cellPx, cellPx);
         }
 
-        // Pulsing gold glow on the user's highlighted cell
-        if (highlightCellRef.current === realIdx && cellPx >= 1.5) {
+        // Pulsing gold glow on the user's highlighted cell.
+        // Cap blur and lineWidth so they stay reasonable at any zoom level.
+        if (isHighlighted && cellPx >= 1.5) {
           const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 380);
           ctx.save();
           ctx.shadowColor = "#c9a84c";
-          ctx.shadowBlur = Math.max(6, cellPx * (2 + pulse * 3));
-          ctx.strokeStyle = `rgba(201, 168, 76, ${0.7 + pulse * 0.3})`;
-          ctx.lineWidth = Math.max(2, cellPx * 0.09);
+          ctx.shadowBlur = 16 + pulse * 12;          // always 16–28 px regardless of zoom
+          ctx.strokeStyle = `rgba(201, 168, 76, ${0.75 + pulse * 0.25})`;
+          ctx.lineWidth = Math.min(5, Math.max(2, cellPx * 0.03));
           ctx.strokeRect(sx, sy, cellPx, cellPx);
           ctx.restore();
         }
@@ -166,7 +171,8 @@ export default function MosaicViewerClient() {
     ctx: CanvasRenderingContext2D,
     url: string,
     x: number, y: number, w: number, h: number,
-    pr: number, pg: number, pb: number
+    pr: number, pg: number, pb: number,
+    skipTint = false
   ) {
     const cache = imgCacheRef.current;
     const entry = cache.get(url);
@@ -179,10 +185,14 @@ export default function MosaicViewerClient() {
 
     if (entry instanceof HTMLImageElement && entry.complete && entry.naturalWidth > 0) {
       ctx.drawImage(entry, x, y, w, h);
-      ctx.globalCompositeOperation = "multiply";
-      ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
-      ctx.fillRect(x, y, w, h);
-      ctx.globalCompositeOperation = "source-over";
+      if (!skipTint) {
+        // Multiply-blend the portrait's reference colour so cells collectively
+        // read as the portrait when zoomed out.
+        ctx.globalCompositeOperation = "multiply";
+        ctx.fillStyle = `rgb(${pr}, ${pg}, ${pb})`;
+        ctx.fillRect(x, y, w, h);
+        ctx.globalCompositeOperation = "source-over";
+      }
       return;
     }
 
@@ -228,11 +238,13 @@ export default function MosaicViewerClient() {
     const H = canvasRef.current?.height ?? 600;
     const col = cellIndex % GRID;
     const row = Math.floor(cellIndex / GRID);
-    const cellPx = (W / GRID) * REVEAL_ZOOM;
+    // zoom so the photo renders at REVEAL_TARGET_PX regardless of screen size
+    const zoom = Math.min(MAX_ZOOM, (REVEAL_TARGET_PX * GRID) / W);
+    const cellPx = (W / GRID) * zoom;
     return {
       x: (col + 0.5) - (W / 2) / cellPx,
       y: (row + 0.5) - (H / 2) / cellPx,
-      zoom: REVEAL_ZOOM,
+      zoom,
     };
   }
 
