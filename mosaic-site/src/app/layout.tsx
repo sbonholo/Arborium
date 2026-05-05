@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/trump-portrait.jpg",
-        width: 3000,
-        height: 1688,
+        width: 1351,
+        height: 1351,
         alt: "Trump Mosaic Portrait",
       },
     ],
