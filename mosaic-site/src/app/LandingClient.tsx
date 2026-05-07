@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import ProgressBar from "@/components/ProgressBar";
@@ -18,17 +18,26 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
   const cellParam = params.get("cell");
   const highlightCell = cellParam !== null ? parseInt(cellParam, 10) : null;
 
+  // Phase 1: static portrait (instant); Phase 2: interactive canvas (on demand)
+  const [phase, setPhase] = useState<"static" | "interactive">(
+    highlightCell !== null ? "interactive" : "static"
+  );
   const [showModal, setShowModal] = useState(false);
   const [liveFilled, setLiveFilled] = useState(initialFilled);
 
-  const handleTotalFilled = useCallback((n: number) => {
-    setLiveFilled(n);
-  }, []);
+  // Pre-fetch the MosaicViewer JS chunk while user reads phase 1
+  useEffect(() => {
+    if (phase === "static") import("@/components/MosaicViewer");
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const activateInteractive = useCallback(() => setPhase("interactive"), []);
+
+  const handleTotalFilled = useCallback((n: number) => setLiveFilled(n), []);
 
   return (
     <div style={{ background: "#0d0d0d" }}>
 
-      {/* ── VIEWPORT HERO (mosaic fills the screen) ── */}
+      {/* ── VIEWPORT HERO ── */}
       <div style={{ height: "100dvh", display: "flex", flexDirection: "column" }}>
 
         {/* Nav */}
@@ -38,29 +47,68 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
         >
           <div className="flex items-center gap-2">
             <span className="text-lg">🇺🇸</span>
-            <span className="font-bold tracking-wide text-white text-sm uppercase">
-              Trump Mosaic
-            </span>
+            <span className="font-bold tracking-wide text-white text-sm uppercase">Trump Mosaic</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block" />
               <span className="text-xs text-gray-600">Live</span>
             </div>
-            <button
-              onClick={() => setShowModal(true)}
-              className="btn-primary text-xs py-2 px-4"
-            >
+            <button onClick={() => setShowModal(true)} className="btn-primary text-xs py-2 px-4">
               Claim My Spot
             </button>
           </div>
         </nav>
 
-        {/* Mosaic canvas */}
+        {/* Mosaic area */}
         <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-          <MosaicViewer highlightCell={highlightCell} onTotalFilled={handleTotalFilled} />
 
-          {/* Bottom gradient overlay: progress + CTA */}
+          {phase === "static" ? (
+            /* ── Phase 1: static portrait (instant load, no API calls) ── */
+            <div
+              style={{ position: "absolute", inset: 0, cursor: "zoom-in" }}
+              onClick={activateInteractive}
+              onTouchStart={(e) => {
+                // Pinch gesture (2 fingers): activate immediately
+                if (e.touches.length >= 2) activateInteractive();
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/trump-portrait.jpg"
+                alt="Trump Mosaic Portrait"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+              {/* Subtle darkening for contrast */}
+              <div
+                style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.18)", pointerEvents: "none" }}
+              />
+              {/* Hint */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 8,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  background: "rgba(0,0,0,0.75)",
+                  color: "#c9a84c",
+                  fontSize: "0.72rem",
+                  padding: "5px 14px",
+                  borderRadius: 99,
+                  whiteSpace: "nowrap",
+                  pointerEvents: "none",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                Tap to zoom in and see the faces
+              </div>
+            </div>
+          ) : (
+            /* ── Phase 2: interactive canvas ── */
+            <MosaicViewer highlightCell={highlightCell} onTotalFilled={handleTotalFilled} />
+          )}
+
+          {/* Bottom gradient overlay — visible in both phases */}
           <div
             style={{
               position: "absolute",
@@ -89,10 +137,7 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
                   {initialPurchases.toLocaleString()} supporters have already joined
                 </p>
               )}
-              <button
-                onClick={() => setShowModal(true)}
-                className="btn-primary w-full"
-              >
+              <button onClick={() => setShowModal(true)} className="btn-primary w-full">
                 🇺🇸 Claim My Spot — Starting at $2
               </button>
               <p className="text-xs text-center" style={{ color: "#2a2a2a" }}>
@@ -139,9 +184,7 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
               },
             ].map((item) => (
               <div key={item.step} className="flex flex-col gap-3">
-                <span className="text-4xl font-bold" style={{ color: "#1e1e1e" }}>
-                  {item.step}
-                </span>
+                <span className="text-4xl font-bold" style={{ color: "#1e1e1e" }}>{item.step}</span>
                 <h3 className="text-white font-semibold">{item.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -153,12 +196,8 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
       {/* ── INFO + CTA ── */}
       <section className="py-16 px-6" style={{ borderTop: "1px solid #1a1a1a" }}>
         <div className="max-w-2xl mx-auto space-y-8">
-          {/* Headline */}
           <div>
-            <p
-              className="text-xs font-semibold uppercase tracking-widest mb-3"
-              style={{ color: "#c9a84c" }}
-            >
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#c9a84c" }}>
               A once-in-a-lifetime gift
             </p>
             <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
@@ -174,7 +213,6 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
             </p>
           </div>
 
-          {/* CTA block */}
           <div
             className="p-5 rounded-xl space-y-4"
             style={{ background: "#111", border: "1px solid #1e1e1e" }}
@@ -185,15 +223,11 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
                 Start at $2 for a single cell. Buy more cells for a larger photo in the final portrait.
               </p>
             </div>
-            <button
-              onClick={() => setShowModal(true)}
-              className="btn-primary w-full text-center"
-            >
+            <button onClick={() => setShowModal(true)} className="btn-primary w-full text-center">
               🇺🇸 Claim My Spot — Starting at $2
             </button>
           </div>
 
-          {/* Donation callout */}
           <div
             className="p-4 rounded-xl flex items-start gap-3"
             style={{ background: "#0f0f0f", border: "1px solid #2a2010" }}
@@ -208,7 +242,6 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
             </p>
           </div>
 
-          {/* Trust badges */}
           <div className="flex flex-wrap gap-4 text-xs text-gray-600">
             {[
               "Secure Stripe payment",
@@ -231,9 +264,7 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
           <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#c9a84c" }}>
             The Mission
           </p>
-          <h2 className="text-3xl font-bold text-white">
-            Show him 1,000,000 faces.
-          </h2>
+          <h2 className="text-3xl font-bold text-white">Show him 1,000,000 faces.</h2>
           <p className="text-gray-500 leading-relaxed">
             Words can only say so much. This portrait says it all — a million Americans standing
             behind their President, each one a real person, each one a real face. When it&apos;s
@@ -244,10 +275,7 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
             A portion of every purchase is donated to support the Republican campaign in the next
             election — so your $2 does double duty.
           </p>
-          <button
-            onClick={() => setShowModal(true)}
-            className="btn-primary mx-auto inline-block"
-          >
+          <button onClick={() => setShowModal(true)} className="btn-primary mx-auto inline-block">
             Add My Face →
           </button>
         </div>
