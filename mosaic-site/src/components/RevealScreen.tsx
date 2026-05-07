@@ -73,7 +73,7 @@ export default function RevealScreen({
   const originX = `${Math.max(5, Math.min(95, ((col + 0.5) / GRID) * 100)).toFixed(1)}%`;
   const originY = `${Math.max(5, Math.min(95, ((row + 0.5) / GRID) * 100)).toFixed(1)}%`;
 
-  const mosaicHref = cellIndex !== null ? `/mosaic?cell=${cellIndex}` : "/mosaic";
+  const mosaicHref = cellIndex !== null ? `/?cell=${cellIndex}` : "/";
 
   useEffect(() => {
     const t1 = setTimeout(() => setPhase("zoom"), 1200);

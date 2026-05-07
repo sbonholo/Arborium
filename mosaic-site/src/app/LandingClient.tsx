@@ -1,175 +1,107 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import ProgressBar from "@/components/ProgressBar";
 import PaymentModal from "@/components/PaymentModal";
 
-// Canvas component requires browser APIs — load client-only
-const MosaicPreview = dynamic(() => import("@/components/MosaicPreview"), { ssr: false });
-
-interface Cell {
-  index: number;
-  photoUrl: string | null;
-  cells: number;
-}
+const MosaicViewer = dynamic(() => import("@/components/MosaicViewer"), { ssr: false });
 
 interface Props {
   initialFilled: number;
   initialPurchases: number;
-  initialCells: Cell[];
 }
 
-export default function LandingClient({ initialFilled, initialPurchases, initialCells }: Props) {
+export default function LandingClient({ initialFilled, initialPurchases }: Props) {
+  const params = useSearchParams();
+  const cellParam = params.get("cell");
+  const highlightCell = cellParam !== null ? parseInt(cellParam, 10) : null;
+
   const [showModal, setShowModal] = useState(false);
   const [liveFilled, setLiveFilled] = useState(initialFilled);
 
-  const handleNewCell = useCallback((_cell: Cell, newTotal: number) => {
-    setLiveFilled(newTotal);
+  const handleTotalFilled = useCallback((n: number) => {
+    setLiveFilled(n);
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#0d0d0d" }}>
-      {/* ── NAV ── */}
-      <nav
-        className="flex items-center justify-between px-6 py-4 border-b"
-        style={{ borderColor: "#1a1a1a" }}
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-xl">🇺🇸</span>
-          <span className="font-bold tracking-wide text-white text-sm uppercase">
-            Trump Mosaic
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/mosaic"
-            className="text-xs font-semibold uppercase tracking-wider hidden sm:block"
-            style={{ color: "#c9a84c" }}
-          >
-            View Mosaic
-          </Link>
-          <button
-            onClick={() => setShowModal(true)}
-            className="btn-primary text-xs py-2 px-4"
-          >
-            Claim My Spot
-          </button>
-        </div>
-      </nav>
+    <div style={{ background: "#0d0d0d" }}>
 
-      {/* ── HERO ── */}
-      <section className="flex-1 flex flex-col lg:flex-row items-stretch gap-0 max-w-7xl mx-auto w-full px-4 pt-10 pb-16 lg:gap-12 lg:items-start">
-        {/* LEFT — mosaic preview */}
-        <div className="w-full lg:w-1/2 lg:sticky lg:top-8">
-          <MosaicPreview
-            filledCells={initialCells}
-            totalFilled={liveFilled}
-            onNewCell={handleNewCell}
-          />
-          <p className="text-xs text-center mt-3" style={{ color: "#3a3a3a" }}>
-            Far away: a portrait. Up close: 1,000,000 supporters.{" "}
-            <Link href="/mosaic" style={{ color: "#c9a84c" }}>View full mosaic →</Link>
-          </p>
-        </div>
+      {/* ── VIEWPORT HERO (mosaic fills the screen) ── */}
+      <div style={{ height: "100dvh", display: "flex", flexDirection: "column" }}>
 
-        {/* RIGHT — info + CTA */}
-        <div className="w-full lg:w-1/2 pt-6 lg:pt-0 flex flex-col gap-8">
-          {/* Headline */}
-          <div>
-            <p
-              className="text-xs font-semibold uppercase tracking-widest mb-3"
-              style={{ color: "#c9a84c" }}
-            >
-              A once-in-a-lifetime gift
-            </p>
-            <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
-              1,000,000 Trump
-              <br />
-              <span style={{ color: "#c9a84c" }}>Supporters.</span>
-              <br />
-              One Historic Portrait.
-            </h1>
-            <p className="mt-4 text-gray-400 leading-relaxed">
-              We are building a monumental photomosaic portrait of Donald Trump — made entirely
-              from the faces of his supporters. At the end, we will frame it and send it to him
-              as a gift.
-            </p>
+        {/* Nav */}
+        <nav
+          className="flex items-center justify-between px-5 py-3 flex-shrink-0"
+          style={{ background: "rgba(13,13,13,0.95)", borderBottom: "1px solid #1a1a1a" }}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-lg">🇺🇸</span>
+            <span className="font-bold tracking-wide text-white text-sm uppercase">
+              Trump Mosaic
+            </span>
           </div>
-
-          {/* Progress */}
-          <div
-            className="p-5 rounded-xl"
-            style={{ background: "#111", border: "1px solid #1e1e1e" }}
-          >
-            <ProgressBar filled={liveFilled} />
-            {initialPurchases > 0 && (
-              <p className="text-xs text-gray-700 mt-3">
-                {initialPurchases.toLocaleString()} supporters have already joined.
-              </p>
-            )}
-            {/* Live indicator */}
-            <div className="flex items-center gap-1.5 mt-2">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block" />
-              <span className="text-xs text-gray-700">Updating live</span>
-            </div>
-          </div>
-
-          {/* CTA block */}
-          <div
-            className="p-5 rounded-xl space-y-4"
-            style={{ background: "#111", border: "1px solid #1e1e1e" }}
-          >
-            <div>
-              <p className="text-white font-semibold">Ready to be part of history?</p>
-              <p className="text-sm text-gray-500 mt-1">
-                Start at $2 for a single cell. Buy more cells for a larger photo in the final portrait.
-              </p>
+              <span className="text-xs text-gray-600">Live</span>
             </div>
             <button
               onClick={() => setShowModal(true)}
-              className="btn-primary w-full text-center"
+              className="btn-primary text-xs py-2 px-4"
             >
-              🇺🇸 Claim My Spot — Starting at $2
+              Claim My Spot
             </button>
           </div>
+        </nav>
 
-          {/* Donation callout */}
+        {/* Mosaic canvas */}
+        <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+          <MosaicViewer highlightCell={highlightCell} onTotalFilled={handleTotalFilled} />
+
+          {/* Bottom gradient overlay: progress + CTA */}
           <div
-            className="p-4 rounded-xl flex items-start gap-3"
-            style={{ background: "#0f0f0f", border: "1px solid #2a2010" }}
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              background: "linear-gradient(to top, rgba(13,13,13,0.97) 0%, rgba(13,13,13,0.85) 45%, transparent 100%)",
+              padding: "56px 20px 20px",
+              pointerEvents: "none",
+              zIndex: 10,
+            }}
           >
-            <span className="text-lg flex-shrink-0">🎗️</span>
-            <p className="text-sm leading-relaxed" style={{ color: "#c9a84c" }}>
-              <span className="font-semibold">A portion of every purchase</span>{" "}
-              <span style={{ color: "#a08030" }}>
-                will be donated to support the Republican campaign in the next election.
-                Every dollar you spend helps grow this mosaic <em>and</em> funds the fight for America.
-              </span>
-            </p>
-          </div>
-
-          {/* Trust badges */}
-          <div className="flex flex-wrap gap-4 text-xs text-gray-600">
-            <span className="flex items-center gap-1">
-              <span style={{ color: "#c9a84c" }}>✓</span> Secure Stripe payment
-            </span>
-            <span className="flex items-center gap-1">
-              <span style={{ color: "#c9a84c" }}>✓</span> One-time fee, no subscription
-            </span>
-            <span className="flex items-center gap-1">
-              <span style={{ color: "#c9a84c" }}>✓</span> Photo used only in this portrait
-            </span>
-            <span className="flex items-center gap-1">
-              <span style={{ color: "#c9a84c" }}>✓</span> Final print sent to President Trump
-            </span>
-            <span className="flex items-center gap-1">
-              <span style={{ color: "#c9a84c" }}>✓</span> Part of proceeds donated to the Republican campaign
-            </span>
+            <div
+              style={{
+                maxWidth: 480,
+                margin: "0 auto",
+                pointerEvents: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <ProgressBar filled={liveFilled} />
+              {initialPurchases > 0 && (
+                <p className="text-xs text-center" style={{ color: "#3a3a3a" }}>
+                  {initialPurchases.toLocaleString()} supporters have already joined
+                </p>
+              )}
+              <button
+                onClick={() => setShowModal(true)}
+                className="btn-primary w-full"
+              >
+                🇺🇸 Claim My Spot — Starting at $2
+              </button>
+              <p className="text-xs text-center" style={{ color: "#2a2a2a" }}>
+                Far away: a portrait. Up close: 1,000,000 supporters.
+              </p>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* ── HOW IT WORKS ── */}
       <section
@@ -218,6 +150,81 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
         </div>
       </section>
 
+      {/* ── INFO + CTA ── */}
+      <section className="py-16 px-6" style={{ borderTop: "1px solid #1a1a1a" }}>
+        <div className="max-w-2xl mx-auto space-y-8">
+          {/* Headline */}
+          <div>
+            <p
+              className="text-xs font-semibold uppercase tracking-widest mb-3"
+              style={{ color: "#c9a84c" }}
+            >
+              A once-in-a-lifetime gift
+            </p>
+            <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
+              1,000,000 Trump{" "}
+              <span style={{ color: "#c9a84c" }}>Supporters.</span>
+              <br />
+              One Historic Portrait.
+            </h2>
+            <p className="mt-4 text-gray-400 leading-relaxed">
+              We are building a monumental photomosaic portrait of Donald Trump — made entirely
+              from the faces of his supporters. At the end, we will frame it and send it to him
+              as a gift.
+            </p>
+          </div>
+
+          {/* CTA block */}
+          <div
+            className="p-5 rounded-xl space-y-4"
+            style={{ background: "#111", border: "1px solid #1e1e1e" }}
+          >
+            <div>
+              <p className="text-white font-semibold">Ready to be part of history?</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Start at $2 for a single cell. Buy more cells for a larger photo in the final portrait.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowModal(true)}
+              className="btn-primary w-full text-center"
+            >
+              🇺🇸 Claim My Spot — Starting at $2
+            </button>
+          </div>
+
+          {/* Donation callout */}
+          <div
+            className="p-4 rounded-xl flex items-start gap-3"
+            style={{ background: "#0f0f0f", border: "1px solid #2a2010" }}
+          >
+            <span className="text-lg flex-shrink-0">🎗️</span>
+            <p className="text-sm leading-relaxed" style={{ color: "#c9a84c" }}>
+              <span className="font-semibold">A portion of every purchase</span>{" "}
+              <span style={{ color: "#a08030" }}>
+                will be donated to support the Republican campaign in the next election.
+                Every dollar you spend helps grow this mosaic <em>and</em> funds the fight for America.
+              </span>
+            </p>
+          </div>
+
+          {/* Trust badges */}
+          <div className="flex flex-wrap gap-4 text-xs text-gray-600">
+            {[
+              "Secure Stripe payment",
+              "One-time fee, no subscription",
+              "Photo used only in this portrait",
+              "Final print sent to President Trump",
+              "Part of proceeds donated to the Republican campaign",
+            ].map((badge) => (
+              <span key={badge} className="flex items-center gap-1">
+                <span style={{ color: "#c9a84c" }}>✓</span> {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── MISSION ── */}
       <section className="py-16 px-6" style={{ borderTop: "1px solid #1a1a1a" }}>
         <div className="max-w-2xl mx-auto text-center space-y-5">
@@ -229,7 +236,7 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
           </h2>
           <p className="text-gray-500 leading-relaxed">
             Words can only say so much. This portrait says it all — a million Americans standing
-            behind their President, each one a real person, each one a real face. When it's
+            behind their President, each one a real person, each one a real face. When it&apos;s
             complete we will have it professionally printed at monumental scale, museum-framed,
             and delivered to Donald Trump as a gift from his supporters.
           </p>
@@ -255,7 +262,6 @@ export default function LandingClient({ initialFilled, initialPurchases, initial
         <p className="mt-1">Photos are used solely for the mosaic portrait and never sold or shared.</p>
       </footer>
 
-      {/* ── PAYMENT MODAL ── */}
       {showModal && <PaymentModal onClose={() => setShowModal(false)} />}
     </div>
   );

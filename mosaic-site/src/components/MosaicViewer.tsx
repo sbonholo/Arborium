@@ -1,8 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 interface Cell {
@@ -11,8 +9,12 @@ interface Cell {
   cells: number;
 }
 
+export interface MosaicViewerProps {
+  highlightCell?: number | null;
+  onTotalFilled?: (n: number) => void;
+}
+
 const GRID = 1000;
-const TOTAL_CELLS = GRID * GRID;
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 3000;
 
@@ -36,13 +38,11 @@ function easeInOutCubic(t: number) {
 
 type RevealPhase = "none" | "zooming-in" | "zoomed-in" | "zooming-out" | "settled";
 
-export default function MosaicViewerClient() {
+export default function MosaicViewer({ highlightCell = null, onTotalFilled }: MosaicViewerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Camera: position in grid-cell units + zoom multiplier
   const viewRef = useRef({ x: 0, y: 0, zoom: 1 });
-  // Snapshot of the full-portrait view, used as zoom-out target
   const initialViewRef = useRef({ x: 0, y: 0, zoom: 1 });
 
   const cellsRef = useRef<Map<number, Cell>>(new Map());
@@ -53,14 +53,9 @@ export default function MosaicViewerClient() {
   const dragRef = useRef({ active: false, startX: 0, startY: 0, startCamX: 0, startCamY: 0 });
   const pinchRef = useRef({ active: false, startDist: 0, startZoom: 1 });
 
-  // rAF and timer handles for the reveal sequence
   const animRef = useRef<number>(0);
   const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ?cell= query param — the cell to highlight and reveal
-  const searchParams = useSearchParams();
-  const highlightCellParam = searchParams.get("cell");
-  const highlightCell = highlightCellParam !== null ? parseInt(highlightCellParam, 10) : null;
   const highlightCellRef = useRef<number | null>(highlightCell);
 
   const [totalFilled, setTotalFilled] = useState(0);
@@ -69,6 +64,10 @@ export default function MosaicViewerClient() {
   const [revealPhase, setRevealPhase] = useState<RevealPhase>(
     highlightCell !== null ? "zooming-in" : "none"
   );
+
+  useEffect(() => {
+    if (totalFilled > 0) onTotalFilled?.(totalFilled);
+  }, [totalFilled, onTotalFilled]);
 
   // ── Rendering ─────────────────────────────────────────────────
 
@@ -88,7 +87,6 @@ export default function MosaicViewerClient() {
 
     const cellPx = (W / GRID) * zoom;
 
-    // Portrait as base layer
     const portrait = portraitRef.current;
     if (portrait) {
       ctx.imageSmoothingEnabled = true;
@@ -101,8 +99,6 @@ export default function MosaicViewerClient() {
     }
     const colors = portraitColorsRef.current;
 
-    // When cells are sub-pixel, per-cell fillRects stack to solid black and bury
-    // the portrait. Instead, show the portrait clearly with a single light tint.
     if (cellPx < 1) {
       ctx.fillStyle = "rgba(0,0,0,0.25)";
       ctx.fillRect(0, 0, W, H);
@@ -130,8 +126,6 @@ export default function MosaicViewerClient() {
 
         const cell = cellsRef.current.get(realIdx);
         const isHighlighted = highlightCellRef.current === realIdx;
-        // As we zoom in, fade the portrait colour tint so individual faces reveal in natural colour.
-        // Full tint at cellPx ≤ 30, gone by cellPx ≥ 100.
         const tintAlpha = Math.max(0, Math.min(1, 1 - (cellPx - 30) / 70));
 
         if (cell) {
@@ -152,13 +146,11 @@ export default function MosaicViewerClient() {
           ctx.strokeRect(sx, sy, cellPx, cellPx);
         }
 
-        // Pulsing gold glow on the user's highlighted cell.
-        // Cap blur and lineWidth so they stay reasonable at any zoom level.
         if (isHighlighted && cellPx >= 1.5) {
           const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 380);
           ctx.save();
           ctx.shadowColor = "#c9a84c";
-          ctx.shadowBlur = 16 + pulse * 12;          // always 16–28 px regardless of zoom
+          ctx.shadowBlur = 16 + pulse * 12;
           ctx.strokeStyle = `rgba(201, 168, 76, ${0.75 + pulse * 0.25})`;
           ctx.lineWidth = Math.min(5, Math.max(2, cellPx * 0.03));
           ctx.strokeRect(sx, sy, cellPx, cellPx);
@@ -242,8 +234,6 @@ export default function MosaicViewerClient() {
     const H = canvasRef.current?.height ?? 600;
     const col = cellIndex % GRID;
     const row = Math.floor(cellIndex / GRID);
-    // Target: cell fills ~80 % of the shorter canvas dimension (~half the phone screen).
-    // Use the smaller of 80 % width and 45 % height so the face is large but still centred.
     const targetPx = Math.min(W * 0.8, H * 0.45);
     const zoom = Math.min(MAX_ZOOM, (targetPx * GRID) / W);
     const cellPx = (W / GRID) * zoom;
@@ -253,8 +243,6 @@ export default function MosaicViewerClient() {
       zoom,
     };
   }
-
-  // ── Fit canvas + store initial full-portrait view ─────────────
 
   function fitToWindow() {
     const canvas = canvasRef.current;
@@ -266,12 +254,6 @@ export default function MosaicViewerClient() {
     const H = canvas.height;
     if (!W || !H) return;
 
-    // zoom semantics: cellPx = (W / GRID) * zoom
-    // zoom = 1  → portrait fills canvas width  (W pixels wide)
-    // zoom = H/W → portrait fills canvas height (H pixels wide = H pixels tall since square)
-    //
-    // Portrait screen (W ≤ H): fit to width, center vertically
-    // Landscape screen  (W > H): fit to height, center horizontally
     const computed =
       W > H
         ? { zoom: H / W, x: -(GRID * (W / H - 1)) / 2, y: 0 }
@@ -297,19 +279,15 @@ export default function MosaicViewerClient() {
       fitToWindow();
 
       if (highlightCellRef.current !== null) {
-        // Phase A: animate zoom-in to the user's cell (2 s)
         const fromView = { ...viewRef.current };
         const toView = cellCenteredView(highlightCellRef.current);
         animateView(fromView, toView, 2000, () => {
-          // Phase B: hold — pulsing glow + "Your photo!" badge (2.5 s)
           setRevealPhase("zoomed-in");
           holdTimerRef.current = setTimeout(() => {
-            // Phase C: animate zoom-out back to full portrait (2.5 s)
             const zoomedView = { ...viewRef.current };
             const fullView = { ...initialViewRef.current };
             setRevealPhase("zooming-out");
             animateView(zoomedView, fullView, 2500, () => {
-              // Phase D: settled — persistent toast, glow persists on zoom-in
               setRevealPhase("settled");
             });
           }, 2500);
@@ -542,10 +520,8 @@ export default function MosaicViewerClient() {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const pct = ((totalFilled / TOTAL_CELLS) * 100).toFixed(4);
-
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: "#0d0d0d" }}>
+    <>
       <style>{`
         @keyframes badgePop {
           from { opacity: 0; transform: translateX(-50%) scale(0.85); }
@@ -555,32 +531,13 @@ export default function MosaicViewerClient() {
           from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes cellGlow {
-          0%, 100% { opacity: 0.6; }
-          50%       { opacity: 1; }
-        }
       `}</style>
 
-      {/* ── Top bar ── */}
       <div
-        className="flex items-center justify-between px-4 py-3 flex-shrink-0"
-        style={{ background: "#111", borderBottom: "1px solid #1a1a1a" }}
+        ref={containerRef}
+        className="w-full h-full relative"
+        style={{ cursor: "crosshair", background: "#0d0d0d" }}
       >
-        <Link href="/" className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#c9a84c" }}>
-          ← Home
-        </Link>
-        <div className="text-center">
-          <span className="text-white text-sm font-bold">{totalFilled.toLocaleString()}</span>
-          <span className="text-gray-600 text-xs"> / 1,000,000 · {pct}%</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse inline-block" />
-          <span className="text-xs text-gray-600">Live</span>
-        </div>
-      </div>
-
-      {/* ── Canvas ── */}
-      <div ref={containerRef} className="flex-1 relative" style={{ cursor: "crosshair" }}>
         <canvas
           ref={canvasRef}
           className="block w-full h-full"
@@ -595,19 +552,18 @@ export default function MosaicViewerClient() {
           style={{ touchAction: "none", cursor: "grab" }}
         />
 
-        {/* ── "Your photo!" badge — visible during zoomed-in hold ── */}
+        {/* "Your photo!" badge — visible during zoomed-in hold */}
         {revealPhase === "zoomed-in" && highlightCell !== null && (
           <div
             style={{
               position: "absolute",
-              bottom: 64,
+              bottom: 160,
               left: "50%",
               animation: "badgePop 0.4s cubic-bezier(0.34,1.56,0.64,1) both",
               pointerEvents: "none",
-              zIndex: 10,
+              zIndex: 20,
             }}
           >
-            {/* Wrapper keeps left:50% and handles the centering separately from the animation */}
             <div style={{ transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
               <div
                 style={{
@@ -623,7 +579,6 @@ export default function MosaicViewerClient() {
               >
                 ✦ Your photo is right here!
               </div>
-              {/* Down-arrow pointing toward center of canvas (the cell) */}
               <div
                 style={{
                   width: 0, height: 0,
@@ -636,15 +591,15 @@ export default function MosaicViewerClient() {
           </div>
         )}
 
-        {/* ── Persistent toast — appears after zoom-out ── */}
+        {/* Persistent toast — appears after zoom-out */}
         {revealPhase === "settled" && highlightCell !== null && (
           <div
             style={{
               position: "absolute",
-              bottom: 56,
+              bottom: 160,
               left: "50%",
               transform: "translateX(-50%)",
-              zIndex: 10,
+              zIndex: 20,
             }}
           >
             <div style={{ animation: "toastSlideUp 0.5s ease both" }}>
@@ -671,10 +626,10 @@ export default function MosaicViewerClient() {
           </div>
         )}
 
-        {/* ── Standard hint ── */}
+        {/* Interaction hint */}
         <div
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full"
-          style={{ background: "rgba(0,0,0,0.7)", color: "#c9a84c", pointerEvents: "none" }}
+          className="absolute left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full"
+          style={{ bottom: 8, background: "rgba(0,0,0,0.7)", color: "#c9a84c", pointerEvents: "none", zIndex: 5 }}
         >
           Tap any photo to zoom in · Scroll/pinch · Drag to pan
         </div>
@@ -682,7 +637,7 @@ export default function MosaicViewerClient() {
         {loading && (
           <div
             className="absolute top-4 right-4 text-xs px-3 py-1 rounded-full"
-            style={{ background: "rgba(0,0,0,0.7)", color: "#c9a84c" }}
+            style={{ background: "rgba(0,0,0,0.7)", color: "#c9a84c", zIndex: 5 }}
           >
             Loading photos…
           </div>
@@ -690,12 +645,12 @@ export default function MosaicViewerClient() {
         {loadError && (
           <div
             className="absolute top-4 right-4 text-xs px-3 py-1 rounded-full"
-            style={{ background: "rgba(180,30,30,0.85)", color: "#fff" }}
+            style={{ background: "rgba(180,30,30,0.85)", color: "#fff", zIndex: 5 }}
           >
-            Some photos failed to load — showing what we have
+            Some photos failed to load
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
