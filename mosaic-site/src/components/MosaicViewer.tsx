@@ -441,17 +441,37 @@ export default function MosaicViewer({ highlightCell = null, onTotalFilled }: Mo
 
   useEffect(() => {
     async function loadAll() {
-      let after = 0, total = 0;
-      while (true) {
-        const res = await fetch(`/api/mosaic?after=${after}`);
-        if (!res.ok) { setLoadError(true); break; }
-        const { cells, nextAfter } = await res.json();
-        (cells as Cell[]).forEach((c) => { cellsRef.current.set(c.index, c); total++; });
+      const PAGE  = 5000; // must match API limit
+      const BATCH = 4;    // pages fetched in parallel per round
+      let after = 0, total = 0, allDone = false;
+
+      while (!allDone) {
+        const offsets = Array.from({ length: BATCH }, (_, i) => after + i * PAGE);
+
+        const results = await Promise.all(
+          offsets.map(async (off) => {
+            try {
+              const res = await fetch(`/api/mosaic?after=${off}`);
+              if (!res.ok) { setLoadError(true); return null; }
+              return await res.json() as { cells: Cell[]; nextAfter: number | null };
+            } catch {
+              setLoadError(true);
+              return null;
+            }
+          })
+        );
+
+        for (const result of results) {
+          if (!result) { allDone = true; continue; }
+          result.cells.forEach((c) => { cellsRef.current.set(c.index, c); total++; });
+          if (!result.nextAfter) allDone = true;
+        }
+
+        after += BATCH * PAGE;
         setTotalFilled(total);
         render();
-        if (!nextAfter) break;
-        after = nextAfter;
       }
+
       setLoading(false);
     }
     loadAll();

@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 // Returns filled mosaic cells for rendering.
 // Cursor-based pagination: pass ?after=<row_number> for subsequent pages.
 export async function GET(request: NextRequest) {
-  const limit = 500;
+  const limit = 5000;
   const after = parseInt(request.nextUrl.searchParams.get("after") ?? "0", 10);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
