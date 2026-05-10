@@ -42,13 +42,21 @@ function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
-// Supabase Storage image transform — falls back to original URL for non-Supabase hosts
+// Supabase Storage image transform — returns original URL unchanged for non-Supabase hosts
 function toTransformUrl(url: string, width: number): string {
   if (!url.includes(".supabase.co/storage/v1/object/public/")) return url;
   return (
     url.replace("/storage/v1/object/public/", "/storage/v1/render/image/public/") +
     `?width=${width}&quality=75`
   );
+}
+
+// Reverse a transform URL back to the original storage URL (for fallback on 400/404)
+function toOriginalUrl(url: string): string | null {
+  if (!url.includes("/storage/v1/render/image/public/")) return null;
+  return url
+    .replace("/storage/v1/render/image/public/", "/storage/v1/object/public/")
+    .split("?")[0];
 }
 
 function tierUrl(photoUrl: string, tier: number): string {
@@ -147,6 +155,9 @@ export default function MosaicViewer({ highlightCell = null, onTotalFilled }: Mo
     img.onerror = () => {
       cache.set(url, "error");
       active.delete(url);
+      // Transform endpoint unavailable (e.g. free Supabase plan) — fall back to original URL
+      const orig = toOriginalUrl(url);
+      if (orig && !cache.has(orig) && !active.has(orig)) startLoad(orig);
     };
     img.src = url;
   }
@@ -226,10 +237,15 @@ export default function MosaicViewer({ highlightCell = null, onTotalFilled }: Mo
 
           const fEntry = touchCache(fUrl);
           const tEntry = tUrl ? touchCache(tUrl) : undefined;
+          // If both transform URLs are errored/missing, check the original storage URL
+          // (populated by startLoad's fallback when transforms are unavailable)
+          const origUrl = toOriginalUrl(fUrl) ?? (tUrl ? toOriginalUrl(tUrl) : null);
+          const origEntry = origUrl ? touchCache(origUrl) : undefined;
 
           const img =
             (fEntry instanceof HTMLImageElement ? fEntry : null) ??
-            (tEntry instanceof HTMLImageElement ? tEntry : null);
+            (tEntry instanceof HTMLImageElement ? tEntry : null) ??
+            (origEntry instanceof HTMLImageElement ? origEntry : null);
 
           if (img) {
             ctx.imageSmoothingEnabled = true;

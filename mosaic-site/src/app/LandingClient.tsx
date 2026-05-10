@@ -32,7 +32,9 @@ export default function LandingClient({ initialFilled, initialPurchases }: Props
 
   const activateInteractive = useCallback(() => setPhase("interactive"), []);
 
-  const handleTotalFilled = useCallback((n: number) => setLiveFilled(n), []);
+  // Never let the canvas batch-loading count drop the displayed number backwards.
+  // The server-side initialFilled is authoritative until the canvas exceeds it.
+  const handleTotalFilled = useCallback((n: number) => setLiveFilled((prev) => Math.max(prev, n)), []);
 
   return (
     <div style={{ background: "#0d0d0d" }}>
