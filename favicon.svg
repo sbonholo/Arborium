@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Evergreen tree silhouette -->
+  <path d="
+    M256 24
+    L180 160 H212 L140 280 H182 L100 400 H210 V488 H302 V400 H412 L330 280 H372 L300 160 H332 Z
+  " fill="#2D5A27"/>
+</svg>
