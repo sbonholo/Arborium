@@ -55,6 +55,28 @@ CREATE POLICY "Public can read uploaded photos"
 -- Service role bypasses RLS automatically; no extra policy needed for writes.
 
 -- ---------------------------------------------------------
+-- Explicit grants (required from Oct 30 2026 for all projects;
+-- required now for new projects created after May 30 2026).
+-- ---------------------------------------------------------
+
+-- purchases
+-- anon  → SELECT only, needed for realtime postgres_changes subscriptions
+-- authenticated → not used (no user auth in this app)
+-- service_role → full access for server-side API routes
+GRANT SELECT                           ON public.purchases      TO anon;
+GRANT SELECT, INSERT, UPDATE, DELETE   ON public.purchases      TO service_role;
+
+-- mosaic_stats view (read-only aggregate)
+GRANT SELECT ON public.mosaic_stats    TO anon;
+GRANT SELECT ON public.mosaic_stats    TO service_role;
+
+-- cell_counter (server-side only — atomic cell allocation)
+GRANT SELECT, UPDATE                   ON public.cell_counter   TO service_role;
+
+-- allocate_cells stored procedure (called by the webhook server route)
+GRANT EXECUTE ON FUNCTION public.allocate_cells(integer) TO service_role;
+
+-- ---------------------------------------------------------
 -- Realtime: enable so the frontend can subscribe to new uploads
 -- ---------------------------------------------------------
 ALTER PUBLICATION supabase_realtime ADD TABLE purchases;
