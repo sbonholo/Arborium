@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -41,6 +42,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col antialiased">{children}</body>
+      <Script
+        data-goatcounter="https://trumpmosaic.goatcounter.com/count"
+        src="//gc.zgo.at/count.js"
+        strategy="afterInteractive"
+      />
     </html>
   );
 }
