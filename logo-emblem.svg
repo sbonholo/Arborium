@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Arborium Cabins emblem: oval badge, pine, stars, ridgeline (cream/amber for dark backgrounds) -->
+  <ellipse cx="256" cy="256" rx="198" ry="238" fill="none" stroke="#f7f2ea" stroke-width="13"/>
+  <g fill="#e0a84a">
+    <path d="M160 148 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/>
+    <path d="M203 103 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z"/>
+    <path d="M310 108 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z"/>
+    <path d="M352 152 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/>
+    <path d="M256 78 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/>
+  </g>
+  <g fill="#f7f2ea">
+    <path d="M256 118 L198 212 H314 Z"/>
+    <path d="M256 172 L178 292 H334 Z"/>
+    <path d="M256 242 L158 372 H354 Z"/>
+    <rect x="241" y="372" width="30" height="38"/>
+  </g>
+  <path d="M132 452 L202 406 L250 446 L290 414 L380 452" fill="none" stroke="#f7f2ea" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
