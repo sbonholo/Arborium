@@ -54,21 +54,26 @@ function toggleFaq(btn) {
 window.toggleFaq = toggleFaq;
 
 // ── Scroll-triggered fade-ins ──
+// Reveal well before elements enter the viewport (rootMargin extends the
+// trigger zone 40% below the fold) so content is never blank when seen.
+const revealEls = document.querySelectorAll('.activity-card, .room-card, .amenity, .review-card, .cabin-card, .why-item, .faq-item');
+const reveal = el => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; };
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
+      reveal(e.target);
       observer.unobserve(e.target);
     }
   });
-}, { threshold: 0.1 });
-document.querySelectorAll('.activity-card, .room-card, .amenity, .review-card, .cabin-card, .why-item, .faq-item').forEach(el => {
+}, { threshold: 0, rootMargin: '0px 0px 40% 0px' });
+revealEls.forEach(el => {
   el.style.opacity = '0';
-  el.style.transform = 'translateY(24px)';
-  el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+  el.style.transform = 'translateY(12px)';
+  el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
   observer.observe(el);
 });
+// Safety net: nothing stays hidden even if the observer never fires.
+setTimeout(() => revealEls.forEach(reveal), 2500);
 
 // ── Gallery lightbox: click a photo to view it large, arrows to navigate ──
 const lb = document.getElementById('lightbox');

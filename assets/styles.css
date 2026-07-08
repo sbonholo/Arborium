@@ -14,7 +14,7 @@
     }
 
     html { scroll-behavior: smooth; }
-    [id] { scroll-margin-top: 92px; }
+    [id] { scroll-margin-top: 104px; }
     body { font-family: 'Inter', sans-serif; color: var(--text-dark); background: var(--cream); overflow-x: hidden; }
 
     /* ── UTILITIES ── */
@@ -134,13 +134,13 @@
     .cabin-card-body { padding: 1.8rem; flex: 1; display: flex; flex-direction: column; }
     .cabin-card-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--forest); margin-bottom: 0.5rem; }
     .cabin-card-tagline { font-size: 0.85rem; color: var(--stone); margin-bottom: 1rem; font-style: italic; }
-    .cabin-card-desc { font-size: 0.88rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.4rem; flex: 1; }
+    .cabin-card-desc { font-size: 0.88rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.4rem; }
     .cabin-card-stats { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
     .cabin-stat { font-size: 0.75rem; font-weight: 500; color: var(--forest-mid); display: flex; align-items: center; gap: 0.35rem; }
     .cabin-stat-icon { font-size: 0.85rem; }
-    .cabin-card-footer { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+    .cabin-card-footer { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-top: auto; }
     .cabin-rating { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 0.3rem; }
-    .cabin-rating span { color: #9a6a15; }
+    .cabin-rating span { color: #855a0b; }
 
     /* ── CABIN DIVIDER ── */
     .cabin-divider {
@@ -278,12 +278,12 @@
     .reviews-top { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 2rem; margin-bottom: 3.5rem; }
     .rating-big { font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 700; color: var(--forest); line-height: 1; }
     .rating-row { display: flex; align-items: center; gap: 1.5rem; }
-    .rating-stars { color: #9a6a15; font-size: 1.15rem; }
+    .rating-stars { color: #855a0b; font-size: 1.15rem; }
     .rating-sub { font-size: 0.82rem; color: var(--stone); margin-top: 0.3rem; }
     .guest-fav { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--forest); color: var(--cream); padding: 0.55rem 1.2rem; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-top: 0.6rem; }
     .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem; }
     .review-card { background: var(--cream); padding: 2rem; border-radius: 2px; }
-    .review-stars { color: #9a6a15; font-size: 0.95rem; margin-bottom: 0.9rem; letter-spacing: 0.1em; }
+    .review-stars { color: #855a0b; font-size: 0.95rem; margin-bottom: 0.9rem; letter-spacing: 0.1em; }
     .review-text { font-size: 0.9rem; line-height: 1.78; color: #4a4540; font-style: italic; margin-bottom: 1.2rem; }
     .review-author { font-size: 0.78rem; font-weight: 600; color: var(--forest); letter-spacing: 0.06em; }
 
@@ -391,8 +391,8 @@
     .fleet-card { background: var(--forest-mid); border-radius: 3px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .fleet-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
     .fleet-card-img { position: relative; aspect-ratio: 16/10; overflow: hidden; }
-    .fleet-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
-    .fleet-card:hover .fleet-card-img img { transform: scale(1.04); }
+    .fleet-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; transform: scale(1.3); }
+    .fleet-card:hover .fleet-card-img img { transform: scale(1.36); }
     .fleet-badge {
       position: absolute; top: 1rem; left: 1rem;
       background: var(--amber); color: var(--forest);
@@ -630,3 +630,7 @@
     .activity-icon { color: var(--amber); }
     .loc-icon { color: var(--amber-light); }
     .hero-trust-badge .icon, .badge .icon, .cabin-stat-icon .icon { vertical-align: -0.22em; }
+
+    /* map embed in location section */
+    .location-map iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .map-caption { font-size: 0.75rem; color: rgba(247,242,234,0.5); margin-top: 0.7rem; text-align: center; }
