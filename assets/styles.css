@@ -600,3 +600,24 @@
     .group-chip-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: var(--cream); }
     .group-chip-cap { font-size: 0.78rem; color: var(--amber-light); margin-top: 0.3rem; }
     .group-total { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--amber-light); margin-bottom: 2rem; }
+
+    /* ── DESIGN REFINEMENTS ── */
+    /* Light badge pills read as glaring white chips on dark sections — use translucent variant */
+    .stargazing-teaser .badge, .outdoor .badge, .nightfall-teaser .badge {
+      background: rgba(247,242,234,0.1); color: rgba(247,242,234,0.85);
+      border: 1px solid rgba(247,242,234,0.18);
+    }
+    /* Cabin pages have 1–2 reviews; center them instead of leaving empty grid columns */
+    .reviews-grid--center { grid-template-columns: repeat(auto-fit, minmax(300px, 460px)); justify-content: center; }
+    /* Group-stay pointer link inside the amber book CTA */
+    .book-cta-sub a { display: inline-block; margin-top: 0.9rem; font-size: 0.85rem; opacity: 0.85; }
+    .book-cta-sub a:hover { opacity: 1; }
+    /* Feature lists: align bullets to first line for multi-line items */
+    .nightfall-features li { align-items: flex-start; }
+    .nightfall-features li::before { margin-top: 0.55em; }
+    /* Boxed callout for the new-listing note */
+    .note-panel {
+      max-width: 620px; margin: 0 auto; text-align: center;
+      border: 1px solid rgba(196,134,42,0.35); border-radius: 3px;
+      padding: 2.5rem 2rem; background: var(--cream);
+    }

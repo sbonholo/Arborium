@@ -27,11 +27,11 @@ if (heroBg) {
   }, { passive: true });
 }
 
-// ── Floating book bar — appears after scrolling past the hero ──
+// ── Floating book bar — appears once the reader is well past the hero ──
 const bookFloat = document.getElementById('bookFloat');
 if (bookFloat) {
   window.addEventListener('scroll', () => {
-    bookFloat.classList.toggle('visible', window.scrollY > window.innerHeight * 0.8);
+    bookFloat.classList.toggle('visible', window.scrollY > window.innerHeight * 1.4);
   }, { passive: true });
 }
 
