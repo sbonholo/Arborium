@@ -77,7 +77,7 @@
     #nav.scrolled { background: rgba(14,28,16,0.96); backdrop-filter: blur(14px); padding: 1rem 3rem; }
 
     .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; color: var(--cream); text-decoration: none; letter-spacing: 0.02em; display: flex; align-items: center; gap: 0.6rem; }
-    .nav-logo span { color: var(--amber); }
+    .nav-logo-word em { font-style: normal; color: var(--amber); }
     .nav-logo-mark { height: 44px; width: auto; display: block; }
 
     .nav-links { display: flex; align-items: center; gap: 2.2rem; list-style: none; }
