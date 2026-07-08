@@ -69,8 +69,9 @@
         "@type": "LodgingBusiness",
         "@id": "https://arboriumcabins.com/#nightfall",
         "name": "Nightfall Guest Cabin — Arborium Cabins",
-        "description": "Guest house and game room in the Ouachita National Forest. PlayStation, pool table, full kitchen, and mountain bike workshop. Sleeps up to 4.",
-        "url": "https://arboriumcabins.com/#nightfall",
+        "description": "Guest house and game room in the Ouachita National Forest, about 50 yards from Sunset Cabin. Video games on the big screen, sofa lounge, frozen-drink machine, full kitchen and bathroom. Queen bed plus sofa bed sleeps up to 4.",
+        "url": "https://www.airbnb.com/rooms/1668096280336036084",
+        "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1668096280336036084/original/e9466e5f-f0c9-431d-b38c-1e622600de40.jpeg?im_w=720",
         "address": { "@type": "PostalAddress", "addressLocality": "Mena", "addressRegion": "AR", "addressCountry": "US" }
       }
     ]
@@ -232,6 +233,9 @@
     .cabin-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.13); }
 
     .cabin-card-img { position: relative; aspect-ratio: 4/3; overflow: hidden; }
+    .cabin-card-img a { display: block; height: 100%; }
+    .cabin-card-name a { color: inherit; text-decoration: none; }
+    .cabin-card-name a:hover { color: var(--amber); }
     .cabin-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
     .cabin-card:hover .cabin-card-img img { transform: scale(1.05); }
 
@@ -436,6 +440,12 @@
     .nightfall-features { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
     .nightfall-features li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--text-muted); }
     .nightfall-features li::before { content: ''; width: 4px; height: 4px; background: var(--amber); border-radius: 50%; flex-shrink: 0; }
+    .nightfall-gallery { background: var(--cream-dark); padding: 0 2rem 5rem; }
+    .nf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; max-width: 1200px; margin: 0 auto; }
+    .nf-item { overflow: hidden; border-radius: 2px; }
+    .nf-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .nf-item:hover img { transform: scale(1.05); }
+    @media (max-width: 768px) { .nf-grid { grid-template-columns: repeat(2, 1fr); } }
 
     /* ── LOCATION ── */
     .location { background: var(--forest); }
@@ -744,11 +754,11 @@
       <!-- SUNSET CABIN -->
       <div class="cabin-card">
         <div class="cabin-card-img">
-          <img src="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg?im_w=720" alt="Sunset Cabin exterior with pond reflection" />
+          <a href="#sunset-cabin"><img src="https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg?im_w=720" alt="Sunset Cabin exterior with pond reflection" /></a>
           <span class="cabin-status-badge badge-available">Available</span>
         </div>
         <div class="cabin-card-body">
-          <h3 class="cabin-card-name">Sunset Cabin</h3>
+          <h3 class="cabin-card-name"><a href="#sunset-cabin">Sunset Cabin</a></h3>
           <p class="cabin-card-tagline">Pour a glass of wine. Watch the forest glow.</p>
           <p class="cabin-card-desc">A handcrafted timber-frame retreat with a stone fireplace, soaking tub, and a front porch made for watching the sun set over the forest and the pond. ATV trails from the doorstep.</p>
           <div class="cabin-card-stats">
@@ -767,11 +777,11 @@
       <!-- STARGAZING CABIN -->
       <div class="cabin-card">
         <div class="cabin-card-img">
-          <img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f2126ff5-fe60-44ee-bd32-f9ec36467901.png?im_w=720" alt="Stargazing Cabin living room" />
+          <a href="#stargazing-cabin"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/f2126ff5-fe60-44ee-bd32-f9ec36467901.png?im_w=720" alt="Stargazing Cabin living room" /></a>
           <span class="cabin-status-badge badge-available">Available</span>
         </div>
         <div class="cabin-card-body">
-          <h3 class="cabin-card-name">Stargazing Cabin</h3>
+          <h3 class="cabin-card-name"><a href="#stargazing-cabin">Stargazing Cabin</a></h3>
           <p class="cabin-card-tagline">No light pollution. Just you and the Milky Way.</p>
           <p class="cabin-card-desc">Deep in the Ouachita wilderness where the night sky is truly dark. Disconnect completely, look up, and experience the stars the way they were meant to be seen.</p>
           <div class="cabin-card-stats">
@@ -788,21 +798,21 @@
       <!-- NIGHTFALL GUEST CABIN -->
       <div class="cabin-card">
         <div class="cabin-card-img">
-          <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80" alt="Nightfall Guest Cabin — deep forest" />
+          <a href="#nightfall"><img src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668096280336036084/original/e9466e5f-f0c9-431d-b38c-1e622600de40.jpeg?im_w=720" alt="Nightfall Guest Cabin exterior" /></a>
           <span class="cabin-status-badge badge-available">Now Open</span>
         </div>
         <div class="cabin-card-body">
-          <h3 class="cabin-card-name">Nightfall Guest Cabin</h3>
+          <h3 class="cabin-card-name"><a href="#nightfall">Nightfall Guest Cabin</a></h3>
           <p class="cabin-card-tagline">Game room, guest house, and your crew's basecamp.</p>
-          <p class="cabin-card-desc">A converted garage turned ultimate retreat. PlayStation, pool table, sofa lounge, full kitchen, and a frozen-drink machine — a cozy basecamp for guests who want more than just a place to sleep.</p>
+          <p class="cabin-card-desc">A converted garage turned ultimate retreat. Video games on the big screen, sofa lounge, full kitchen, and a frozen-drink machine — a cozy basecamp for guests who want more than just a place to sleep.</p>
           <div class="cabin-card-stats">
             <span class="cabin-stat"><span class="cabin-stat-icon">👥</span> Up to 4 guests</span>
-            <span class="cabin-stat"><span class="cabin-stat-icon">🎮</span> PlayStation & Lounge</span>
-            <span class="cabin-stat"><span class="cabin-stat-icon">🎱</span> Pool Table</span>
+            <span class="cabin-stat"><span class="cabin-stat-icon">🎮</span> Video Games & Lounge</span>
             <span class="cabin-stat"><span class="cabin-stat-icon">🍹</span> Frozen-Drink Machine</span>
           </div>
           <div class="cabin-card-footer">
-            <a href="mailto:info@arborium.app?subject=Nightfall Guest Cabin — Booking Inquiry" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book by Email</a>
+            <a href="https://www.airbnb.com/rooms/1668096280336036084" target="_blank" rel="noopener noreferrer" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
+            <a href="#nightfall" class="btn-outline-dark" style="padding:0.7rem 1.5rem;font-size:0.75rem">View Details</a>
           </div>
         </div>
       </div>
@@ -1129,25 +1139,42 @@
 <section class="nightfall">
   <div class="nightfall-inner">
     <div class="nightfall-img">
-      <img loading="lazy" src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=85" alt="Nightfall Guest Cabin — deep Ouachita forest" />
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668096280336036084/original/a68f0afa-9d89-4a5f-a559-473aa527426d.jpeg?im_w=720" alt="Nightfall Guest Cabin game room and living room" />
     </div>
     <div>
       <span class="coming-soon-pill">🌑 Now Open</span>
       <h2 class="section-title">Nightfall Guest Cabin<br><em style="font-style:italic;color:var(--amber)">& Game Room</em></h2>
-      <p class="body-text">A converted garage transformed into the perfect Ouachita basecamp. Part cozy guest house, part epic game room — Nightfall sleeps 2 to 4 guests and gives your crew a space unlike anything else in the forest.</p>
+      <p class="body-text">A converted garage transformed into the perfect Ouachita basecamp. Part cozy guest house, part epic game room — Nightfall sleeps up to 4 guests, sits about 50 yards from Sunset Cabin, and is minutes from the Wolf Pen Gap trail system.</p>
       <ul class="nightfall-features">
-        <li><strong style="color:var(--text-dark)">PlayStation & lounge</strong> — large TV and a comfortable sofa lounge for rainy days and late nights</li>
-        <li><strong style="color:var(--text-dark)">Pool table & frozen-drink machine</strong> — rack up a game and blend something cold after a day on the trails</li>
-        <li><strong style="color:var(--text-dark)">Full kitchen & bathroom</strong> — everything you need to stay comfortable and self-sufficient</li>
-        <li><strong style="color:var(--text-dark)">Mountain bike workshop</strong> — dedicated workbench, full tool station, and secure bike storage for riders who go out hard and come back ready to go again</li>
-        <li><strong style="color:var(--text-dark)">Up to 4 guests</strong> — perfect as a standalone retreat or as overflow accommodation alongside Sunset or Stargazing Cabin</li>
+        <li><strong style="color:var(--text-dark)">Video games & lounge</strong> — video games on the big screen and a comfortable sofa lounge for rainy days and late nights</li>
+        <li><strong style="color:var(--text-dark)">Frozen-drink machine</strong> — blend a frozen margarita or a kid-friendly slush after a day on the trails</li>
+        <li><strong style="color:var(--text-dark)">Full kitchen & bathroom</strong> — everything you need to stay self-sufficient, plus Nespresso or drip coffee to start the morning</li>
+        <li><strong style="color:var(--text-dark)">Queen bed + sofa bed</strong> — sleeps up to 4, perfect as a standalone retreat or as overflow accommodation alongside Sunset or Stargazing Cabin</li>
       </ul>
       <div style="margin-top:2.5rem">
-        <a href="mailto:info@arborium.app?subject=Nightfall Guest Cabin — Booking Inquiry" class="btn-outline-dark">Book Nightfall by Email</a>
+        <a href="https://www.airbnb.com/rooms/1668096280336036084" target="_blank" rel="noopener noreferrer" class="btn-amber">Book on Airbnb</a>
       </div>
     </div>
   </div>
 </section>
+
+<!-- NIGHTFALL GALLERY -->
+<div class="nightfall-gallery">
+  <div class="nf-grid">
+    <div class="nf-item">
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668096280336036084/original/e15442a2-401d-40c1-aae6-018b404d5b62.jpeg?im_w=720" alt="Nightfall Guest Cabin kitchen" />
+    </div>
+    <div class="nf-item">
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668096280336036084/original/0e983394-08de-49c0-bbdd-81d5122fc774.jpeg?im_w=720" alt="Nightfall Guest Cabin bedroom with queen bed" />
+    </div>
+    <div class="nf-item">
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668096280336036084/original/a6baa127-d3d5-49b2-a923-eb674d1c7e7d.jpeg?im_w=720" alt="Nightfall Guest Cabin bathroom" />
+    </div>
+    <div class="nf-item">
+      <img loading="lazy" src="https://a0.muscache.com/im/pictures/hosting/Hosting-1668096280336036084/original/e9466e5f-f0c9-431d-b38c-1e622600de40.jpeg?im_w=720" alt="Nightfall Guest Cabin exterior" />
+    </div>
+  </div>
+</div>
 
 <!-- ACTIVITIES -->
 <section class="activities" id="activities">
@@ -1419,11 +1446,11 @@
   <div class="container-narrow">
     <span class="eyebrow">Reserve Your Stay</span>
     <h2 class="book-cta-title">The forest is<br><em>waiting for you.</em></h2>
-    <p class="book-cta-sub">Sunset and Stargazing Cabins book directly on Airbnb, and the Nightfall Guest Cabin books by email. Weekends fill fast.</p>
+    <p class="book-cta-sub">All three cabins book directly on Airbnb. Weekends fill fast.</p>
     <div class="book-cta-btns">
       <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer" class="btn-dark">Book Sunset Cabin →</a>
       <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-dark-outline">Book Stargazing Cabin →</a>
-      <a href="mailto:info@arborium.app?subject=Nightfall Guest Cabin — Booking Inquiry" class="btn-dark-outline">Book Nightfall Cabin →</a>
+      <a href="https://www.airbnb.com/rooms/1668096280336036084" target="_blank" rel="noopener noreferrer" class="btn-dark-outline">Book Nightfall Cabin →</a>
     </div>
   </div>
 </section>
@@ -1435,6 +1462,7 @@
   <p style="margin-top:0.75rem;display:flex;justify-content:center;align-items:center;gap:1.5rem;flex-wrap:wrap">
     <a href="https://www.airbnb.com/rooms/1369606948743760150" target="_blank" rel="noopener noreferrer">Book Sunset Cabin</a>
     <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer">Book Stargazing Cabin</a>
+    <a href="https://www.airbnb.com/rooms/1668096280336036084" target="_blank" rel="noopener noreferrer">Book Nightfall Cabin</a>
     <a href="https://www.instagram.com/arborium.app" target="_blank" rel="noopener noreferrer">@arborium.app</a>
     <a href="mailto:info@arborium.app">info@arborium.app</a>
   </p>
