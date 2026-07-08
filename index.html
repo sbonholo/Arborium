@@ -141,6 +141,7 @@
     }
 
     html { scroll-behavior: smooth; }
+    [id] { scroll-margin-top: 92px; }
     body { font-family: 'Inter', sans-serif; color: var(--text-dark); background: var(--cream); overflow-x: hidden; }
 
     /* ── UTILITIES ── */
@@ -213,13 +214,13 @@
     .nav-cta:hover { background: var(--amber-light) !important; }
 
     /* ── HERO ── */
-    .hero { position: relative; height: 100vh; min-height: 680px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero { position: relative; height: 100vh; min-height: 680px; display: flex; align-items: safe center; justify-content: center; overflow: hidden; padding-top: 104px; }
     .hero-bg {
       position: absolute; inset: 0; will-change: transform;
       background-image: url('https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg?im_w=1200');
       background-size: cover; background-position: center;
     }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,16,9,0.2) 0%, rgba(8,16,9,0.55) 50%, rgba(8,16,9,0.85) 100%); }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,16,9,0.55) 0%, rgba(8,16,9,0.4) 22%, rgba(8,16,9,0.55) 55%, rgba(8,16,9,0.85) 100%); }
     .hero-content { position: relative; text-align: center; color: var(--cream); max-width: 860px; padding: 0 2rem 3.5rem; }
     .hero-eyebrow { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.88); margin-bottom: 1.4rem; opacity: 0.9; }
     .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.2rem, 9vw, 7rem); font-weight: 700; line-height: 1.02; margin-bottom: 1.6rem; }
@@ -265,8 +266,8 @@
     .cabin-stat { font-size: 0.75rem; font-weight: 500; color: var(--forest-mid); display: flex; align-items: center; gap: 0.35rem; }
     .cabin-stat-icon { font-size: 0.85rem; }
     .cabin-card-footer { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
-    .cabin-rating { font-size: 0.8rem; font-weight: 600; color: var(--forest); display: flex; align-items: center; gap: 0.3rem; }
-    .cabin-rating span { color: var(--amber); }
+    .cabin-rating { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 0.3rem; }
+    .cabin-rating span { color: #9a6a15; }
 
     /* ── CABIN DIVIDER ── */
     .cabin-divider {
@@ -404,12 +405,12 @@
     .reviews-top { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 2rem; margin-bottom: 3.5rem; }
     .rating-big { font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 700; color: var(--forest); line-height: 1; }
     .rating-row { display: flex; align-items: center; gap: 1.5rem; }
-    .rating-stars { color: var(--amber); font-size: 1.15rem; }
+    .rating-stars { color: #9a6a15; font-size: 1.15rem; }
     .rating-sub { font-size: 0.82rem; color: var(--stone); margin-top: 0.3rem; }
     .guest-fav { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--forest); color: var(--cream); padding: 0.55rem 1.2rem; border-radius: 50px; font-size: 0.78rem; font-weight: 600; margin-top: 0.6rem; }
     .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.8rem; }
     .review-card { background: var(--cream); padding: 2rem; border-radius: 2px; }
-    .review-stars { color: var(--amber); font-size: 0.88rem; margin-bottom: 0.9rem; }
+    .review-stars { color: #9a6a15; font-size: 0.95rem; margin-bottom: 0.9rem; letter-spacing: 0.1em; }
     .review-text { font-size: 0.9rem; line-height: 1.78; color: #4a4540; font-style: italic; margin-bottom: 1.2rem; }
     .review-author { font-size: 0.78rem; font-weight: 600; color: var(--forest); letter-spacing: 0.06em; }
 
@@ -827,6 +828,7 @@
           <div class="cabin-card-footer">
             <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
             <a href="#stargazing-cabin" class="btn-outline-dark" style="padding:0.7rem 1.5rem;font-size:0.75rem">View Details</a>
+            <span class="cabin-rating"><span>★</span> 4.67 · 3 reviews</span>
           </div>
         </div>
       </div>
@@ -1391,6 +1393,8 @@
       <h3>Ready to ride?</h3>
       <p>All three vehicles are available exclusively for Arborium Cabins guests. Rates, availability, and trail recommendations provided on request. We'll make sure you're set up and on the trail from the moment you arrive.</p>
       <a href="mailto:info@arborium.app?subject=ATV%20%26%20SxS%20Rental%20Inquiry" class="btn-amber">Contact Us About Rentals</a>
+      <!-- PHONE PLACEHOLDER: replace 479-000-0000 with the real number, or delete this line -->
+      <p style="margin-top:1.2rem;margin-bottom:0"><a href="tel:+14790000000" style="color:var(--amber-light);text-decoration:none">📞 Or call / text: (479) 000-0000</a></p>
     </div>
   </div>
 </section>
@@ -1514,6 +1518,8 @@
     <a href="https://www.airbnb.com/rooms/1668096280336036084" target="_blank" rel="noopener noreferrer">Book Nightfall Cabin</a>
     <a href="https://www.instagram.com/arborium.app" target="_blank" rel="noopener noreferrer">@arborium.app</a>
     <a href="mailto:info@arborium.app">info@arborium.app</a>
+    <!-- PHONE PLACEHOLDER: replace 479-000-0000 with the real number, or delete this line -->
+    <a href="tel:+14790000000">📞 (479) 000-0000</a>
   </p>
   <p style="margin-top:1.5rem;font-size:0.72rem;opacity:0.3">© 2026 Arborium LLC. All rights reserved.</p>
 </footer>
