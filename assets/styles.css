@@ -622,3 +622,11 @@
       border: 1px solid rgba(196,134,42,0.35); border-radius: 3px;
       padding: 2.5rem 2rem; background: var(--cream);
     }
+
+    /* ── ICON SYSTEM ── */
+    /* Rendering-critical styling lives in SVG attributes; these are enhancements only */
+    .icon { display: inline-block; vertical-align: -0.18em; flex-shrink: 0; }
+    .amenity-icon { color: var(--amber); }
+    .activity-icon { color: var(--amber); }
+    .loc-icon { color: var(--amber-light); }
+    .hero-trust-badge .icon, .badge .icon, .cabin-stat-icon .icon { vertical-align: -0.22em; }
