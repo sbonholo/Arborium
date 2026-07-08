@@ -149,6 +149,7 @@ document.querySelectorAll('a[href*="airbnb.com/rooms"], a[href^="mailto:"]').for
     if (a.href.includes('1369606948743760150')) name = 'click-book-sunset';
     else if (a.href.includes('1668015378530902092')) name = 'click-book-stargazing';
     else if (a.href.includes('1668096280336036084')) name = 'click-book-nightfall';
+    else if (a.href.includes('1711593580951571625')) name = 'click-book-whole-property';
     window.goatcounter.count({ path: name, title: name, event: true });
   });
 });
