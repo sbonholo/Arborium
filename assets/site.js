@@ -1,5 +1,21 @@
 // Arborium Cabins — shared site behavior (all pages)
 
+// ── Anchor handling ──
+// Landing on a #hash must JUMP instantly (a load-time smooth-scroll
+// animation leaves stale paint strips under the toolbar in Chrome and
+// can land mid-section). Smooth scrolling is enabled only after load,
+// so it applies to in-page clicks — and once images/fonts have loaded,
+// we re-align the anchor target in case late layout shifted it.
+window.addEventListener('load', () => {
+  if (location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) target.scrollIntoView();
+  }
+  requestAnimationFrame(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+  });
+});
+
 // ── Review counts: single source of truth ──
 // Update these numbers when the Airbnb review counts change; every
 // mention across the site updates automatically. (Also update the
