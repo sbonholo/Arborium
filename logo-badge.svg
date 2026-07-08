@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Arborium Cabins official badge: A-frame cabin, pines, mountains, night sky -->
+  <defs>
+    <path id="arcTop" d="M 66 256 A 190 190 0 0 1 446 256"/>
+    <clipPath id="scene"><circle cx="256" cy="256" r="150"/></clipPath>
+  </defs>
+
+  <!-- badge base -->
+  <circle cx="256" cy="256" r="250" fill="#1e3522"/>
+  <circle cx="256" cy="256" r="246" fill="none" stroke="#f7f2ea" stroke-width="5"/>
+  <circle cx="256" cy="256" r="152" fill="none" stroke="#f7f2ea" stroke-width="4"/>
+
+  <!-- arched brand name -->
+  <text font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="700" fill="#f7f2ea" letter-spacing="14">
+    <textPath href="#arcTop" startOffset="50%" text-anchor="middle">ARBORIUM</textPath>
+  </text>
+
+  <!-- inner scene -->
+  <g clip-path="url(#scene)">
+    <rect x="106" y="106" width="300" height="300" fill="#0f231d"/>
+
+    <!-- stars -->
+    <g fill="#e8c877">
+      <circle cx="300" cy="146" r="3.5"/>
+      <circle cx="336" cy="132" r="2.5"/>
+      <circle cx="356" cy="168" r="3"/>
+      <circle cx="322" cy="186" r="2.5"/>
+      <circle cx="282" cy="170" r="2.5"/>
+      <circle cx="368" cy="140" r="2"/>
+    </g>
+
+    <!-- crescent moon -->
+    <path d="M 214 138 a 24 24 0 1 0 20 38 a 18 18 0 1 1 -20 -38 Z" fill="#f2ecdd"/>
+
+    <!-- mountains -->
+    <path d="M106 268 L166 200 L212 248 L268 186 L326 250 L376 210 L406 246 L406 406 L106 406 Z" fill="#33523a"/>
+    <path d="M106 284 L150 240 L206 290 L262 232 L330 296 L406 240 L406 406 L106 406 Z" fill="#26412c"/>
+
+    <!-- pine forest flanking the cabin -->
+    <g fill="#14291b">
+      <path d="M136 342 L156 250 L176 342 Z"/>
+      <path d="M168 350 L186 268 L204 350 Z"/>
+      <path d="M118 356 L132 290 L146 356 Z"/>
+      <path d="M338 350 L356 262 L374 350 Z"/>
+      <path d="M368 354 L384 282 L400 354 Z"/>
+      <path d="M308 352 L324 276 L340 352 Z"/>
+      <path d="M196 354 L210 292 L224 354 Z"/>
+      <path d="M290 356 L302 298 L314 356 Z"/>
+    </g>
+
+    <!-- A-frame cabin -->
+    <g>
+      <path d="M256 208 L192 350 L320 350 Z" fill="#1a2e1c" stroke="#c98d2e" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M256 232 L212 330" stroke="#a8762a" stroke-width="4"/>
+      <path d="M256 232 L300 330" stroke="#a8762a" stroke-width="4"/>
+      <!-- glowing window -->
+      <rect x="238" y="288" width="36" height="36" fill="#f4c15e"/>
+      <path d="M256 288 V324 M238 306 H274" stroke="#7a5a1e" stroke-width="4"/>
+      <!-- base -->
+      <rect x="188" y="350" width="136" height="8" fill="#c98d2e"/>
+    </g>
+  </g>
+
+  <!-- bottom banner -->
+  <path d="M92 344 L150 362 Q256 384 362 362 L420 344 L404 414 Q256 442 108 414 Z" fill="#1e3522" stroke="#f7f2ea" stroke-width="4" stroke-linejoin="round"/>
+  <text x="256" y="404" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="700" fill="#f7f2ea" text-anchor="middle" letter-spacing="5">CABINS · OUACHITA</text>
+</svg>
