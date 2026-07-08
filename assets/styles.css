@@ -74,7 +74,7 @@
       padding: 1.6rem 3rem;
       transition: background 0.35s, padding 0.3s, backdrop-filter 0.35s;
     }
-    #nav.scrolled { background: rgba(14,28,16,0.96); backdrop-filter: blur(14px); padding: 1rem 3rem; }
+    #nav.scrolled { background: rgba(14,28,16,0.98); padding: 1rem 3rem; }
 
     .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; color: var(--cream); text-decoration: none; letter-spacing: 0.02em; display: flex; align-items: center; gap: 0.6rem; }
     .nav-logo-word em { font-style: normal; color: var(--amber); }
@@ -89,7 +89,7 @@
     /* ── HERO ── */
     .hero { position: relative; height: 100vh; min-height: 680px; display: flex; align-items: safe center; justify-content: center; overflow: hidden; padding-top: 104px; }
     .hero-bg {
-      position: absolute; inset: 0; will-change: transform;
+      position: absolute; inset: 0;
       background-image: url('https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg?im_w=1200');
       background-size: cover; background-position: center;
     }

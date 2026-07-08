@@ -17,16 +17,6 @@ if (nav) {
   }, { passive: true });
 }
 
-// ── Hero parallax ──
-const heroBg = document.getElementById('heroBg');
-if (heroBg) {
-  window.addEventListener('scroll', () => {
-    if (window.scrollY < window.innerHeight) {
-      heroBg.style.transform = `translateY(${window.scrollY * 0.35}px)`;
-    }
-  }, { passive: true });
-}
-
 // ── Floating book bar — appears once the reader is well past the hero ──
 const bookFloat = document.getElementById('bookFloat');
 if (bookFloat) {
