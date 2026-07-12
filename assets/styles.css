@@ -86,7 +86,7 @@
     .nav-cta:hover { background: var(--amber-light) !important; }
 
     /* ── HERO ── */
-    .hero { position: relative; height: 100vh; min-height: 680px; display: flex; align-items: safe center; justify-content: center; overflow: hidden; padding-top: 104px; }
+    .hero { position: relative; min-height: 100vh; min-height: max(680px, 100svh); display: flex; align-items: safe center; justify-content: center; overflow: hidden; padding-top: 104px; }
     .hero-bg {
       position: absolute; inset: 0;
       background-image: url('https://a0.muscache.com/im/pictures/miso/Hosting-1369606948743760150/original/6dcde223-f425-452d-8d59-f07bfbb2e384.jpeg?im_w=1200');
@@ -571,7 +571,7 @@
     }
 
     /* ── CABIN PAGE HERO ── */
-    .hero--cabin { height: 78vh; min-height: 560px; }
+    .hero--cabin { min-height: 78vh; min-height: max(560px, 78svh); }
     .hero-back {
       display: inline-flex; align-items: center; gap: 0.4rem;
       color: rgba(247,242,234,0.75); text-decoration: none;
