@@ -21,7 +21,7 @@ window.addEventListener('load', () => {
 // mention across the site updates automatically. (Also update the
 // "reviewCount" values in each page's JSON-LD block for Google.)
 const SUNSET_REVIEW_COUNT = 18;  // Sunset Cabin listing (.rev-count)
-const TOTAL_REVIEW_COUNT = 21;   // all listings combined (.rev-count-total)
+const TOTAL_REVIEW_COUNT = 30;   // all listings combined (.rev-count-total)
 document.querySelectorAll('.rev-count').forEach(el => el.textContent = SUNSET_REVIEW_COUNT);
 document.querySelectorAll('.rev-count-total').forEach(el => el.textContent = TOTAL_REVIEW_COUNT);
 
