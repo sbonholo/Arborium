@@ -16,14 +16,12 @@ window.addEventListener('load', () => {
   });
 });
 
-// ── Review counts: single source of truth ──
-// Update these numbers when the Airbnb review counts change; every
-// mention across the site updates automatically. (Also update the
-// "reviewCount" values in each page's JSON-LD block for Google.)
-const SUNSET_REVIEW_COUNT = 18;  // Sunset Cabin listing (.rev-count)
-const TOTAL_REVIEW_COUNT = 30;   // all listings combined (.rev-count-total)
-document.querySelectorAll('.rev-count').forEach(el => el.textContent = SUNSET_REVIEW_COUNT);
-document.querySelectorAll('.rev-count-total').forEach(el => el.textContent = TOTAL_REVIEW_COUNT);
+// ── Review count: single source of truth (host-wide, all listings) ──
+// Update this ONE number when the Airbnb total changes; every mention
+// across the site updates automatically. (Also update "reviewCount"
+// values in each page's JSON-LD block for Google.)
+const TOTAL_REVIEW_COUNT = 30;
+document.querySelectorAll('.rev-count, .rev-count-total').forEach(el => el.textContent = TOTAL_REVIEW_COUNT);
 
 // ── Nav background on scroll ──
 const nav = document.getElementById('nav');
