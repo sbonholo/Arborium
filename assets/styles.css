@@ -670,3 +670,18 @@
     }
     /* Reserve nav logo space so it can't shift the header while loading */
     .nav-logo-mark { aspect-ratio: 1; }
+
+    /* Single-vehicle fleet layout */
+    .fleet-grid--single { grid-template-columns: minmax(0, 420px); justify-content: center; }
+
+    /* Skip-to-content link (keyboard/screen-reader users) */
+    .skip-link {
+      position: absolute; left: 50%; transform: translateX(-50%) translateY(-150%);
+      top: 0.6rem; z-index: 500;
+      background: var(--amber); color: var(--forest);
+      padding: 0.8rem 1.6rem; border-radius: 2px;
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      transition: transform 0.18s ease;
+    }
+    .skip-link:focus { transform: translateX(-50%) translateY(0); }
