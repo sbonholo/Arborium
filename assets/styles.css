@@ -640,3 +640,33 @@
     .cat-value { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--forest); }
     .cat-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); margin-top: 0.25rem; }
     @media (max-width: 768px) { .cat-ratings { grid-template-columns: repeat(3, 1fr); row-gap: 1.4rem; } }
+
+    /* ── UX / ACCESSIBILITY REFINEMENTS ── */
+    /* Visible keyboard focus (browser default 1px outline is invisible on dark sections) */
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--amber-light);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+    /* Respect reduced-motion preferences (vestibular disorders) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto !important; }
+    }
+    /* Comfortable touch targets on phones (WCAG 2.5.5) */
+    @media (max-width: 768px) {
+      .hero-back { padding: 0.9rem 0; }
+      .nav-hamburger { min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+      .btn-amber, .btn-outline-light, .btn-outline-dark, .btn-dark, .btn-dark-outline {
+        min-height: 46px; display: inline-flex; align-items: center; justify-content: center;
+      }
+      .book-float-close, .lb-close { min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+      .cabin-card-name a { display: inline-block; padding: 0.25rem 0; }
+      .faq-question { min-height: 52px; }
+    }
+    /* Reserve nav logo space so it can't shift the header while loading */
+    .nav-logo-mark { aspect-ratio: 1; }
