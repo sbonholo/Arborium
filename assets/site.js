@@ -102,7 +102,10 @@ if (lb) {
     ['.sg-grid', 'Stargazing Cabin'],
     ['.nf-grid', 'Nightfall Guest Cabin']
   ].forEach(([sel, label]) => {
-    const imgs = Array.from(document.querySelectorAll(sel + ' img'));
+    const grid = document.querySelector(sel);
+    if (!grid) return;
+    label = grid.dataset.lightboxLabel || label;
+    const imgs = Array.from(grid.querySelectorAll('img'));
     imgs.forEach((img, i) => {
       img.style.cursor = 'zoom-in';
       img.addEventListener('click', () => openLightbox(imgs, i, label));
@@ -155,7 +158,8 @@ document.querySelectorAll('a[href*="airbnb.com/rooms"], a[href^="mailto:"]').for
   a.addEventListener('click', () => {
     if (!window.goatcounter || !window.goatcounter.count) return;
     let name = 'click-email-inquiry';
-    if (a.href.includes('1369606948743760150')) name = 'click-book-sunset';
+    if (a.href.includes('Waitlist')) name = 'click-waitlist-sugar-creek';
+    else if (a.href.includes('1369606948743760150')) name = 'click-book-sunset';
     else if (a.href.includes('1668015378530902092')) name = 'click-book-stargazing';
     else if (a.href.includes('1668096280336036084')) name = 'click-book-nightfall';
     else if (a.href.includes('1711593580951571625')) name = 'click-book-whole-property';

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img" aria-label="Photo coming soon: Gallery (tall): looking down at the creek from the porch">
+  <rect width="900" height="1200" fill="#1a2e1c"/>
+  <path d="M0 864 Q 225 792 450 864 T 900 864 V 1200 H 0 Z" fill="#0e1c10"/>
+  <path d="M0 936 Q 225 864 450 936 T 900 936" fill="none" stroke="#c4862a" stroke-opacity="0.55" stroke-width="3"/>
+  <text x="50%" y="42%" text-anchor="middle" font-family="Georgia, 'Playfair Display', serif" font-size="40" fill="#f7f2ea">Sugar Creek Cabin</text>
+  <text x="50%" y="52%" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" letter-spacing="4" fill="#e0a84a">PHOTO COMING SOON</text>
+  <text x="50%" y="60%" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#f7f2ea" fill-opacity="0.6">Gallery (tall): looking down at the creek from the porch</text>
+</svg>
