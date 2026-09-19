@@ -39,7 +39,8 @@
     "sameAs": "https://www.airbnb.com/rooms/1668015378530902092",
     "image": "https://a0.muscache.com/im/pictures/hosting/Hosting-1668015378530902092/original/9073bb07-ab80-4c13-a58c-31f3c889f48f.png?im_w=720",
     "address": { "@type": "PostalAddress", "addressLocality": "Mena", "addressRegion": "AR", "addressCountry": "US" },
-    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.97", "reviewCount": "30", "bestRating": "5" },
+    "numberOfRooms": 3,
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.88", "reviewCount": "8", "bestRating": "5" },
     "petsAllowed": true
   }
   </script>
@@ -51,9 +52,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/styles.css?v=14" />
+  <link rel="stylesheet" href="/assets/styles.css?v=16" />
 </head>
-<body>
+<body data-cabin="stargazing">
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -93,10 +94,12 @@
     <a class="hero-back" href="/#our-cabins">← All Cabins</a>
     <h1 class="hero-title" style="font-size:clamp(2.8rem,7vw,5.2rem)"><span class="hero-eyebrow" style="display:block">Ouachita National Forest &nbsp;·&nbsp; Mena, Arkansas</span>Stargazing <em>Cabin</em></h1>
     <div class="hero-trust">
-      <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="currentColor" stroke="none" aria-hidden="true"><use href="/assets/icons.svg#star"/></svg> 4.97 · <span class="rev-count-total">30</span> Reviews</span>
+      <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="currentColor" stroke="none" aria-hidden="true"><use href="/assets/icons.svg#star"/></svg> 4.97 · <span class="rev-count-total">36</span> Reviews</span>
       <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#users"/></svg> Sleeps 8</span>
       <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg> Dark-Sky Views</span>
       <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#paw"/></svg> Pet Friendly</span>
+      <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#bed"/></svg> 3 Bedrooms · 1 Bath</span>
+      <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkle"/></svg> From $229/night</span>
     </div>
     <p class="hero-sub">No light pollution. No noise. Just the forest, the silence, and an endless sky full of stars.</p>
     <div class="hero-btns">
@@ -189,20 +192,16 @@
       </div>
       <div>
         <div class="rating-row">
-          <span class="rating-big">4.97</span>
+          <span class="rating-big" data-cabin-rating="stargazing">4.88</span>
           <div>
             <div class="rating-stars">★★★★★</div>
-            <div class="rating-sub"><span class="rev-count-total">30</span> reviews on Airbnb</div>
+            <div class="rating-sub"><span data-cabin-count="stargazing">8</span> reviews on Airbnb</div>
+            <div class="rating-sub">Host rating <span class="host-rating">4.97</span> across <span class="rev-count-total">36</span> reviews</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="reviews-grid reviews-grid--center">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"The Stargazer cabin in the woods was a perfect place to relax and enjoy the Ouachita National Forest all around you. It was quiet, peaceful and provided direct ATV access to the trail system. The cabin was very clean and stocked with all the essentials… perfect size for 2 couples and 2 kids. The host Simao was very attentive and responded to our questions quickly. We would definitely recommend this cabin."</p>
-        <div class="review-author">Charles &amp; Sherry &nbsp;·&nbsp; June 2026</div>
-      </div>
+    <div class="reviews-grid reviews-grid--center" data-reviews="stargazing" data-limit="2">
     </div>
   </div>
 </section>
@@ -212,7 +211,17 @@
   <div class="container-narrow">
     <span class="eyebrow">Reserve Your Stay</span>
     <h2 class="book-cta-title">The stars are<br><em>waiting for you.</em></h2>
-    <p class="book-cta-sub">Stargazing Cabin books directly on Airbnb. Weekends fill fast.<br><a href="/#group" style="color:inherit;font-weight:600">Bigger group? Add Sunset or Nightfall for larger groups — the property sleeps up to 18 →</a></p>
+    <p class="book-cta-sub">Stargazing Cabin books directly on Airbnb — from $229/night. Weekends fill fast.<br><a href="/#group" style="color:inherit;font-weight:600">Bigger group? Take the whole property — sleeps 18 →</a></p>
+    <div class="check-dates" id="check-dates">
+      <div class="check-dates-title">Check dates for Stargazing Cabin</div>
+      <form class="dates-form" data-cabin="stargazing">
+        <label>Check-in<input type="date" name="checkin" required></label>
+        <label>Check-out<input type="date" name="checkout" required></label>
+        <label>Guests<input type="number" name="adults" min="1" max="8" value="2"></label>
+        <button type="submit" class="btn-amber">Check on Airbnb →</button>
+      </form>
+      <div class="avail-strip" data-availability="stargazing" hidden></div>
+    </div>
     <div class="book-cta-btns">
       <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-dark">Book Stargazing Cabin →</a>
       <a href="/#our-cabins" class="btn-dark-outline">See All Cabins →</a>
@@ -241,13 +250,44 @@
 <!-- FLOATING BOOK BAR -->
 <div class="book-float" id="bookFloat">
   <div class="book-float-text">
-    <strong>Stargazing Cabin &nbsp;·&nbsp; <svg class="icon" width="15" height="15" fill="currentColor" stroke="none" aria-hidden="true"><use href="/assets/icons.svg#star"/></svg> 4.97 · <span class="rev-count-total">30</span> Reviews</strong>
+    <strong>Stargazing Cabin &nbsp;·&nbsp; <svg class="icon" width="15" height="15" fill="currentColor" stroke="none" aria-hidden="true"><use href="/assets/icons.svg#star"/></svg> 4.97 · <span class="rev-count-total">36</span> Reviews</strong>
     <span>8 guests · Dark-sky views · Pet friendly · Ouachita National Forest</span>
   </div>
   <div class="book-float-btns">
-    <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
+    <a href="https://www.airbnb.com/rooms/1668015378530902092" target="_blank" rel="noopener noreferrer" class="btn-amber desktop-only" style="padding:0.7rem 1.5rem;font-size:0.75rem">Book on Airbnb</a>
+    <button type="button" class="btn-amber mobile-only" style="padding:0.7rem 1.2rem;font-size:0.75rem" data-open-dates="stargazing">Check dates</button>
+    <a href="mailto:info@arborium.app?subject=Question about Arborium Cabins" class="btn-amber mobile-only" style="padding:0.7rem 1.2rem;font-size:0.75rem;background:transparent;border:1.5px solid var(--amber);color:var(--amber)">Email us</a>
   </div>
   <button class="book-float-close" onclick="document.getElementById('bookFloat').classList.remove('visible');document.getElementById('bookFloat').style.display='none'" aria-label="Close">✕</button>
+</div>
+
+
+<!-- CHECK DATES MODAL -->
+<div class="dates-modal" id="datesModal" hidden>
+  <div class="dates-modal-panel" role="dialog" aria-modal="true" aria-labelledby="datesModalTitle">
+    <button type="button" class="dates-modal-close" data-close-dates aria-label="Close">✕</button>
+    <span class="eyebrow">Check dates</span>
+    <h3 class="dates-modal-title" id="datesModalTitle">Pick a cabin and your dates</h3>
+    <form class="dates-form dates-form--cabin">
+      <label>Cabin
+        <select name="cabin">
+          <option value="sunset">Sunset Cabin · sleeps 6 · from $249/night</option>
+          <option value="stargazing">Stargazing Cabin · sleeps 8 · from $229/night</option>
+          <option value="sunset-nightfall">Sunset + Nightfall · sleeps 10</option>
+          <option value="whole-property">Whole property, 3 cabins · sleeps 18</option>
+          <option value="sugar-creek" disabled>Sugar Creek Cabin · opening Fall 2027</option>
+        </select>
+      </label>
+      <div class="dates-form-row">
+        <label>Check-in<input type="date" name="checkin" required></label>
+        <label>Check-out<input type="date" name="checkout" required></label>
+        <label>Guests<input type="number" name="adults" min="1" value="2"></label>
+      </div>
+      <button type="submit" class="btn-amber">Check on Airbnb →</button>
+    </form>
+    <div class="avail-strip" data-availability="" hidden></div>
+    <p class="dates-modal-foot">Opens the Airbnb listing with your dates filled in. Sugar Creek Cabin opens Fall 2027 — <a href="/sugar-creek/#waitlist" style="color:var(--forest);font-weight:600">join the waitlist</a>.</p>
+  </div>
 </div>
 
 <!-- LIGHTBOX -->
@@ -259,7 +299,9 @@
   <div class="lb-info"><span id="lbLabel"></span> &nbsp;·&nbsp; <span id="lbCounter"></span></div>
 </div>
 
-<script src="/assets/site.js?v=14"></script>
+<script src="/assets/site.js?v=16"></script>
+<script src="/assets/js/forms.js?v=16"></script>
+<script src="/assets/js/availability.js?v=16"></script>
 
 <!-- GoatCounter analytics (privacy-friendly, no cookies) -->
 <script data-goatcounter="https://arboriumcabins.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

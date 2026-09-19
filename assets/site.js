@@ -16,12 +16,35 @@ window.addEventListener('load', () => {
   });
 });
 
-// ── Review count: single source of truth (host-wide, all listings) ──
-// Update this ONE number when the Airbnb total changes; every mention
-// across the site updates automatically. (Also update "reviewCount"
-// values in each page's JSON-LD block for Google.)
-const TOTAL_REVIEW_COUNT = 30;
+// ── Reviews: single source of truth is /assets/data/reviews.json ──
+// host.count fills every .rev-count-total; host.rating fills .host-rating;
+// [data-cabin-rating] / [data-cabin-count] / [data-cabin-badge] take the
+// per-cabin numbers; [data-reviews="sunset|stargazing|all"] gets the cards.
+// (JSON-LD "reviewCount" values in each page's <head> must be updated by hand.)
+const TOTAL_REVIEW_COUNT = 36; // fallback shown until the JSON loads
 document.querySelectorAll('.rev-count, .rev-count-total').forEach(el => el.textContent = TOTAL_REVIEW_COUNT);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+fetch('/assets/data/reviews.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).then(data => {
+  if (!data) return;
+  const host = data.host || {};
+  if (host.count) document.querySelectorAll('.rev-count, .rev-count-total').forEach(el => el.textContent = host.count);
+  if (host.rating) document.querySelectorAll('.host-rating').forEach(el => el.textContent = host.rating.toFixed(2));
+  const cabins = data.cabins || {};
+  document.querySelectorAll('[data-cabin-rating]').forEach(el => { const c = cabins[el.dataset.cabinRating]; if (c) el.textContent = Number.isInteger(c.rating) ? c.rating.toFixed(1) : c.rating; });
+  document.querySelectorAll('[data-cabin-count]').forEach(el => { const c = cabins[el.dataset.cabinCount]; if (c) el.textContent = c.count; });
+  document.querySelectorAll('[data-cabin-badge]').forEach(el => { const c = cabins[el.dataset.cabinBadge]; if (c && c.badge) { el.textContent = c.badge; el.hidden = false; } else el.hidden = true; });
+  const names = { sunset: 'Sunset Cabin', stargazing: 'Stargazing Cabin', nightfall: 'Nightfall Guest Cabin', 'sugar-creek': 'Sugar Creek Cabin' };
+  document.querySelectorAll('[data-reviews]').forEach(grid => {
+    const which = grid.dataset.reviews, limit = +grid.dataset.limit || 99, showCabin = grid.dataset.showCabin === 'true';
+    const list = (data.reviews || []).filter(r => which === 'all' || r.cabin === which).slice(0, limit);
+    if (!list.length) return;
+    grid.innerHTML = list.map(r => {
+      const meta = [r.author + (r.from ? ' · ' + r.from : ''), showCabin ? names[r.cabin] || '' : '', r.label].filter(Boolean).join(' &nbsp;·&nbsp; ');
+      return '<div class="review-card"><div class="review-stars">' + '★'.repeat(r.stars || 5) + '</div><p class="review-text">"' + esc(r.text) + '"</p><div class="review-author">' + esc(meta).replace(/&amp;nbsp;/g, '&nbsp;') + (r.pet ? ' <span class="review-pet" title="Stayed with a dog">🐾</span>' : '') + '</div></div>';
+    }).join('');
+    if (window.revealNew) window.revealNew(grid.querySelectorAll('.review-card'));
+  });
+});
 
 // ── Nav background on scroll ──
 const nav = document.getElementById('nav');
@@ -86,6 +109,8 @@ revealEls.forEach(el => {
   el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
   observer.observe(el);
 });
+// Cards injected later (reviews from JSON) get the same treatment.
+window.revealNew = els => els.forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(12px)'; el.style.transition = 'opacity 0.45s ease, transform 0.45s ease'; observer.observe(el); setTimeout(() => reveal(el), 1500); });
 // Safety net: nothing stays hidden even if the observer never fires.
 setTimeout(() => revealEls.forEach(reveal), 2500);
 
@@ -152,18 +177,18 @@ if (lb) {
   }, { passive: true });
 }
 
-// ── Conversion tracking: count booking clicks as GoatCounter events ──
-// Shows in the GoatCounter dashboard as paths like "click-book-sunset".
+// ── Conversion tracking: GoatCounter events ──
+// Dashboard shows them as paths: book-airbnb-<cabin>, waitlist-submit,
+// check-dates-<cabin>, email-click.
+window.track = name => { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: name, title: name, event: true }); };
+const CABIN_BY_LISTING = {
+  '1369606948743760150': 'sunset', '1668015378530902092': 'stargazing', '1668096280336036084': 'nightfall',
+  '1711593580951571625': 'whole-property', '1708103105692478664': 'sunset-nightfall', '1772724604383701053': 'sugar-creek'
+};
 document.querySelectorAll('a[href*="airbnb.com/rooms"], a[href^="mailto:"]').forEach(a => {
   a.addEventListener('click', () => {
-    if (!window.goatcounter || !window.goatcounter.count) return;
-    let name = 'click-email-inquiry';
-    if (a.href.includes('Waitlist')) name = 'click-waitlist-sugar-creek';
-    else if (a.href.includes('1369606948743760150')) name = 'click-book-sunset';
-    else if (a.href.includes('1668015378530902092')) name = 'click-book-stargazing';
-    else if (a.href.includes('1668096280336036084')) name = 'click-book-nightfall';
-    else if (a.href.includes('1711593580951571625')) name = 'click-book-whole-property';
-    else if (a.href.includes('1708103105692478664')) name = 'click-book-sunset-nightfall';
-    window.goatcounter.count({ path: name, title: name, event: true });
+    if (a.href.startsWith('mailto:')) return window.track('email-click');
+    const id = (a.href.match(/rooms\/(\d+)/) || [])[1];
+    window.track('book-airbnb-' + (CABIN_BY_LISTING[id] || 'unknown'));
   });
 });

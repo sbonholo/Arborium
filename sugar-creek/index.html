@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="rMCm1vsSa0OXldiexnA4Q3ERxqdaPHYXuAs_YVempAo" />
   <title>Sugar Creek Cabin — Creekside Log Cabin near Wolf Pen Gap, Mena AR | Arborium Cabins</title>
-  <meta name="description" content="Sugar Creek Cabin — coming soon from Arborium Cabins. A 2022 custom log home overlooking Sugar Creek on 16.87 gated acres bordering the Ouachita National Forest and Caney Creek Wilderness. Wraparound porches, hot tub. Sleeps 8." />
+  <meta name="description" content="Sugar Creek Cabin — opening Fall 2027 from Arborium Cabins. From $349/night. A 2022 custom log home overlooking Sugar Creek on 16.87 gated acres bordering the Ouachita National Forest and Caney Creek Wilderness. Wraparound porches, hot tub. Sleeps 8." />
   <link rel="canonical" href="https://arboriumcabins.com/sugar-creek/" />
   <meta name="theme-color" content="#0e1c10" />
   <link rel="preload" as="image" href="/sugar-creek/img/01-hero-cabin-over-creek.jpg" />
@@ -19,12 +19,12 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://arboriumcabins.com/sugar-creek/" />
   <meta property="og:title" content="Sugar Creek Cabin — Arborium Cabins · Ouachita National Forest" />
-  <meta property="og:description" content="Coming soon. A 2022 custom log home overlooking Sugar Creek — wraparound porches, hot tub, 16.87 gated acres bordering the Ouachita National Forest. Sleeps 8." />
+  <meta property="og:description" content="Opening Fall 2027. A 2022 custom log home overlooking Sugar Creek — wraparound porches, hot tub, 16.87 gated acres bordering the Ouachita National Forest. Sleeps 8." />
   <meta property="og:image" content="https://arboriumcabins.com/sugar-creek/img/01-hero-cabin-over-creek.jpg" />
   <meta property="og:site_name" content="Arborium Cabins" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Sugar Creek Cabin — Arborium Cabins · Ouachita National Forest" />
-  <meta name="twitter:description" content="Coming soon. A 2022 custom log home overlooking Sugar Creek — wraparound porches, hot tub, 16.87 gated acres. Sleeps 8." />
+  <meta name="twitter:description" content="Opening Fall 2027. A 2022 custom log home overlooking Sugar Creek — wraparound porches, hot tub, 16.87 gated acres. Sleeps 8." />
   <meta name="twitter:image" content="https://arboriumcabins.com/sugar-creek/img/01-hero-cabin-over-creek.jpg" />
 
   <!-- JSON-LD Structured Data -->
@@ -34,13 +34,14 @@
     "@type": "LodgingBusiness",
     "@id": "https://arboriumcabins.com/sugar-creek/",
     "name": "Sugar Creek Cabin — Arborium Cabins",
-    "description": "Coming soon. 2022 custom-built log home, 1,600 sq ft, overlooking Sugar Creek on 16.87 gated acres bordering the Ouachita National Forest and Caney Creek Wilderness near Mena, Arkansas. Wraparound porches, hot tub, propane backup generator. Sleeps 8, 3 bedrooms, 2 baths.",
+    "description": "Opening Fall 2027. 2022 custom-built log home, 1,600 sq ft, overlooking Sugar Creek on 16.87 gated acres bordering the Ouachita National Forest and Caney Creek Wilderness near Mena, Arkansas. Wraparound porches, hot tub, propane backup generator. Sleeps 8, 3 bedrooms, 2 baths.",
     "url": "https://arboriumcabins.com/sugar-creek/",
     "image": "https://arboriumcabins.com/sugar-creek/img/01-hero-cabin-over-creek.jpg",
     "address": { "@type": "PostalAddress", "addressLocality": "Mena", "addressRegion": "AR", "addressCountry": "US" },
     "amenityFeature": [
       {"@type": "LocationFeatureSpecification", "name": "Creek Frontage", "value": true},
       {"@type": "LocationFeatureSpecification", "name": "Hot Tub", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Wood-Burning Fireplace", "value": true},
       {"@type": "LocationFeatureSpecification", "name": "Wraparound Porch", "value": true},
       {"@type": "LocationFeatureSpecification", "name": "Backup Generator", "value": true},
       {"@type": "LocationFeatureSpecification", "name": "Gated Property", "value": true},
@@ -58,9 +59,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/styles.css?v=15" />
+  <link rel="stylesheet" href="/assets/styles.css?v=16" />
 </head>
-<body>
+<body data-cabin="sugar-creek">
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -73,7 +74,7 @@
     <li><a href="/#activities">Activities</a></li>
     <li><a href="/#rentals">SxS Rental</a></li>
     <li><a href="/#location">Location</a></li>
-    <li><a href="mailto:info@arborium.app?subject=Waitlist — Sugar Creek Cabin" class="nav-cta">Join the Waitlist</a></li>
+    <li><a href="#waitlist" class="nav-cta">Notify Me</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -87,7 +88,7 @@
   <a href="/#activities" onclick="closeNav()">Activities</a>
   <a href="/#rentals" onclick="closeNav()">SxS Rental</a>
   <a href="/#location" onclick="closeNav()">Location</a>
-  <a href="mailto:info@arborium.app?subject=Waitlist — Sugar Creek Cabin" class="nav-mobile-book" onclick="closeNav()">Join the Sugar Creek Waitlist</a>
+  <a href="#waitlist" class="nav-mobile-book" onclick="closeNav()">Notify me when bookable</a>
 </div>
 
 <main id="main">
@@ -100,14 +101,16 @@
     <a class="hero-back" href="/#our-cabins">← All Cabins</a>
     <h1 class="hero-title" style="font-size:clamp(2.8rem,7vw,5.2rem)"><span class="hero-eyebrow" style="display:block">Ouachita National Forest &nbsp;·&nbsp; Caney Creek Wilderness &nbsp;·&nbsp; Mena, Arkansas</span>Sugar Creek <em>Cabin</em></h1>
     <div class="hero-trust">
-      <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg> Coming Soon</span>
+      <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg> Opening Fall 2027</span>
       <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#users"/></svg> Sleeps 8</span>
       <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#drop"/></svg> Creek Frontage</span>
       <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#bath"/></svg> Hot Tub</span>
+      <span class="hero-trust-badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkle"/></svg> From $349/night</span>
     </div>
-    <p class="hero-sub">Wake to the sound of water. Sugar Creek runs just below — coffee on the rail, feet up, white oaks overhead.</p>
+    <p class="hero-sub">The only cabin with its own creek and 16 private acres. Book it on its own, or add it to a whole-property reunion.</p>
     <div class="hero-btns">
-      <a href="mailto:info@arborium.app?subject=Waitlist — Sugar Creek Cabin" class="btn-amber">Join the Waitlist</a>
+      <a href="#waitlist" class="btn-amber">Notify me when bookable</a>
+      <!-- When the Airbnb listing goes live (Fall 2027): <a href="https://www.airbnb.com/rooms/1772724604383701053" target="_blank" rel="noopener noreferrer" class="btn-amber">Book on Airbnb</a> -->
       <a href="#gallery" class="btn-outline-light">View Photos</a>
     </div>
   </div>
@@ -134,10 +137,10 @@
       <div>
         <span class="eyebrow">Sugar Creek Cabin</span>
         <h2 class="section-title">Secluded.<br>Private.<br><em style="font-style:italic;color:var(--amber)">Creekside.</em></h2>
-        <p class="body-text">Our fourth cabin sits on its own gated 16.87 acres, one parcel over from Sunset, Stargazing, and Nightfall. A 2022 custom-built log home — 1,600 square feet, three bedrooms, two baths — and the reason you'll come back: it overlooks Sugar Creek, with wraparound porches facing the water.</p>
-        <p class="body-text" style="margin-top:1rem">Behind you, mature white oaks. Past the fence line, the Ouachita National Forest and the Caney Creek Wilderness. Soak in the hot tub while the creek runs below. Wolf Pen Gap is five miles up the road. Sugar Creek Cabin opens soon — join the waitlist and you'll hear first. Full details and booking coming soon.</p>
+        <p class="body-text">The only Arborium cabin with its own creek and 16 private acres — book it on its own, or add it to a whole-property reunion. It sits on its own gated 16.87 acres, one parcel over from Sunset, Stargazing, and Nightfall. A 2022 custom-built log home — 1,600 square feet, three bedrooms, two baths — and the reason you'll come back: it overlooks Sugar Creek, with wraparound porches facing the water.</p>
+        <p class="body-text" style="margin-top:1rem">Behind you, mature white oaks. Past the fence line, the Ouachita National Forest and the Caney Creek Wilderness. Soak in the hot tub while the creek runs below. Wolf Pen Gap is five miles up the road. Sugar Creek Cabin opens Fall 2027 — from $349/night. Join the waitlist and you'll hear first; full details and booking to come.</p>
         <div class="intro-badges">
-          <span class="badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg> Coming Soon</span>
+          <span class="badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg> Opening Fall 2027</span>
           <span class="badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#users"/></svg> Sleeps 8</span>
           <span class="badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#drop"/></svg> Creek Frontage</span>
           <span class="badge"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#lock"/></svg> Gated 16.87 Acres</span>
@@ -163,7 +166,7 @@
         </div>
         <div class="room-card-body">
           <h3 class="room-card-title">The Bedrooms</h3>
-          <p class="room-card-desc">Three bedrooms and two full baths across 1,600 square feet of hand-set logs. Built in 2022, so everything is new — and quiet. Full details and booking coming soon.</p>
+          <p class="room-card-desc">Three bedrooms and two full baths across 1,600 square feet of hand-set logs. Built in 2022, so everything is new — and quiet. Full details and booking to come in Fall 2027.</p>
           <div class="room-tags">
             <span class="room-tag">3 Bedrooms</span>
             <span class="room-tag">2 Full Baths</span>
@@ -202,16 +205,17 @@
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#bath"/></svg></span><div><div class="amenity-name">Hot Tub</div><div class="amenity-desc">Soak while the creek runs below</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkle"/></svg></span><div><div class="amenity-name">Propane Backup Generator</div><div class="amenity-desc">The lights stay on when the grid doesn't</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#lock"/></svg></span><div><div class="amenity-name">Gated 16.87 Acres</div><div class="amenity-desc">Your own gated parcel, no neighbors</div></div></div>
-      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#map"/></svg></span><div><div class="amenity-name">Borders National Forest</div><div class="amenity-desc">Ouachita National Forest at the fence line</div></div></div>
+      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#map"/></svg></span><div><div class="amenity-name">National Forest on Three Sides</div><div class="amenity-desc">Ouachita National Forest at the fence line</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#boot"/></svg></span><div><div class="amenity-name">Caney Creek Wilderness</div><div class="amenity-desc">Wilderness access next door</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#leaf"/></svg></span><div><div class="amenity-name">White Oak Canopy</div><div class="amenity-desc">Mature hardwood shade over the cabin</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#car"/></svg></span><div><div class="amenity-name">Two-Car Carport</div><div class="amenity-desc">Covered parking steps from the door</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#wheel"/></svg></span><div><div class="amenity-name">Enclosed Shop + Lean-to</div><div class="amenity-desc">Covered space beside the carport</div></div></div>
-      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#pan"/></svg></span><div><div class="amenity-name">Full Kitchen</div><div class="amenity-desc">Gas range, full-size fridge, granite counters</div></div></div>
+      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#pan"/></svg></span><div><div class="amenity-name">Full Kitchen</div><div class="amenity-desc">Gas range, full-size fridge, live-edge granite</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#shower"/></svg></span><div><div class="amenity-name">Walk-in Tile Shower</div><div class="amenity-desc">Glass-door shower with dual heads</div></div></div>
-      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#fire"/></svg></span><div><div class="amenity-name">Vaulted Great Room</div><div class="amenity-desc">Exposed beams, tall windows, crystal chandelier</div></div></div>
+      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#fire"/></svg></span><div><div class="amenity-name">Wood-Burning Fireplace</div><div class="amenity-desc">Real fire on winter nights</div></div></div>
+      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg></span><div><div class="amenity-name">Vaulted Great Room</div><div class="amenity-desc">Exposed beams, tall windows, crystal chandelier</div></div></div>
       <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg></span><div><div class="amenity-name">2022 Custom Log Home</div><div class="amenity-desc">1,600 sq ft, three bedrooms, two baths</div></div></div>
-      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#pin"/></svg></span><div><div class="amenity-name">5 mi to Wolf Pen Gap</div><div class="amenity-desc">East Trailhead, five miles up the road</div></div></div>
+      <div class="amenity"><span class="amenity-icon"><svg class="icon" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#pin"/></svg></span><div><div class="amenity-name">10 mi to Wolf Pen Gap</div><div class="amenity-desc">West Trailhead, ten miles up the road</div></div></div>
     </div>
   </div>
 </section>
@@ -232,9 +236,9 @@
           <li>Ouachita National Forest on three sides, the Caney Creek Wilderness beyond</li>
           <li>Mature white oak canopy over the cabin</li>
           <li>3 miles to the Sugar Creek Vista overlook</li>
-          <li>5 miles to Wolf Pen Gap East Trailhead, 10 to the West Trailhead</li>
+          <li>10 miles to Wolf Pen Gap West Trailhead</li>
           <li>6.5 miles to Shady Lake Recreation Area</li>
-          <li>11 miles to Little Missouri Falls, 13 to Albert Pike</li>
+          <li>12 miles to Little Missouri Falls, 13 to Albert Pike</li>
           <li>21 miles southeast of Mena — exact address provided after booking</li>
         </ul>
       </div>
@@ -295,10 +299,10 @@
       </div>
       <div>
         <div class="rating-row">
-          <span class="rating-big">4.97</span>
+          <span class="rating-big host-rating">4.97</span>
           <div>
             <div class="rating-stars">★★★★★</div>
-            <div class="rating-sub"><span class="rev-count-total">30</span> reviews on Airbnb</div>
+            <div class="rating-sub"><span class="rev-count-total">36</span> reviews on Airbnb</div>
             <span class="guest-fav"><svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#award"/></svg> Guest Favorite</span>
           </div>
         </div>
@@ -309,13 +313,34 @@
 </section>
 
 <!-- BOOK CTA -->
-<section class="book-cta">
+<section class="book-cta" id="waitlist">
   <div class="container-narrow">
-    <span class="eyebrow">Opening Soon</span>
+    <span class="eyebrow">Opening Fall 2027</span>
     <h2 class="book-cta-title">Be first<br><em>on the creek.</em></h2>
-    <p class="book-cta-sub">Sugar Creek Cabin sits on its own parcel nearby and books separately from the other three. Join the waitlist and you'll hear before it lists anywhere.</p>
+    <p class="book-cta-sub">Sugar Creek Cabin opens Fall 2027 — from $349/night. It sits on its own parcel nearby and books on its own, or alongside a whole-property reunion. Leave your email and dates and you'll hear before it lists anywhere.</p>
+    <div class="lead-card">
+    <form class="lead-form" data-lead="waitlist-sugar-creek" data-subject="Waitlist — Sugar Creek Cabin" data-to="info@arborium.app" data-success="You're on the Sugar Creek list — we'll email you before it opens in Fall 2027." novalidate>
+      <input type="hidden" name="_subject" value="Arborium waitlist">
+      <input type="hidden" name="_cc" value="info@arborium.app">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <div class="lead-row">
+        <label>Email<input type="email" name="email" required autocomplete="email" placeholder="you@example.com"></label>
+      </div>
+      <div class="lead-row lead-row--3">
+        <label>Check-in<input type="date" name="checkin"></label>
+        <label>Check-out<input type="date" name="checkout"></label>
+        <label>Guests<input type="number" name="guests" min="1" max="8" value="2"></label>
+      </div>
+      <label>Message <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span><textarea name="message" rows="3" placeholder="Anything we should know?"></textarea></label>
+      <button type="submit" class="btn-amber">Notify me when bookable</button>
+      <p class="lead-status" aria-live="polite"></p>
+    </form>
+    </div>
+    <!-- When the Airbnb listing goes live (Fall 2027), replace the form with:
+         <a href="https://www.airbnb.com/rooms/1772724604383701053" target="_blank" rel="noopener noreferrer" class="btn-dark">Book Sugar Creek Cabin →</a> -->
     <div class="book-cta-btns">
-      <a href="mailto:info@arborium.app?subject=Waitlist — Sugar Creek Cabin" class="btn-dark">Join the Waitlist →</a>
       <a href="/#our-cabins" class="btn-dark-outline">See All Cabins →</a>
     </div>
   </div>
@@ -342,11 +367,13 @@
 <!-- FLOATING BOOK BAR -->
 <div class="book-float" id="bookFloat">
   <div class="book-float-text">
-    <strong>Sugar Creek Cabin &nbsp;·&nbsp; <svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg> Coming Soon</strong>
+    <strong>Sugar Creek Cabin &nbsp;·&nbsp; <svg class="icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="/assets/icons.svg#sparkles"/></svg> Opening Fall 2027</strong>
     <span>8 guests · 3 bedrooms · Creek frontage · Hot tub</span>
   </div>
   <div class="book-float-btns">
-    <a href="mailto:info@arborium.app?subject=Waitlist — Sugar Creek Cabin" class="btn-amber" style="padding:0.7rem 1.5rem;font-size:0.75rem">Join the Waitlist</a>
+    <a href="#waitlist" class="btn-amber desktop-only" style="padding:0.7rem 1.5rem;font-size:0.75rem">Notify me</a>
+    <a href="#waitlist" class="btn-amber mobile-only" style="padding:0.7rem 1.2rem;font-size:0.75rem">Notify me</a>
+    <a href="mailto:info@arborium.app?subject=Question about Arborium Cabins" class="btn-amber mobile-only" style="padding:0.7rem 1.2rem;font-size:0.75rem;background:transparent;border:1.5px solid var(--amber);color:var(--amber)">Email us</a>
   </div>
   <button class="book-float-close" onclick="document.getElementById('bookFloat').classList.remove('visible');document.getElementById('bookFloat').style.display='none'" aria-label="Close">✕</button>
 </div>
@@ -360,7 +387,9 @@
   <div class="lb-info"><span id="lbLabel"></span> &nbsp;·&nbsp; <span id="lbCounter"></span></div>
 </div>
 
-<script src="/assets/site.js?v=15"></script>
+<script src="/assets/site.js?v=16"></script>
+<script src="/assets/js/forms.js?v=16"></script>
+<script src="/assets/js/availability.js?v=16"></script>
 
 <!-- GoatCounter analytics (privacy-friendly, no cookies) -->
 <script data-goatcounter="https://arboriumcabins.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

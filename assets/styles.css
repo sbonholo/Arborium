@@ -685,3 +685,114 @@
       transition: transform 0.18s ease;
     }
     .skip-link:focus { transform: translateX(-50%) translateY(0); }
+
+    /* ══════════════════════════════════════════════════════════════
+       CX package (Sep 2026): lead forms, check-dates, availability,
+       seasons, hosts, email capture, mobile CTA bar
+       ══════════════════════════════════════════════════════════════ */
+
+    /* ── Lead form (waitlist / cabin updates) ── */
+    .lead-form { display: flex; flex-direction: column; gap: 1rem; text-align: left; }
+    .lead-form label, .dates-form label { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--forest-mid); }
+    .lead-form input, .lead-form textarea, .dates-form input, .dates-form select {
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; color: var(--text-dark); background: var(--cream); border: 1px solid rgba(138,125,110,0.5); border-radius: 2px; padding: 0.7rem 0.85rem; width: 100%; letter-spacing: 0; text-transform: none; font-weight: 400; min-height: 44px;
+    }
+    .lead-form input:focus, .lead-form textarea:focus, .dates-form input:focus, .dates-form select:focus { outline: 3px solid var(--amber); outline-offset: 1px; border-color: var(--amber); }
+    .lead-row { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+    .lead-row--3 { grid-template-columns: 1fr 1fr 110px; }
+    .lead-form button[type=submit] { align-self: flex-start; }
+    .lead-status { font-size: 0.85rem; min-height: 1.2em; margin: 0; color: var(--text-muted); }
+    .lead-status.is-error { color: #a33a22; }
+    .lead-success { background: var(--cream); border-left: 3px solid var(--amber); padding: 1.2rem 1.4rem; font-size: 0.95rem; line-height: 1.65; color: var(--text-dark); }
+    .lead-success a { color: var(--forest); font-weight: 600; }
+    .lead-card { background: rgba(247,242,234,0.92); border-radius: 3px; padding: 2rem; max-width: 640px; margin: 0 auto 2.5rem; box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .lead-card .lead-form { text-align: left; }
+    .lead-section { background: var(--forest-mid); padding: 6rem 2rem; }
+    .lead-section .eyebrow { color: var(--amber-light); }
+    .lead-section .section-title { color: var(--cream); }
+    .lead-section .body-text { color: rgba(247,242,234,0.65); }
+    .lead-section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+    .lead-section .lead-form label { color: rgba(247,242,234,0.75); }
+    .lead-section .lead-status { color: rgba(247,242,234,0.7); }
+    @media (max-width: 900px) { .lead-section-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+    @media (max-width: 560px) { .lead-row--3 { grid-template-columns: 1fr 1fr; } .lead-row--3 label:last-child { grid-column: 1 / -1; } }
+
+    /* ── Check dates (Airbnb deep link) ── */
+    .check-dates { background: rgba(247,242,234,0.92); border-radius: 3px; padding: 1.6rem 1.8rem; max-width: 720px; margin: 0 auto 2.5rem; text-align: left; box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+    .check-dates-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; color: var(--forest); margin-bottom: 1rem; }
+    .dates-form { display: grid; grid-template-columns: 1fr 1fr 100px auto; gap: 0.9rem; align-items: end; }
+    .dates-form--cabin { grid-template-columns: 1fr; }
+    .dates-form--cabin .dates-form-row { display: grid; grid-template-columns: 1fr 1fr 100px; gap: 0.9rem; }
+    .dates-form button { min-height: 44px; white-space: nowrap; }
+    @media (max-width: 640px) { .dates-form { grid-template-columns: 1fr 1fr; } .dates-form button { grid-column: 1 / -1; } .dates-form--cabin .dates-form-row { grid-template-columns: 1fr 1fr; } .dates-form--cabin .dates-form-row label:last-child { grid-column: 1 / -1; } }
+
+    /* ── Availability strip (next 90 days) ── */
+    .avail-strip { margin-top: 1.2rem; }
+    .avail-strip[hidden] { display: none; }
+    .avail-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--forest-mid); margin-bottom: 0.5rem; }
+    .avail-legend { display: inline-flex; align-items: center; gap: 0.4rem; text-transform: none; letter-spacing: 0; font-size: 0.75rem; }
+    .avail-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; }
+    .avail-free, .avail-day { background: #cfe3cf; }
+    .avail-busy, .avail-day.is-busy { background: var(--stone); opacity: 0.85; }
+    .avail-days { display: grid; grid-template-columns: repeat(30, 1fr); gap: 2px; }
+    .avail-day { height: 14px; border-radius: 2px; position: relative; }
+    .avail-day.is-month::before { content: attr(data-month); position: absolute; top: -1.1rem; left: 0; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--stone); }
+    .avail-days { padding-top: 1.1rem; }
+    .avail-foot { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.5rem; }
+    @media (max-width: 640px) { .avail-days { grid-template-columns: repeat(15, 1fr); row-gap: 1.3rem; } }
+
+    /* ── Dates modal (floating bar "Check dates") ── */
+    .dates-modal { position: fixed; inset: 0; z-index: 10000; background: rgba(14,28,16,0.72); display: flex; align-items: flex-end; justify-content: center; padding: 1rem; }
+    .dates-modal[hidden] { display: none; }
+    .dates-modal-panel { background: var(--cream); border-radius: 4px; padding: 1.8rem 1.6rem 1.6rem; width: 100%; max-width: 560px; position: relative; max-height: 92vh; overflow: auto; }
+    .dates-modal-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 600; color: var(--forest); margin: 0.2rem 0 1.2rem; }
+    .dates-modal-close { position: absolute; top: 0.6rem; right: 0.6rem; background: none; border: none; font-size: 1.1rem; color: var(--forest-mid); cursor: pointer; min-width: 44px; min-height: 44px; }
+    .dates-modal-foot { font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem; }
+    @media (min-width: 700px) { .dates-modal { align-items: center; } }
+
+    /* ── Floating bar: mobile shows only "Check dates" + "Email us" ── */
+    .book-float-btns .mobile-only { display: none; }
+    .book-float-btns button.btn-amber { border: none; cursor: pointer; font-family: inherit; }
+    @media (max-width: 600px) {
+      .book-float-btns .desktop-only { display: none !important; }
+      .book-float-btns .mobile-only { display: inline-flex; align-items: center; justify-content: center; }
+    }
+
+    /* ── Cabin card price line ── */
+    .cabin-card-price { font-size: 0.85rem; color: var(--forest); font-weight: 600; margin: -0.6rem 0 1.2rem; }
+    .cabin-card-price span { font-weight: 400; color: var(--text-muted); }
+
+    /* ── Group chip for the separate-parcel cabin ── */
+    .group-chip--separate { border: 1px dashed rgba(224,168,74,0.55); }
+    .group-chip--separate .group-chip-cap { color: rgba(247,242,234,0.6); }
+    .group-note { font-size: 0.9rem; color: rgba(247,242,234,0.75); max-width: 640px; margin: -0.5rem auto 2rem; line-height: 1.65; }
+
+    /* ── When to come (seasons) ── */
+    .seasons { background: var(--cream); padding: 6rem 2rem; }
+    .seasons-header { text-align: center; max-width: 620px; margin: 0 auto 3.5rem; }
+    .seasons .why-grid { max-width: 1100px; margin: 0 auto; }
+    .seasons .why-item { text-align: left; background: #fff; padding: 1.8rem; border-radius: 3px; box-shadow: 0 2px 20px rgba(0,0,0,0.05); }
+    .seasons .why-icon { justify-content: flex-start; }
+    .seasons-note { max-width: 1100px; margin: 2rem auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .seasons-note div { background: var(--forest); color: rgba(247,242,234,0.8); padding: 1.4rem 1.6rem; border-radius: 3px; font-size: 0.88rem; line-height: 1.7; }
+    .seasons-note strong { color: var(--amber-light); display: block; font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 0.4rem; }
+    @media (max-width: 768px) { .seasons-note { grid-template-columns: 1fr; } }
+
+    /* ── Meet your hosts ── */
+    .hosts { background: var(--cream-dark); }
+    .hosts-facts { list-style: none; margin: 1.6rem 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem 1.5rem; }
+    .hosts-facts li { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.88rem; line-height: 1.5; color: var(--text-dark); }
+    .hosts-facts .icon { flex-shrink: 0; color: var(--amber); margin-top: 0.15rem; }
+    @media (max-width: 560px) { .hosts-facts { grid-template-columns: 1fr; } }
+
+    .review-pet { font-size: 0.85rem; margin-left: 0.3rem; }
+
+    /* ── CX fixes after visual QA ── */
+    .lead-form label, .dates-form label, .lead-form input, .lead-form textarea, .dates-form input, .dates-form select { min-width: 0; }
+    .dates-form--cabin { grid-template-columns: 1fr; }
+    .avail-days { gap: 1.2rem 2px; padding-top: 1.1rem; }
+    .hosts .intro-img-wrap img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+    .hosts-facts li > span { flex: 1; }
+    @media (max-width: 640px) { .dates-form--cabin { grid-template-columns: 1fr; } .dates-form--cabin button { grid-column: auto; } }
+    /* width/height attributes on lazy images must not override CSS sizing */
+    .intro-img-wrap img { height: auto; }

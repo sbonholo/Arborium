@@ -1,0 +1,6 @@
+{
+  "generated": null,
+  "note": "Written by .github/workflows/availability.yml from the Airbnb iCal feeds. Empty until the ICAL_* secrets (ICAL_SUNSET, ICAL_STARGAZING, ICAL_SUNSET_NIGHTFALL, ICAL_THREE_CABINS) are set.",
+  "feeds": {},
+  "cabins": {}
+}

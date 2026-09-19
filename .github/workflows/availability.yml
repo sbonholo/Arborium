@@ -1,0 +1,35 @@
+name: Update availability
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ical:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch Airbnb iCal feeds
+        env:
+          ICAL_SUNSET: ${{ secrets.ICAL_SUNSET }}
+          ICAL_STARGAZING: ${{ secrets.ICAL_STARGAZING }}
+          ICAL_SUNSET_NIGHTFALL: ${{ secrets.ICAL_SUNSET_NIGHTFALL }}
+          ICAL_THREE_CABINS: ${{ secrets.ICAL_THREE_CABINS }}
+        run: python scripts/fetch_availability.py
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- assets/data/availability.json; then
+            echo "No change"; exit 0
+          fi
+          git config user.name "arborium-bot"
+          git config user.email "info@arborium.app"
+          git add assets/data/availability.json
+          git commit -m "Update availability from Airbnb iCal"
+          git push
