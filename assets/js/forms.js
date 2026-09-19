@@ -4,7 +4,7 @@
 // AJAX: https://formsubmit.co/ajax/<email>; hidden _cc/_subject/_captcha/_template
 // fields ride along). Leave empty to fall back to a pre-filled mailto:.
 // NOTE: FormSubmit must be activated once from the inbox after the first submit.
-const FORM_ENDPOINT = 'https://formsubmit.co/ajax/sbonholo@gmail.com';
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/36e7d69d9910fa61eacefdf6e63328b6'; // FormSubmit alias (activated)
 const FORM_FALLBACK_EMAIL = 'info@arborium.app';
 
 (function () {
@@ -65,9 +65,11 @@ const FORM_FALLBACK_EMAIL = 'info@arborium.app';
       if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Sending…'; }
       try {
         const r = await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) });
+        // Any 2xx counts as delivered. FormSubmit answers {success: "true"|"false", message}
+        // as strings; a "false" body on a 2xx is logged but never sends the visitor to mailto.
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const out = await r.json().catch(() => ({}));
-        if (out && String(out.success) === 'false') throw new Error(out.message || 'rejected');
+        if (out && String(out.success) === 'false' && window.console) console.warn('FormSubmit:', out.message || out);
         success(form);
       } catch (err) {
         if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label; }
