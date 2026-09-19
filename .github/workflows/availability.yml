@@ -8,6 +8,14 @@ on:
 permissions:
   contents: write
 
+# The Airbnb iCal export URLs are deliberately kept in the open (owner's
+# decision). A repository secret with the same name, if present, wins.
+env:
+  DEFAULT_ICAL_SUNSET: https://www.airbnb.com/calendar/ical/1369606948743760150.ics?t=7bf950a73f004aa48b11a194637ed430
+  DEFAULT_ICAL_STARGAZING: https://www.airbnb.com/calendar/ical/1668015378530902092.ics?t=1e40ac13f01b43ef9f246af5887160e2
+  DEFAULT_ICAL_SUNSET_NIGHTFALL: https://www.airbnb.com/calendar/ical/1708103105692478664.ics?t=60f8c0fd06b24131b309155bf6618ca4
+  DEFAULT_ICAL_THREE_CABINS: https://www.airbnb.com/calendar/ical/1711593580951571625.ics?t=f47e43870c0049749f607d393d2b5e21
+
 jobs:
   ical:
     runs-on: ubuntu-latest
@@ -18,10 +26,10 @@ jobs:
           python-version: "3.12"
       - name: Fetch Airbnb iCal feeds
         env:
-          ICAL_SUNSET: ${{ secrets.ICAL_SUNSET }}
-          ICAL_STARGAZING: ${{ secrets.ICAL_STARGAZING }}
-          ICAL_SUNSET_NIGHTFALL: ${{ secrets.ICAL_SUNSET_NIGHTFALL }}
-          ICAL_THREE_CABINS: ${{ secrets.ICAL_THREE_CABINS }}
+          ICAL_SUNSET: ${{ secrets.ICAL_SUNSET || env.DEFAULT_ICAL_SUNSET }}
+          ICAL_STARGAZING: ${{ secrets.ICAL_STARGAZING || env.DEFAULT_ICAL_STARGAZING }}
+          ICAL_SUNSET_NIGHTFALL: ${{ secrets.ICAL_SUNSET_NIGHTFALL || env.DEFAULT_ICAL_SUNSET_NIGHTFALL }}
+          ICAL_THREE_CABINS: ${{ secrets.ICAL_THREE_CABINS || env.DEFAULT_ICAL_THREE_CABINS }}
         run: python scripts/fetch_availability.py
       - name: Commit if changed
         run: |
