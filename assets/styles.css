@@ -796,3 +796,12 @@
     @media (max-width: 640px) { .dates-form--cabin { grid-template-columns: 1fr; } .dates-form--cabin button { grid-column: auto; } }
     /* width/height attributes on lazy images must not override CSS sizing */
     .intro-img-wrap img { height: auto; }
+
+    /* ── Hero CTAs: one primary, one secondary, equal footprint ── */
+    .hero-btns button { font-family: inherit; border: none; cursor: pointer; }
+    .hero-btns > * { min-width: 200px; text-align: center; }
+    .hero-btns--pair > * { min-width: 220px; }
+    @media (max-width: 600px) {
+      .hero-btns { display: grid; grid-template-columns: 1fr; gap: 0.75rem; max-width: 340px; margin: 0 auto; }
+      .hero-btns > * { width: 100%; min-width: 0; padding-left: 1rem; padding-right: 1rem; }
+    }
