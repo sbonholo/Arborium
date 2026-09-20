@@ -125,7 +125,8 @@ if (lb) {
   [
     ['.gallery-grid', 'Sunset Cabin'],
     ['.sg-grid', 'Stargazing Cabin'],
-    ['.nf-grid', 'Nightfall Guest Cabin']
+    ['.nf-grid', 'Nightfall Guest Cabin'],
+    ['.property-map-figure', 'Arborium property map']
   ].forEach(([sel, label]) => {
     const grid = document.querySelector(sel);
     if (!grid) return;

@@ -830,3 +830,11 @@
     @media (max-width: 600px) { .book-cta-btns { grid-template-columns: 1fr; max-width: 340px; } .book-cta-btns > * { letter-spacing: 0.08em; padding-left: 0.75rem; padding-right: 0.75rem; } }
     .book-cta-btns { align-items: stretch; }
     .book-cta-btns > * { height: 100%; min-height: 52px; }
+
+    /* ── Property map ── */
+    .property-map { background: var(--cream-dark); padding: 6rem 2rem; }
+    .property-map-header { text-align: center; max-width: 640px; margin: 0 auto 2.5rem; }
+    .property-map-figure { border-radius: 4px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+    .property-map-figure img { width: 100%; height: auto; display: block; cursor: zoom-in; }
+    .property-map .map-caption { color: var(--text-muted); font-size: 0.82rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+    @media (max-width: 600px) { .property-map { padding: 4rem 1rem; } }
