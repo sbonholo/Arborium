@@ -812,3 +812,6 @@
     .included-grid { grid-template-columns: repeat(6, 1fr); max-width: 1200px; margin: 0 auto; }
     @media (max-width: 1000px) { .included-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 560px) { .included-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* Images that carry width/height attributes must still obey CSS aspect-ratio */
+    img[style*="aspect-ratio"], .activity-card img, .gem-callout-img img { height: auto; }
