@@ -815,3 +815,18 @@
 
     /* Images that carry width/height attributes must still obey CSS aspect-ratio */
     img[style*="aspect-ratio"], .activity-card img, .gem-callout-img img { height: auto; }
+
+    /* ── Card footers and CTA rows: equal footprint, side by side, stack cleanly on phones ── */
+    .cabin-card-footer { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+    .cabin-card-footer > * { width: 100%; text-align: center; padding-left: 0.75rem !important; padding-right: 0.75rem !important; white-space: normal; line-height: 1.25; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .cabin-card-footer { align-items: stretch; }
+    .cabin-card-price { margin-top: -0.4rem; }
+    @media (max-width: 600px) { .cabin-card-footer { grid-template-columns: 1fr; } }
+    .book-cta-btns { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.85rem; max-width: 720px; margin: 0 auto; }
+    .book-cta-btns > * { width: 100%; text-align: center; }
+    .group-stays .btn-amber, .group-stays .btn-outline-light { min-width: 230px; text-align: center; }
+    .book-cta-btns button { font-family: inherit; border: none; cursor: pointer; }
+    .book-cta-btns > * { white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    @media (max-width: 600px) { .book-cta-btns { grid-template-columns: 1fr; max-width: 340px; } .book-cta-btns > * { letter-spacing: 0.08em; padding-left: 0.75rem; padding-right: 0.75rem; } }
+    .book-cta-btns { align-items: stretch; }
+    .book-cta-btns > * { height: 100%; min-height: 52px; }
