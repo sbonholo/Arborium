@@ -192,3 +192,14 @@ document.querySelectorAll('a[href*="airbnb.com/rooms"], a[href^="mailto:"]').for
     window.track('book-airbnb-' + (CABIN_BY_LISTING[id] || 'unknown'));
   });
 });
+
+// ── Scroll depth: one event per page view at 25/50/75/100% ──
+(function () {
+  const marks = [25, 50, 75, 100], sent = new Set();
+  const check = () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight; if (h <= 0) return;
+    const pct = Math.round((window.scrollY / h) * 100);
+    marks.forEach(m => { if (pct >= m && !sent.has(m)) { sent.add(m); if (window.track) window.track('scroll-' + m + '-' + (location.pathname.replace(/\W+/g, '') || 'home')); } });
+  };
+  window.addEventListener('scroll', check, { passive: true }); window.addEventListener('load', check);
+})();
