@@ -74,14 +74,24 @@
   // ── Dates modal (floating bar "Check dates") ──
   const modal = document.getElementById('datesModal');
   if (modal) {
+    let lastFocus = null;
+    const focusables = () => Array.from(modal.querySelectorAll('button, [href], input, select, textarea')).filter(e => !e.disabled && e.offsetParent !== null);
     const open = key => {
+      lastFocus = document.activeElement;
       const sel = modal.querySelector('select[name=cabin]');
       if (sel && key && LISTINGS[key] && LISTINGS[key].id) { sel.value = key; sel.dispatchEvent(new Event('change')); }
       else if (sel) renderStrip(modal.querySelector('.avail-strip'), sel.value);
       modal.hidden = false; document.body.style.overflow = 'hidden';
       const first = modal.querySelector('input[name=checkin]'); if (first) first.focus();
     };
-    const close = () => { modal.hidden = true; document.body.style.overflow = ''; };
+    const close = () => { modal.hidden = true; document.body.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus(); };
+    modal.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const f = focusables(); if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
     document.querySelectorAll('[data-open-dates]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); open(b.dataset.openDates || document.body.dataset.cabin); }));
     modal.querySelectorAll('[data-close-dates]').forEach(b => b.addEventListener('click', close));
     modal.addEventListener('click', e => { if (e.target === modal) close(); });

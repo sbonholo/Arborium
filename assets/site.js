@@ -134,11 +134,14 @@ if (lb) {
     const imgs = Array.from(grid.querySelectorAll('img'));
     imgs.forEach((img, i) => {
       img.style.cursor = 'zoom-in';
+      img.tabIndex = 0; img.setAttribute('role', 'button'); img.setAttribute('aria-label', 'View larger: ' + (img.alt || label));
       img.addEventListener('click', () => openLightbox(imgs, i, label));
+      img.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(imgs, i, label); } });
     });
   });
 
   function openLightbox(imgs, i, label) {
+    lbReturnFocus = imgs[i];
     lbGroup = imgs; lbIndex = i;
     lbLabel.textContent = label;
     showLbPhoto();
@@ -155,9 +158,11 @@ if (lb) {
     lbIndex = (lbIndex + dir + lbGroup.length) % lbGroup.length;
     showLbPhoto();
   }
+  let lbReturnFocus = null;
   function closeLightbox() {
     lb.classList.remove('open');
     document.body.style.overflow = '';
+    if (lbReturnFocus && lbReturnFocus.focus) lbReturnFocus.focus();
   }
   window.lbNext = lbNext;
   window.closeLightbox = closeLightbox;
