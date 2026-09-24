@@ -9,8 +9,8 @@
     'stargazing':       { id: '1668015378530902092', name: 'Stargazing Cabin', max: 8 },
     'sunset-nightfall': { id: '1708103105692478664', name: 'Sunset + Nightfall', max: 10 },
     'whole-property':   { id: '1711593580951571625', name: 'Whole property (3 cabins)', max: 18 },
-    // Sugar Creek Cabin: Airbnb listing 1772724604383701053 is unlisted until Fall 2027.
-    'sugar-creek':      { id: '', name: 'Sugar Creek Cabin', max: 8 }
+    // Creekside Cabin: Airbnb listing 1772724604383701053 is unlisted until Fall 2027.
+    'sugar-creek':      { id: '', name: 'Creekside Cabin', max: 8 }
   };
   const DAYS = 90;
   const iso = d => d.toISOString().slice(0, 10);

@@ -33,7 +33,7 @@ fetch('/assets/data/reviews.json', { cache: 'no-cache' }).then(r => r.ok ? r.jso
   document.querySelectorAll('[data-cabin-rating]').forEach(el => { const c = cabins[el.dataset.cabinRating]; if (c) el.textContent = Number.isInteger(c.rating) ? c.rating.toFixed(1) : c.rating; });
   document.querySelectorAll('[data-cabin-count]').forEach(el => { const c = cabins[el.dataset.cabinCount]; if (c) el.textContent = c.count; });
   document.querySelectorAll('[data-cabin-badge]').forEach(el => { const c = cabins[el.dataset.cabinBadge]; if (c && c.badge) { el.textContent = c.badge; el.hidden = false; } else el.hidden = true; });
-  const names = { sunset: 'Sunset Cabin', stargazing: 'Stargazing Cabin', nightfall: 'Nightfall Guest Cabin', 'sugar-creek': 'Sugar Creek Cabin' };
+  const names = { sunset: 'Sunset Cabin', stargazing: 'Stargazing Cabin', nightfall: 'Nightfall Guest Cabin', 'sugar-creek': 'Creekside Cabin' };
   document.querySelectorAll('[data-reviews]').forEach(grid => {
     const which = grid.dataset.reviews, limit = +grid.dataset.limit || 99, showCabin = grid.dataset.showCabin === 'true';
     const list = (data.reviews || []).filter(r => which === 'all' || r.cabin === which).slice(0, limit);
